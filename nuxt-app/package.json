@@ -1,0 +1,18 @@
+{
+  "name": "neo-smart-factory-app",
+  "version": "0.5.1",
+  "private": true,
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "preview": "nuxi preview"
+  },
+  "dependencies": {
+    "nuxt": "^3.10.0",
+    "@pinia/nuxt": "^0.5.0"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest"
+  }
+}
+
