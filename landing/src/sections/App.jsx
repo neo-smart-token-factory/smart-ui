@@ -2,7 +2,7 @@ import React from "react";
 
 export default function App() {
   const launch = () => {
-    window.location.href = "https://neo-smart-factory.app/"; // futuramente seu Nuxt PWA
+    window.location.href = "https://neosmartfactory.onchain/"; // Nuxt PWA
   };
 
   return (
@@ -53,6 +53,14 @@ export default function App() {
       {/* FOOTER */}
       <footer className="px-10 pb-10 opacity-40">
         <p>NΞØ Protocol — PATCH v0.5.1 IGNIÇÃO</p>
+        <p className="mt-2">
+          <a 
+            href="mailto:team@neosmartfactory.onchain" 
+            className="hover:opacity-80 transition underline"
+          >
+            team@neosmartfactory.onchain
+          </a>
+        </p>
       </footer>
 
     </div>

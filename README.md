@@ -88,7 +88,7 @@ Configure a URL no arquivo `landing/src/sections/App.jsx`:
 
 ```jsx
 const launch = () => {
-  window.location.href = "https://neo-smart-factory.app/";
+  window.location.href = "https://neosmartfactory.onchain/";
 };
 ```
 

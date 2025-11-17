@@ -1,20 +1,25 @@
 <template>
-  <div class="p-6">
-    <h1 class="text-3xl font-bold mb-6">Simulador – v0.5.1</h1>
+  <div class="min-h-screen flex flex-col">
+    <div class="p-6 flex-1">
+      <h1 class="text-3xl font-bold mb-6">Simulador – v0.5.1</h1>
 
-    <div class="mt-6">
-      <div class="bg-black p-6 rounded-xl text-neo font-mono text-sm whitespace-pre-wrap">
-        {{ simulation }}
+      <div class="mt-6">
+        <div class="bg-black p-6 rounded-xl text-neo font-mono text-sm whitespace-pre-wrap">
+          {{ simulation }}
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <button @click="goBack">Voltar</button>
       </div>
     </div>
-
-    <div class="mt-6">
-      <button @click="goBack">Voltar</button>
-    </div>
+    <Footer />
   </div>
 </template>
 
 <script setup>
+import Footer from "~/components/Footer.vue";
+
 const route = useRoute();
 
 let data = {};
