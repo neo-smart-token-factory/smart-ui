@@ -1,7 +1,9 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <div class="p-6 flex-1">
-      <h1 class="text-3xl font-bold mb-6">Criar Token – PATCH v0.5.1</h1>
+      <h1 class="text-3xl md:text-4xl font-headline font-extrabold mb-6 uppercase tracking-tight" style="color: var(--color-brand-primary);">
+        Criar Token – PATCH v0.5.1
+      </h1>
 
       <div class="mt-6 grid gap-4 max-w-xl">
         <input 
@@ -43,7 +45,7 @@
         ></textarea>
 
         <button @click="preview" :disabled="!isFormValid">
-          Gerar Preview
+          GERAR PREVIEW
         </button>
       </div>
 
@@ -84,8 +86,6 @@ function preview() {
 </script>
 
 <style scoped>
-h1 {
-  color: #0ff;
-}
+/* Estilos aplicados via CSS variables e classes globais */
 </style>
 

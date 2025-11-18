@@ -1,25 +1,27 @@
 <template>
-  <div class="border border-zinc-700 p-4 rounded-xl max-w-xl">
-    <h2 class="text-xl font-bold mb-4">Preview do Token</h2>
+  <div class="p-4 max-w-xl" style="background: var(--color-bg-surface); border: 1px solid var(--color-border-muted); border-radius: var(--radius-lg);">
+    <h2 class="text-xl font-headline font-extrabold mb-4 uppercase tracking-tight" style="color: var(--color-brand-primary);">Preview do Token</h2>
     
     <div class="space-y-2">
-      <p><b>Nome:</b> {{ data.name }}</p>
-      <p><b>Símbolo:</b> {{ data.symbol }}</p>
-      <p><b>Supply Inicial:</b> {{ data.supply.toLocaleString() }}</p>
-      <p><b>Preço Fixo:</b> {{ data.price }} MATIC</p>
-      <p><b>Rede:</b> {{ data.network === 'polygon' ? 'Polygon Mainnet' : 'Polygon Amoy (Testnet)' }}</p>
-      <p v-if="data.purpose" class="mt-4 opacity-70">
-        <b>Propósito:</b> {{ data.purpose }}
+      <p><b style="color: var(--color-state-active);">Nome:</b> {{ data.name }}</p>
+      <p><b style="color: var(--color-state-active);">Símbolo:</b> {{ data.symbol }}</p>
+      <p><b style="color: var(--color-state-active);">Supply Inicial:</b> {{ data.supply.toLocaleString() }}</p>
+      <p><b style="color: var(--color-state-active);">Preço Fixo:</b> {{ data.price }} MATIC</p>
+      <p><b style="color: var(--color-state-active);">Rede:</b> {{ data.network === 'polygon' ? 'Polygon Mainnet' : 'Polygon Amoy (Testnet)' }}</p>
+      <p v-if="data.purpose" class="mt-4" style="color: var(--color-text-secondary);">
+        <b style="color: var(--color-state-active);">Propósito:</b> {{ data.purpose }}
       </p>
     </div>
 
     <div class="mt-6 flex gap-4">
-      <button @click="simular">Simular Ecossistema</button>
+      <button @click="simular">SIMULAR ECOSSISTEMA</button>
       <button 
         @click="deployPreview" 
-        class="bg-zinc-700 text-white hover:bg-zinc-600"
+        style="background: var(--color-bg-elevated); color: var(--color-text-primary);"
+        @mouseenter="$event.target.style.background = 'var(--color-bg-surface)'"
+        @mouseleave="$event.target.style.background = 'var(--color-bg-elevated)'"
       >
-        Deploy Preview
+        DEPLOY PREVIEW
       </button>
     </div>
   </div>
@@ -44,8 +46,6 @@ function deployPreview() {
 </script>
 
 <style scoped>
-b {
-  color: #0ff;
-}
+/* Estilos aplicados via CSS variables e inline styles */
 </style>
 

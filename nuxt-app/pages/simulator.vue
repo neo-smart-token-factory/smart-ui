@@ -1,16 +1,16 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <div class="p-6 flex-1">
-      <h1 class="text-3xl font-bold mb-6">Simulador – v0.5.1</h1>
+      <h1 class="text-3xl md:text-4xl font-headline font-extrabold mb-6 uppercase tracking-tight" style="color: var(--color-brand-primary);">Simulador – v0.5.1</h1>
 
       <div class="mt-6">
-        <div class="bg-black p-6 rounded-xl text-neo font-mono text-sm whitespace-pre-wrap">
+        <div class="p-6 rounded-xl text-sm whitespace-pre-wrap font-mono" style="background: var(--color-bg-elevated); color: var(--color-state-active); border: 1px solid var(--color-border-muted);">
           {{ simulation }}
         </div>
       </div>
 
       <div class="mt-6">
-        <button @click="goBack">Voltar</button>
+        <button @click="goBack">VOLTAR</button>
       </div>
     </div>
     <Footer />
@@ -58,8 +58,6 @@ function goBack() {
 </script>
 
 <style scoped>
-.text-neo {
-  color: #0ff;
-}
+/* Estilos aplicados via CSS variables e inline styles */
 </style>
 
