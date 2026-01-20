@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-headline: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-obsidian text-slate-100 font-body antialiased;
+    background-image: 
+      radial-gradient(circle at 0% 0%, rgba(216, 242, 68, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 100% 100%, rgba(0, 229, 255, 0.05) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+
+  .glass-card {
+    @apply glass rounded-2xl p-6 transition-all duration-300;
+  }
+
+  .glass-card:hover {
+    @apply border-white/20 bg-white/10;
+  }
+
+  .neon-glow {
+    box-shadow: 0 0 20px rgba(216, 242, 68, 0.2);
+  }
+
+  .btn-primary {
+    @apply bg-neon-acid text-obsidian font-bold py-3 px-6 rounded-xl transition-all duration-200 
+           hover:scale-105 active:scale-95 hover:shadow-[0_0_15px_rgba(216,242,68,0.4)];
+  }
+
+  .btn-secondary {
+    @apply glass text-white font-medium py-3 px-6 rounded-xl transition-all duration-200
+           hover:bg-white/10;
+  }
+
+  /* Input styles */
+  .neo-input {
+    @apply bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white outline-none
+           focus:border-neon-acid/50 transition-colors;
+  }
+
+  .neo-label {
+    @apply block text-sm font-medium text-slate-400 mb-2 uppercase tracking-wider;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-obsidian;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-white/20;
+}

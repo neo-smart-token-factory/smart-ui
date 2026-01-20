@@ -1,106 +1,37 @@
-# NΞØ SMART FACTORY — UI Components
+# NΞØ SMART FACTORY — Neural Forge UI
 
-Interface completa da NΞØ SMART FACTORY com Landing Page e PWA App.
+## 🌐 Overview
+The **Neural Forge** is the premium interface for the NΞØ Smart Factory ecosystem. Designed as a high-fidelity, multichain asset generator, it allows users to forge protocols with neural-level precision.
 
-## 📁 Estrutura
+## 🚀 Aesthetics
+- **Core**: Obsidian Dark Mode
+- **Accent**: Acid Neon (`#D8F244`)
+- **Effects**: Glassmorphism, Kinetic Gradients, Neural Blurs
+- **Interactions**: Framer Motion powered micro-animations
 
-```
-forge-ui/
-├── landing/              # Landing Page (React + Vite + Tailwind)
-│   ├── src/
-│   │   ├── sections/
-│   │   │   └── App.jsx  # Componente principal
-│   │   ├── main.jsx
-│   │   └── styles.css
-│   ├── index.html
-│   └── package.json
-│
-└── nuxt-app/            # PWA App (Nuxt.js 3)
-    ├── pages/
-    │   ├── index.vue    # Formulário principal
-    │   ├── simulator.vue
-    │   └── preview.vue
-    ├── components/
-    │   └── TokenPreview.vue
-    ├── assets/
-    │   └── main.css
-    └── package.json
-```
+## 🛠️ Tech Stack
+- **Framework**: Next.js 14
+- **Styling**: Tailwind CSS + Custom Design Tokens
+- **Icons**: Lucide React
+- **Animations**: Framer Motion
+- **Web3**: Ethers.js v6
 
-## 🚀 Início Rápido
+## 📦 Features
+- [x] **Multichain Selection**: Integrated support for Base, Polygon, and Arbitrum.
+- [x] **Nexus Config**: Token identity and narrative definition.
+- [x] **Asset Pack Generator**: Automatic creation of marketing plans and whitepaper drafts.
+- [x] **Social Forge**: Step-by-step guides for X, Telegram, and Discord integration.
+- [x] **MiniApp Ready**: Responsive design optimized for Telegram MiniApp frames.
 
-### Landing Page
-
+## 🏃 Running Locally
 ```bash
-cd landing
+cd forge-ui
 npm install
 npm run dev
-# Acesse http://localhost:3001
 ```
 
-### PWA App
-
-```bash
-cd nuxt-app
-npm install
-npm run dev
-# Acesse http://localhost:3000
-```
-
-## 🎨 Características
-
-### Landing Page
-- ✅ Design minimalista NΞØ
-- ✅ React + Vite (performance)
-- ✅ Tailwind CSS
-- ✅ Totalmente responsivo
-- ✅ Botão de lançamento para app
-
-### PWA App
-- ✅ Formulário completo de criação de tokens
-- ✅ Preview de tokens
-- ✅ Simulador de ecossistemas
-- ✅ Deploy preview
-- ✅ PWA-ready (Service Worker)
-- ✅ Pronto para Web3
-
-## 📦 Build
-
-### Landing
-```bash
-cd landing
-npm run build
-npm run preview
-```
-
-### PWA
-```bash
-cd nuxt-app
-npm run build
-npm run preview
-```
-
-## 🔗 Integração
-
-A landing page redireciona para o PWA app quando o botão "LAUNCH APP" é clicado.
-
-Configure a URL no arquivo `landing/src/sections/App.jsx`:
-
-```jsx
-const launch = () => {
-  window.location.href = "https://neosmartfactory.onchain/";
-};
-```
-
-## 🌐 Próximos Passos
-
-- [ ] Integração Web3 (ethers.js)
-- [ ] Conexão de wallet
-- [ ] Deploy real de contratos
-- [ ] Histórico de tokens
-- [ ] Dashboard
+## 📁 Repository Structure (Post-Split)
+This project is part of the `smart-ui` repository in the NΞØ Organization.
 
 ---
-
-**Versão**: v0.5.1 — IGNIÇÃO
-
+**Build v0.5.3** — *Expand until silence becomes structure.*
