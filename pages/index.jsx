@@ -49,7 +49,6 @@ export default function NeuralForge() {
       <Head>
         <title>NΞØ | Neural Forge Factory</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono&display=swap" rel="stylesheet" />
       </Head>
 
       {/* Background Decor */}
@@ -59,11 +58,11 @@ export default function NeuralForge() {
       </div>
 
       <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-neon-acid rounded flex items-center justify-center">
-            <Hexagon className="w-5 h-5 text-obsidian" />
+        <div className="flex items-center gap-3">
+          <div className="relative w-10 h-10">
+            <img src="/brand/logo-main.png" alt="NEØ Logo" className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(216,242,68,0.4)]" />
           </div>
-          <span className="font-headline font-bold text-xl tracking-tighter">NΞØ <span className="text-neon-acid">FORGE</span></span>
+          <span className="font-headline font-bold text-xl tracking-tighter uppercase">NΞØ <span className="text-neon-acid">FORGE</span></span>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest hidden md:inline">Neural Network Status: <span className="text-green-400">Stable</span></span>
@@ -98,11 +97,21 @@ export default function NeuralForge() {
                   The first neural-ready asset generator. Create stable, liquid, and narratives-driven protocols in seconds across the Superchain.
                 </p>
                 <div className="pt-8">
-                  <button onClick={() => setStep(2)} className="btn-primary flex items-center gap-3 mx-auto text-lg px-12">
+                  <button onClick={() => setStep(2)} className="btn-primary flex items-center gap-3 mx-auto text-lg px-12 relative z-10">
                     Enter the Forge <ArrowRight className="w-5 h-5" />
                   </button>
                 </div>
               </div>
+
+              {/* Hero Image Integration */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="relative max-w-3xl mx-auto rounded-3xl overflow-hidden glass border-white/10 shadow-2xl"
+              >
+                <img src="/images/hero-genesis.png" alt="Neural Forge Genesis" className="w-full aspect-video object-cover opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent" />
+              </motion.div>
 
               <LandingSection />
             </motion.div>

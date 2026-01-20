@@ -31,6 +31,9 @@ module.exports = {
             },
             animation: {
                 'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            boxShadow: {
+                'neon-hover': '0 0 15px rgba(216, 242, 68, 0.4)',
             }
         },
     },
