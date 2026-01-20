@@ -30,8 +30,10 @@ npm install
 npm run dev
 ```
 
-## 📁 Repository Structure (Post-Split)
-This project is part of the `smart-ui` repository in the NΞØ Organization.
+## 📜 Attribution & Licensing
+This project is licensed under the **MIT License**.
+
+If you use this UI as a foundation for your project, we require **Attribution** to NΞØ Protocol. Keep the design credits and reference the original factory.
 
 ---
 **Build v0.5.3** — *Expand until silence becomes structure.*
