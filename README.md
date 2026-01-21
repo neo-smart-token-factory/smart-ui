@@ -1,39 +1,39 @@
-# NΞØ SMART FACTORY — Neural Forge UI
+# NΞØ SMART FACTORY — Interface de Gestão e Fábrica de Tokens
 
-## 🌐 Overview
-The **Neural Forge** is the premium interface for the NΞØ Smart Factory ecosystem. Designed as a high-fidelity, multichain asset generator, it allows users to forge protocols with neural-level precision.
+## 🌐 Visão Geral
+A **NΞØ Smart Factory** é a interface definitiva para o ecossistema de criação de ativos da NEO. Desenvolvida como uma fábrica de tokens multichain, ela permite que usuários compilem e publiquem contratos inteligentes com precisão técnica e segurança.
 
-## 🚀 Aesthetics
-- **Core**: Obsidian Dark Mode
-- **Accent**: Acid Neon (`#D8F244`)
-- **Effects**: Glassmorphism, Kinetic Gradients, Neural Blurs
-- **Interactions**: Framer Motion powered micro-animations
+Documentação detalhada: [PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)
 
-## 🛠️ Tech Stack
-- **Framework**: Next.js 14
-- **Styling**: Tailwind CSS + Custom Design Tokens
-- **Icons**: Lucide React
-- **Animations**: Framer Motion
-- **Web3**: Ethers.js v6
+## 🚀 Estética e Design
+- **Tema**: Modo Escuro (Obsidian)
+- **Destaque**: Neon Acid (`#D8F244`)
+- **Efeitos**: Glassmorphism e Gradientes Cinéticos.
+- **Interações**: Micro-animações fluidas.
 
-## 📦 Features
-- [x] **Multichain Selection**: Integrated support for Base, Polygon, and Arbitrum.
-- [x] **Nexus Config**: Token identity and narrative definition.
-- [x] **Asset Pack Generator**: Automatic creation of marketing plans and whitepaper drafts.
-- [x] **Social Forge**: Step-by-step guides for X, Telegram, and Discord integration.
-- [x] **MiniApp Ready**: Responsive design optimized for Telegram MiniApp frames.
+## 🛠️ Stack Técnica
+- **Framework**: Next.js 14 / Nuxt 3 (dependendo do módulo)
+- **Estilo**: Tailwind CSS + Design Tokens Customizados
+- **Ícones**: Lucide React / Vue
+- **Web3**: Ethers.js v6 / Viem
 
-## 🏃 Running Locally
+## 📦 Funcionalidades
+- [x] **Fábrica Multichain**: Suporte integrado para Base, Polygon e outras redes EVM.
+- [x] **Compilação de Contratos**: Interface para configurar e compilar novos tokens sem código.
+- [x] **Gerador de Ativos**: Criação automática de planos de marketing e rascunhos de whitepaper.
+- [x] **Pronto para MiniApp**: Design responsivo otimizado para frames do Telegram MiniApp.
+
+## 🏃 Como Rodar Localmente
 ```bash
-cd forge-ui
+# Para a interface principal
 npm install
 npm run dev
 ```
 
-## 📜 Attribution & Licensing
-This project is licensed under the **MIT License**.
+## 📜 Atribuição e Licença
+Este projeto está licenciado sob a **Licença MIT**.
 
-If you use this UI as a foundation for your project, we require **Attribution** to NΞØ Protocol. Keep the design credits and reference the original factory.
+Se você utilizar esta UI como base para seu projeto, solicitamos a **Atribuição** ao Protocolo NΞØ, mantendo os créditos de design e referência à fábrica original.
 
 ---
-**Build v0.5.3** — *Expand until silence becomes structure.*
+**Build v0.5.3** — *Transformando código em ativos líquidos.*

@@ -17,7 +17,7 @@ import AssetPack from '../components/AssetPack';
 import LandingSection from '../components/LandingSection';
 import CustomService from '../components/CustomService';
 
-export default function NeuralForge() {
+export default function SmartMint() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -27,6 +27,66 @@ export default function NeuralForge() {
     network: 'base',
     description: ''
   });
+
+  const [userAddress, setUserAddress] = useState(null); // Simulated wallet
+  const [deployHistory, setDeployHistory] = useState([]);
+
+  // Load global deploy history
+  useEffect(() => {
+    const fetchDeploys = async () => {
+      try {
+        const res = await fetch('/api/deploys');
+        if (res.ok) {
+          const data = await res.json();
+          setDeployHistory(Array.isArray(data) ? data : []);
+        }
+      } catch (e) {
+        console.error("Failed to load history", e);
+      }
+    };
+    fetchDeploys();
+  }, []);
+
+  // Auto-save logic
+  useEffect(() => {
+    if (userAddress && step === 2) {
+      const saveDraft = async () => {
+        try {
+          await fetch('/api/drafts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              user_address: userAddress,
+              token_config: formData
+            })
+          });
+        } catch (e) {
+          console.error("Auto-save failed", e);
+        }
+      };
+
+      const timeoutId = setTimeout(saveDraft, 1000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [formData, userAddress, step]);
+
+  // Load draft logic
+  useEffect(() => {
+    if (userAddress) {
+      const loadDraft = async () => {
+        try {
+          const res = await fetch(`/api/drafts?address=${userAddress}`);
+          if (res.ok) {
+            const draftData = await res.json();
+            setFormData(prev => ({ ...prev, ...draftData }));
+          }
+        } catch (e) {
+          console.error("Failed to load draft", e);
+        }
+      };
+      loadDraft();
+    }
+  }, [userAddress]);
 
   const [forgeResult, setForgeResult] = useState(null);
 
@@ -47,7 +107,7 @@ export default function NeuralForge() {
   return (
     <div className="min-h-screen Selection:bg-neon-acid Selection:text-obsidian">
       <Head>
-        <title>NΞØ | Neural Forge Factory</title>
+        <title>NΞØ SMART FACTORY | Smart Mint</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
       </Head>
 
@@ -62,13 +122,16 @@ export default function NeuralForge() {
           <div className="relative w-10 h-10">
             <img src="/brand/logo-main.png" alt="NEØ Logo" className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(216,242,68,0.4)]" />
           </div>
-          <span className="font-headline font-bold text-xl tracking-tighter uppercase">NΞØ <span className="text-neon-acid">FORGE</span></span>
+          <span className="font-headline font-bold text-xl tracking-tighter uppercase">NΞØ <span className="text-neon-acid">SMART FACTORY</span></span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest hidden md:inline">Neural Network Status: <span className="text-green-400">Stable</span></span>
-          <div className="btn-secondary !py-2 !px-4 !text-xs flex items-center gap-2">
-            <Wallet className="w-3 h-3" /> Connect Neural Link
-          </div>
+          <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest hidden md:inline">Protocol Status: <span className="text-green-400">Online</span></span>
+          <button 
+            onClick={() => setUserAddress('0x' + Math.random().toString(16).slice(2, 12))}
+            className={`btn-secondary !py-2 !px-4 !text-xs flex items-center gap-2 ${userAddress ? 'opacity-50' : ''}`}
+          >
+            <Wallet className="w-3 h-3" /> {userAddress ? `Connected: ${userAddress.slice(0, 6)}...` : 'Connect Wallet'}
+          </button>
         </div>
       </header>
 
@@ -91,14 +154,14 @@ export default function NeuralForge() {
                   <Zap className="w-3 h-3" /> Decentralized Intelligence Factory
                 </motion.div>
                 <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-                  Forge your <span className="text-neon-acid">Multichain</span> Future.
+                  Deploy your <span className="text-neon-acid">Token</span> now.
                 </h1>
                 <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
-                  The first neural-ready asset generator. Create stable, liquid, and narratives-driven protocols in seconds across the Superchain.
+                  The most efficient Smart Contract Factory. Compile and deploy stable, liquid protocols in seconds with zero upfront fees.
                 </p>
                 <div className="pt-8">
                   <button onClick={() => setStep(2)} className="btn-primary flex items-center gap-3 mx-auto text-lg px-12 relative z-10">
-                    Enter the Forge <ArrowRight className="w-5 h-5" />
+                    Open Smart Mint <ArrowRight className="w-5 h-5" />
                   </button>
                 </div>
               </div>
@@ -109,7 +172,7 @@ export default function NeuralForge() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="relative max-w-3xl mx-auto rounded-3xl overflow-hidden glass border-white/10 shadow-2xl"
               >
-                <img src="/images/hero-genesis.png" alt="Neural Forge Genesis" className="w-full aspect-video object-cover opacity-80" />
+                <img src="/images/hero-genesis.png" alt="Smart Mint Interface" className="w-full aspect-video object-cover opacity-80" />
                 <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent" />
               </motion.div>
 
@@ -139,7 +202,7 @@ export default function NeuralForge() {
                         type="text"
                         required
                         className="neo-input w-full"
-                        placeholder="Ex: Neural Flow"
+                        placeholder="Ex: Neo Flow Token"
                         value={formData.tokenName}
                         onChange={e => setFormData({ ...formData, tokenName: e.target.value })}
                       />
@@ -225,14 +288,22 @@ export default function NeuralForge() {
                         >
                           <Rocket className="w-5 h-5" />
                         </motion.div>
-                        Igniting Neural Forge...
+                        Compiling Smart Contract...
                       </>
                     ) : (
                       <>
-                        Forge Protocol <ArrowRight className="w-5 h-5" />
+                        Deploy Protocol <ArrowRight className="w-5 h-5" />
                       </>
                     )}
                   </button>
+                  <div className="mt-4 p-4 bg-neon-acid/5 border border-neon-acid/20 rounded-xl text-center">
+                    <p className="text-xs text-neon-acid font-bold uppercase tracking-wider">
+                      Zero Upfront Fee Policy
+                    </p>
+                    <p className="text-[10px] text-slate-400 mt-1">
+                      A 5% protocol fee is embedded in the contract. You only pay the Network GAS.
+                    </p>
+                  </div>
                   <p className="text-[10px] text-slate-500 flex items-center gap-2 italic">
                     <ShieldCheck className="w-3 h-3" /> Secure Minting Protocol v0.5.3 — Audit Stable
                   </p>
@@ -280,6 +351,34 @@ export default function NeuralForge() {
                 >
                   <ArrowRight className="w-3 h-3 rotate-180" /> Start New Genesis
                 </button>
+              </div>
+
+              {/* Global Deploy History (Transparency Section) */}
+              <div className="mt-20 space-y-6">
+                <div className="flex items-center gap-2 text-neon-acid">
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span className="text-xs font-bold uppercase tracking-[0.2em]">Global Factory Presence</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {deployHistory.length > 0 ? deployHistory.map((deploy) => (
+                    <div key={deploy.id} className="glass-card !p-4 flex items-center justify-between border-white/5 hover:border-neon-acid/20 transition-colors">
+                      <div>
+                        <p className="text-xs font-bold text-white uppercase">{deploy.token_name || 'Unnamed Token'}</p>
+                        <p className="text-[10px] text-slate-500 font-mono">{deploy.contract_address.slice(0, 10)}...{deploy.contract_address.slice(-8)}</p>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-[9px] bg-neon-acid/10 text-neon-acid px-2 py-0.5 rounded-full border border-neon-acid/20 uppercase font-bold">
+                          {deploy.network}
+                        </span>
+                        <p className="text-[8px] text-slate-600 mt-1 uppercase font-bold tracking-tighter">Verified Protocol</p>
+                      </div>
+                    </div>
+                  )) : (
+                    <div className="col-span-full py-10 text-center border border-dashed border-white/10 rounded-2xl">
+                       <p className="text-xs text-slate-600 uppercase font-bold tracking-widest">Awaiting Genesis Sequences...</p>
+                    </div>
+                  )}
+                </div>
               </div>
             </motion.div>
           )}
