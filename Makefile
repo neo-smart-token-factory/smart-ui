@@ -7,27 +7,31 @@ NEXT_DIR = .
 NUXT_DIR = ./nuxt-app
 LANDING_DIR = ./landing
 CORE_DIR = ../neo-smart-factory/forge-core
-CLI_DIR = ../neo-smart-factory/forge-cli
-DOCS_DIR = ../neo-smart-factory/docs
-OPS_DIR = ../neo-smart-factory/internal-ops
+CLI_DIR = ../smart-cli
+DOCS_DIR = ../docs
+# OPS_DIR = ../internal-ops # Desativado ou apontar para local correto se necessário
 
 help:
 	@echo "NΞØ SMART FACTORY - Comandos Disponíveis:"
 	@echo "  make install      - Instala dependências em todos os módulos"
 	@echo "  make dev          - Inicia o painel principal (Next.js) em modo dev"
+	@echo "  make dev-all      - Inicia todos os frontends simultaneamente"
 	@echo "  make ops-sync     - Sincroniza status com Internal Ops e Docs"
+	@echo "  make link-cli     - Registra o comando 'nxf' globalmente via npm link"
 	@echo "  make health       - Verifica integridade entre UI, Core e CLI"
 	@echo "  make build-all    - Gera o build de todos os módulos"
 	@echo "  make clean        - Remove pastas node_modules e artefatos de build"
 
 install:
-	@echo "Installing dependencies..."
+	@echo "Installing dependencies (Monorepo Workspace)..."
 	npm install
-	cd $(NUXT_DIR) && npm install
-	cd $(LANDING_DIR) && npm install
 
 dev:
 	npm run dev
+
+dev-all:
+	@echo "Launching all NΞØ Frontends..."
+	npm run dev & cd $(LANDING_DIR) && npm run dev & cd $(NUXT_DIR) && npm run dev
 
 ops-sync:
 	@echo "Syncing with NΞØ Ecosystem..."
@@ -38,6 +42,10 @@ ops-sync:
 	@if [ -f "$(DOCS_DIR)/changelog.md" ]; then \
 		echo "Core Documentation found."; \
 	fi
+
+link-cli:
+	@echo "Linking NΞØ CLI..."
+	cd $(CLI_DIR) && npm link
 
 health:
 	@echo "NΞØ Protocol Health Check..."
