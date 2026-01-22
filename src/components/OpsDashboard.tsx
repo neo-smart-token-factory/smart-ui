@@ -17,19 +17,22 @@ interface OpsState {
 export default function OpsDashboard() {
     const [state, setState] = useState<OpsState | null>(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
-        // In a real scenario, this would fetch from an API route that reads internal-ops/state.json
-        // For now, we simulate the fetch or use a local mock if API isn't ready
+        // Fetch operational status from API route
         const fetchState = async () => {
             try {
                 const res = await fetch('/api/ops-status');
                 if (res.ok) {
                     const data = await res.json();
                     setState(data);
+                } else {
+                    setError(true);
                 }
-            } catch {
-                console.error("Ops Sync Failed");
+            } catch (err) {
+                console.error("Ops Sync Failed:", err);
+                setError(true);
             } finally {
                 setLoading(false);
             }
@@ -38,7 +41,22 @@ export default function OpsDashboard() {
     }, []);
 
     if (loading) return <div className="animate-pulse text-neon-acid text-[10px] font-bold uppercase tracking-widest">Synchronizing Protocol Intel...</div>;
-    if (!state) return null;
+    
+    // Show graceful fallback UI when API is unavailable (e.g., local dev without Vercel)
+    if (!state || error) {
+        return (
+            <div className="glass-card !p-6 border-orange-500/20 bg-black/60">
+                <div className="flex items-center gap-2 mb-3">
+                    <AlertCircle className="w-4 h-4 text-orange-400" />
+                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-orange-400">Protocol Intel Unavailable</h3>
+                </div>
+                <p className="text-[10px] text-slate-400 leading-relaxed">
+                    Ops dashboard requires Vercel serverless functions. Use <code className="text-neon-acid bg-black/40 px-1 py-0.5 rounded">vercel dev</code> for local development,
+                    or deploy to Vercel to enable Protocol Intel synchronization.
+                </p>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
