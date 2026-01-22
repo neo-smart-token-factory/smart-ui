@@ -18,6 +18,7 @@ jobs:
 
             - name: Checkout Smart Factory (Core/Docs/Ops)
               uses: actions/checkout@v4
+              continue-on-error: true
               with:
                   repository: neo-smart-token-factory/neo-smart-factory
                   path: neo-smart-factory
