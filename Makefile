@@ -21,6 +21,8 @@ help:
 	@echo "  make health       - Verifica integridade entre UI, Core e CLI"
 	@echo "  make build-all    - Gera o build de todos os módulos"
 	@echo "  make clean        - Remove pastas node_modules e artefatos de build"
+	@echo "  make deploy       - Safe Commit + Push (Triggers Vercel). Usage: make deploy msg=\"feat: ...\""
+	@echo "  make deploy-force - Força deploy manual via Vercel CLI (bypass Git)"
 
 install:
 	@echo "Installing dependencies (Monorepo Workspace)..."
@@ -62,3 +64,16 @@ clean:
 	rm -rf node_modules .next
 	rm -rf $(NUXT_DIR)/node_modules $(NUXT_DIR)/.nuxt
 	rm -rf $(LANDING_DIR)/node_modules $(LANDING_DIR)/dist
+
+deploy:
+	@./scripts/safe-deploy.sh "$(msg)"
+
+deploy-force:
+	@echo "Force deploying all modules to Vercel (Production)..."
+	vercel deploy --prod
+	cd $(LANDING_DIR) && vercel deploy --prod
+	cd $(NUXT_DIR) && vercel deploy --prod
+
+migratedb:
+	@echo "Running Database Migrations..."
+	node scripts/migrate.js
