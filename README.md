@@ -1,3 +1,36 @@
+## ⚠️ Architectural Status Notice
+
+This repository is **intentionally frozen**.
+
+The Smart UI is classified as a **Demo and Intent Layer**, as defined in:
+- `docs/ui-status.md`
+- `ADR 0002 — Smart UI as Demo and Intent Layer`
+
+### What this means
+
+- This UI demonstrates flows and concepts.
+- It does NOT represent protocol authority.
+- It does NOT deploy contracts or execute transactions.
+- Backend logic present here is transitional and non-authoritative.
+
+### Allowed changes
+
+- Critical build fixes
+- Security dependency updates
+- Explicit demo/simulation labeling
+
+### Forbidden changes
+
+- New features
+- New backend logic
+- Protocol rules
+- Direct core integrations
+
+Any change outside this scope requires an explicit architectural decision (ADR).
+
+**Do not treat this repository as production infrastructure.**
+
+
 # NΞØ SMART FACTORY — Interface de Gestão e Fábrica de Tokens
 
 ## 🌐 Visão Geral
