@@ -239,15 +239,6 @@ export default function SmartMint() {
                 </div>
               </div>
 
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="relative max-w-3xl mx-auto rounded-3xl overflow-hidden glass border-white/10 shadow-2xl"
-              >
-                <img src="/images/hero-genesis.png" alt="Smart Mint Interface" className="w-full aspect-video object-cover opacity-80" />
-                <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent" />
-              </motion.div>
-
               <LandingSection />
             </motion.div>
           ) : !forgeResult && step === 2 ? (
@@ -445,17 +436,56 @@ export default function SmartMint() {
       </main>
 
       <footer className="border-t border-white/5 py-12 px-6 bg-black/20">
-        <div className="container mx-auto max-w-4xl flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2 opacity-50">
-            <Hexagon className="w-4 h-4 text-neon-acid" />
-            <span className="text-[10px] font-bold tracking-widest uppercase">NODE NEØ PROTOCOL — EST. 2026</span>
-          </div>
-          <div className="flex gap-10">
-            {['Manifesto', 'Technical Ops', 'Legal', 'Structure'].map(link => (
-              <a key={link} href="#" className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest">
-                {link}
+        <div className="container mx-auto max-w-4xl space-y-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-2 opacity-50">
+              <Hexagon className="w-4 h-4 text-neon-acid" />
+              <span className="text-[10px] font-bold tracking-widest uppercase">NODE NEØ PROTOCOL — EST. 2026</span>
+            </div>
+            <div className="flex gap-10">
+              <a
+                href="https://github.com/neo-smart-token-factory"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest"
+              >
+                Organization
               </a>
-            ))}
+              <a
+                href="https://github.com/neo-smart-token-factory/smart-ui/blob/main/docs/ARCHITECTURAL_ADDENDUMS.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest"
+              >
+                Governance
+              </a>
+              <a
+                href="https://github.com/neo-smart-token-factory/smart-ui/blob/main/docs/adr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest"
+              >
+                Technical ADRs
+              </a>
+              <a
+                href="https://github.com/neo-smart-token-factory/smart-ui/blob/main/docs/PROJECT_OVERVIEW.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest"
+              >
+                Documentation
+              </a>
+            </div>
+          </div>
+
+          <div className="border-t border-white/5 pt-6 text-center">
+            <p className="text-[9px] text-slate-600 uppercase tracking-wider font-mono">
+              Open Source Infrastructure · Institutional Responsibility · Active Governance
+            </p>
+            <p className="text-[8px] text-slate-700 mt-2 max-w-2xl mx-auto">
+              Built with deliberate security architecture. All decisions documented in ADRs.
+              Governed by <a href="https://github.com/neo-smart-token-factory" target="_blank" rel="noopener noreferrer" className="text-neon-acid/60 hover:text-neon-acid transition-colors">neo-smart-token-factory</a> organization.
+            </p>
           </div>
         </div>
       </footer>
