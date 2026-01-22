@@ -20,7 +20,7 @@ When the user clicks "Forge Token", the deployment is simulated:
 - Random contract address is generated (40 hex characters)
 - Random transaction hash is generated (64 hex characters)
 - No actual smart contract is deployed to any blockchain
-- The simulated deployment IS saved to the database
+- The simulated deployment is saved to the database
 
 **Code Location**: `src/App.jsx` - `handleForge()` function (lines 136-182)
 

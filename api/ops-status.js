@@ -1,6 +1,10 @@
 // API Route: /api/ops-status
 // Provides operational status information for the OpsDashboard component
 
+// Default fallback values
+const DEFAULT_VERSION = "0.5.3";
+const DEFAULT_CODENAME = "MULTICHAIN FOUNDATION";
+
 export default async function handler(req, res) {
     if (req.method !== 'GET') {
         return res.status(405).json({ error: "Method not allowed" });
@@ -10,8 +14,8 @@ export default async function handler(req, res) {
         // In production, this could read from INTERNAL_OPS_PATH or a database
         // For now, we return a stable operational state
         const opsState = {
-            version: process.env.NEXT_PUBLIC_APP_VERSION || "0.5.3",
-            codename: process.env.NEXT_PUBLIC_APP_CODENAME || "MULTICHAIN FOUNDATION",
+            version: process.env.NEXT_PUBLIC_APP_VERSION || DEFAULT_VERSION,
+            codename: process.env.NEXT_PUBLIC_APP_CODENAME || DEFAULT_CODENAME,
             status: "operational",
             forge: {
                 "Core Engine": {
