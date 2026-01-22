@@ -60,11 +60,11 @@ Implementar a taxa de 5% (500 bps) diretamente no contrato da Factory.
 
 ## 📋 TODO List Imediata (Checklist de Madrugada)
 
-1.  **[ ] Workspace Setup:** Configurar o `package.json` raiz do `smart-ui` com `workspaces`.
+1.  **[x] Workspace Setup:** Workspace "smart-ui" funcional (Dashboard, Landing e Mobile App integrados no monorepo).
 2.  **[ ] Shared Logic:** Mover ABIs e constantes para `/packages/shared`.
-3.  **[ ] Modal Bridge:** Criar o script Python para aproveitar os créditos da Modal antes do dia 31.
-4.  **[ ] Sentry Connect:** Integrar o DSN do Sentry no Dashboard Next.js.
-5.  **[ ] Vercel Draft:** Criar os 3 projetos no painel da Vercel (mesmo que sem build funcional ainda).
+3.  **[x] Modal Bridge:** Script Python configurado e testado (`get_started.py`).
+4.  **[x] Sentry Connect:** DSN configurada no .env e integration pronta no Dashboard.
+5.  **[x] Vercel Deploy:** 3 Projetos implantados com sucesso (Dashboard, Landing, Mobile).
 
 ---
 

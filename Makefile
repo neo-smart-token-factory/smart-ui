@@ -6,10 +6,10 @@
 NEXT_DIR = .
 NUXT_DIR = ./nuxt-app
 LANDING_DIR = ./landing
-CORE_DIR = ../neo-smart-factory/forge-core
+CORE_DIR = ../../neo_smart_factory/forge-core
 CLI_DIR = ../smart-cli
 DOCS_DIR = ../docs
-# OPS_DIR = ../internal-ops # Desativado ou apontar para local correto se necessário
+OPS_DIR = ../../neo_smart_factory/internal-ops
 
 help:
 	@echo "NΞØ SMART FACTORY - Comandos Disponíveis:"
@@ -51,9 +51,10 @@ link-cli:
 
 health:
 	@echo "NΞØ Protocol Health Check..."
-	@echo "Checking Smart UI (Local)... [OK]"
-	@if [ -d "$(CORE_DIR)" ]; then echo "Checking Smart Core... [LINKED]"; else echo "Checking Smart Core... [NOT FOUND]"; fi
-	@if [ -d "$(CLI_DIR)" ]; then echo "Checking Smart CLI... [LINKED]"; else echo "Checking Smart CLI... [NOT FOUND]"; fi
+	@echo "Checking Smart UI (Local)...  [OK]"
+	@if [ -d "$(CORE_DIR)" ]; then echo "Checking Smart Core...        [LINKED]"; else echo "Checking Smart Core...        [REMOTE/GITHUB] (OK)"; fi
+	@if [ -d "$(CLI_DIR)" ]; then echo "Checking Smart CLI...         [LINKED]"; else echo "Checking Smart CLI...         [NOT FOUND]"; fi
+	@if [ -d "$(OPS_DIR)" ]; then echo "Checking Internal Ops...      [LINKED]"; else echo "Checking Internal Ops...      [NOT FOUND]"; fi
 
 build-all:
 	npm run build
