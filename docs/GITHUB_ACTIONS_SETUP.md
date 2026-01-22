@@ -1,10 +1,10 @@
 # Configuração do GitHub Actions — NΞØ Smart Mint Protocol
 
-Para que o workflow de **Health Check** funcione corretamente no GitHub, você precisa configurar um token de acesso para permitir a comunicação entre repositórios da NΞØ Ecosystem.
+O workflow de **Health Check** funciona sem configuração adicional, mas para habilitar a verificação completa do ecossistema (incluindo o repositório `neo-smart-factory`), você pode opcionalmente configurar um token de acesso.
 
-## 1. Gerar o Personal Access Token (PAT)
+## 1. Gerar o Personal Access Token (PAT) (Opcional)
 
-Este token permite que o GitHub Actions do `smart-ui` "enxergue" o repositório `neo-smart-factory`.
+Este token permite que o GitHub Actions do `smart-ui` "enxergue" o repositório `neo-smart-factory` para verificações completas do ecossistema. **Se não configurado, o workflow ainda funcionará, mas sem acesso ao repositório neo-smart-factory.**
 
 1. Acesse seu GitHub e vá em: **Settings** (do perfil) > **Developer settings** > **Personal access tokens** > **Tokens (classic)**.
 2. Clique em **Generate new token (classic)**.
@@ -28,9 +28,10 @@ Agora, adicione esse token como uma variável segura no repositório da interfac
 
 ## 3. Verificação
 
-Após a configuração:
+Após a configuração (ou sem ela):
 - O próximo **Push** ou **Pull Request** disparará automaticamente o workflow `.github/workflows/protocol-health.yml`.
 - Você poderá acompanhar o status na aba **Actions** do repositório.
+- **Nota**: Se o token `NEO_ECOSYSTEM_TOKEN` não estiver configurado, o checkout do repositório `neo-smart-factory` será ignorado, mas o workflow continuará e será bem-sucedido.
 
 ---
 
