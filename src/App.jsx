@@ -35,6 +35,7 @@ export default function SmartMint() {
 
   const [userAddress, setUserAddress] = useState(null);
   const [deployHistory, setDeployHistory] = useState([]);
+  const [isDemoMode, setIsDemoMode] = useState(false);
 
   // Fetch History with retry logic
   const fetchDeploys = useCallback(async () => {
@@ -62,18 +63,22 @@ export default function SmartMint() {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         if (accounts.length > 0) {
           setUserAddress(accounts[0]);
+          setIsDemoMode(false);
         }
       } catch {
         setError("User alignment rejected connection.");
         // Fallback for demo if no provider
         console.warn("Wallet extension not detected, using sandbox mode.");
         setUserAddress('0x' + Math.random().toString(16).slice(2, 42).padEnd(40, '0'));
+        setIsDemoMode(true);
       } finally {
         setLoading(false);
       }
     } else {
-      // Demo fallback
+      // Demo fallback - No Web3 wallet detected
+      console.warn("No Web3 wallet detected, entering simulation mode.");
       setUserAddress('0x' + Math.random().toString(16).slice(2, 42).padEnd(40, '0'));
+      setIsDemoMode(true);
     }
   };
 
@@ -141,9 +146,18 @@ export default function SmartMint() {
     setLoading(true);
 
     try {
-      // Simulate transaction wait
+      // ⚠️ SIMULATION MODE: This is a mock deployment for demonstration purposes
+      // TODO: Replace with real Web3 contract deployment using ethers.js/wagmi
+      // Real implementation should:
+      // 1. Deploy actual ERC-20 contract to selected network
+      // 2. Wait for transaction confirmation
+      // 3. Listen for TokenCreated events from the blockchain
+      // 4. Return real contract address and tx hash
+      
+      // Simulate transaction wait (3 seconds)
       await new Promise(resolve => setTimeout(resolve, 3000));
 
+      // Generate simulated contract address and transaction hash
       const result = {
         ...formData,
         address: '0x' + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
@@ -203,6 +217,24 @@ export default function SmartMint() {
 
       <main className="container mx-auto px-6 pt-32 pb-20 max-w-4xl">
         <AnimatePresence mode="wait">
+          {isDemoMode && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mb-6 p-4 bg-orange-500/10 border border-orange-500/30 rounded-xl flex items-center gap-3 text-orange-400 text-sm"
+            >
+              <AlertTriangle className="w-5 h-5 flex-shrink-0" />
+              <div>
+                <p className="font-bold mb-1">⚠️ Simulation Mode Active</p>
+                <p className="text-xs text-orange-300/80">
+                  No Web3 wallet detected. Deployments are simulated and won&apos;t create real blockchain contracts. 
+                  Install MetaMask or another Web3 wallet to deploy real tokens.
+                </p>
+              </div>
+            </motion.div>
+          )}
+
           {error && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
