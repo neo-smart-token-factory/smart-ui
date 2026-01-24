@@ -33,17 +33,19 @@ jobs:
           echo ""
 
           # Categorize changed files
-          while IFS= read -r file; do
-            if [[ -n "$file" ]]; then
-              if [[ $file == docs/* ]] || [[ $file == *.md ]]; then
-                DOCS_CHANGED=true
-                DOC_FILES+=("$file")
-              else
-                CODE_CHANGED=true
-                CODE_FILES+=("$file")
+          if [[ -n "$CHANGED_FILES" ]]; then
+            while IFS= read -r file; do
+              if [[ -n "$file" ]]; then
+                if [[ $file == docs/* ]] || [[ $file == *.md ]]; then
+                  DOCS_CHANGED=true
+                  DOC_FILES+=("$file")
+                else
+                  CODE_CHANGED=true
+                  CODE_FILES+=("$file")
+                fi
               fi
-            fi
-          done <<< "$CHANGED_FILES"
+            done <<< "$CHANGED_FILES"
+          fi
 
           # Display categorized files
           echo "📂 FILES REQUIRING DOCUMENTATION CHECK:"
