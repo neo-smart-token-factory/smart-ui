@@ -1,533 +1,239 @@
 <!DOCTYPE html>
 <!--
-    NEØ Ecosystem Graph
-    Visualização interativa das conexões do ecossistema NEØ Smart Token Factory
-    
-    Este arquivo não deve ser indexado por motores de busca (meta robots: noindex).
-    Utilizado apenas para visualização interna da arquitetura do projeto.
-    
-    Tecnologias: D3.js v7.8.5
-    Data: Janeiro 2026
+  NEØ Ecosystem Graph — Visão COMPLETA (pré-lançamento)
+  Todos os repos (públicos + privados), componentes, workflows.
+  Conexões rastreadas em profundidade. Dados: ecosystem-graph-data.js
 -->
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO: Prevenir indexação -->
-    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-    <meta name="googlebot" content="noindex, nofollow">
-    
-    <title>NEØ Ecosystem Graph</title>
-    
-    <!-- D3.js -->
+    <meta name="robots" content="noindex, nofollow">
+    <title>NEØ Ecosystem Graph — Repos &amp; Conexões</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="./ecosystem-graph-data.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0E0E0E;
-            color: #fff;
-            overflow: hidden;
-        }
-
-        #graph {
-            width: 100vw;
-            height: 100vh;
-        }
-
-        .controls {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(17, 18, 20, 0.95);
-            border: 1px solid #D8F244;
-            border-radius: 12px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-        }
-
-        .controls h2 {
-            color: #D8F244;
-            margin-bottom: 15px;
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .controls button {
-            background: linear-gradient(135deg, #D8F244, #00E5FF);
-            color: #0E0E0E;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            margin: 5px;
-            transition: transform 0.2s;
-        }
-
-        .controls button:hover {
-            transform: scale(1.05);
-        }
-
-        .legend {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(17, 18, 20, 0.95);
-            border: 1px solid #D8F244;
-            border-radius: 12px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin: 8px 0;
-            font-size: 14px;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            margin-right: 10px;
-        }
-
-        .node {
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .node:hover {
-            filter: brightness(1.3);
-        }
-
-        .node-label {
-            font-size: 12px;
-            font-weight: 600;
-            pointer-events: none;
-            text-shadow: 0 0 4px #0E0E0E;
-        }
-
-        .link {
-            stroke-opacity: 0.6;
-            transition: stroke-width 0.3s;
-        }
-
-        .link:hover {
-            stroke-width: 3 !important;
-            stroke-opacity: 1;
-        }
-
-        .link-label {
-            font-size: 10px;
-            fill: #D8F244;
-            text-anchor: middle;
-            pointer-events: none;
-        }
-
-        .info-panel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(17, 18, 20, 0.95);
-            border: 1px solid #FF2E9A;
-            border-radius: 12px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            max-width: 300px;
-            display: none;
-        }
-
-        .info-panel.active {
-            display: block;
-        }
-
-        .info-panel h3 {
-            color: #D8F244;
-            margin-bottom: 10px;
-        }
-
-        .info-panel p {
-            font-size: 13px;
-            line-height: 1.6;
-            margin: 5px 0;
-        }
-
-        .legend-title {
-            color: #D8F244;
-            margin-bottom: 10px;
-        }
-
-        .legend-color-core {
-            background: #D8F244;
-        }
-
-        .legend-color-ui {
-            background: #FF2E9A;
-        }
-
-        .legend-color-infra {
-            background: #00E5FF;
-        }
-
-        .legend-color-workflow {
-            background: #9333EA;
-        }
-
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: #0E0E0E; color: #fff; overflow: hidden; }
+        #graph { width: 100vw; height: 100vh; }
+        .controls { position: absolute; top: 20px; left: 20px; background: rgba(17,18,20,.95); border: 1px solid #D8F244; border-radius: 12px; padding: 20px; z-index: 1000; }
+        .controls h2 { color: #D8F244; margin-bottom: 15px; font-size: 18px; }
+        .controls button { background: linear-gradient(135deg, #D8F244, #00E5FF); color: #0E0E0E; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; margin: 5px; }
+        .controls .note { font-size: 11px; color: #888; margin-top: 12px; max-width: 200px; }
+        .legend { position: absolute; bottom: 20px; right: 20px; background: rgba(17,18,20,.95); border: 1px solid #D8F244; border-radius: 12px; padding: 20px; max-height: 70vh; overflow-y: auto; }
+        .legend h3 { color: #D8F244; margin-bottom: 10px; }
+        .legend-item { display: flex; align-items: center; margin: 8px 0; font-size: 13px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 50%; margin-right: 10px; flex-shrink: 0; }
+        .legend-color.repo-public { background: #FF2E9A; }
+        .legend-color.repo-private { background: #F59E0B; }
+        .legend-color.workflow { background: #9333EA; }
+        .legend-color.component { background: #10B981; }
+        .legend-color.connected { background: #D8F244; width: 20px; height: 4px; border-radius: 2px; }
+        .legend-color.not-connected { background: #666; width: 20px; height: 4px; border-radius: 2px; }
+        .info-panel { position: absolute; top: 20px; right: 20px; background: rgba(17,18,20,.95); border: 1px solid #FF2E9A; border-radius: 12px; padding: 20px; max-width: 340px; max-height: 80vh; overflow-y: auto; display: none; z-index: 1000; }
+        .info-panel.active { display: block; }
+        .info-panel h3 { color: #D8F244; margin-bottom: 10px; }
+        .info-panel .type { font-size: 11px; color: #888; margin-bottom: 8px; }
+        .info-panel p, .info-panel ul { font-size: 13px; line-height: 1.6; margin: 5px 0; }
+        .info-panel ul { padding-left: 18px; }
+        .node { cursor: pointer; }
+        .node:hover { filter: brightness(1.3); }
+        .node-label { font-size: 11px; font-weight: 600; pointer-events: none; text-shadow: 0 0 4px #0E0E0E; }
+        .link { stroke-opacity: 0.85; }
+        .link.not-connected { stroke-dasharray: 6,4; stroke: #666; stroke-opacity: 0.5; }
+        .link-label { font-size: 9px; fill: #D8F244; text-anchor: middle; pointer-events: none; }
+        .link-label.not-connected { fill: #888; }
     </style>
 </head>
 <body>
-    <div class="controls" role="toolbar" aria-label="Controles do gráfico">
+    <div class="controls">
         <h2>🎛️ Controles</h2>
-        <button type="button" id="btnReset" aria-label="Resetar visualização">🔄 Reset</button>
-        <button type="button" id="btnPhysics" aria-label="Alternar física da simulação">⚡ Física: ON</button>
-        <button type="button" id="btnCenter" aria-label="Centralizar visualização">🎯 Centralizar</button>
+        <button type="button" id="btnReset">🔄 Reset</button>
+        <button type="button" id="btnPhysics">⚡ Física: ON</button>
+        <button type="button" id="btnCenter">🎯 Centralizar</button>
+        <p class="note">Pré-lançamento: inclui repos privados. Conexões rastreadas em profundidade.</p>
     </div>
-
-    <div class="legend" role="complementary" aria-label="Legenda do gráfico">
-        <h3 class="legend-title">Legenda</h3>
-        <div class="legend-item">
-            <div class="legend-color legend-color-core" aria-hidden="true"></div>
-            <span>Repositórios Core</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color legend-color-ui" aria-hidden="true"></div>
-            <span>Componentes UI</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color legend-color-infra" aria-hidden="true"></div>
-            <span>Infraestrutura</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color legend-color-workflow" aria-hidden="true"></div>
-            <span>Workflows</span>
-        </div>
+    <div class="legend">
+        <h3>Legenda</h3>
+        <div class="legend-item"><div class="legend-color repo-public"></div><span>Repo público</span></div>
+        <div class="legend-item"><div class="legend-color repo-private"></div><span>Repo privado</span></div>
+        <div class="legend-item"><div class="legend-color workflow"></div><span>Workflow / CI</span></div>
+        <div class="legend-item"><div class="legend-color component"></div><span>Componente</span></div>
+        <div class="legend-item" style="margin-top:10px;"><div class="legend-color connected"></div><span>Conectados</span></div>
+        <div class="legend-item"><div class="legend-color not-connected"></div><span>Não conectados (tracejado)</span></div>
     </div>
-
-    <div class="info-panel" id="infoPanel" role="dialog" aria-labelledby="infoTitle" aria-live="polite" aria-hidden="true">
+    <div class="info-panel" id="infoPanel">
         <h3 id="infoTitle">Selecione um nó</h3>
+        <p class="type" id="infoType"></p>
         <p id="infoDescription"></p>
         <p id="infoConnections"></p>
+        <p id="infoNotConnected"></p>
     </div>
-
-    <svg id="graph" role="img" aria-label="Gráfico interativo do ecossistema NEØ"></svg>
-
+    <svg id="graph"></svg>
     <script>
-        'use strict';
-
-        /**
-         * NEØ Ecosystem Graph
-         * Visualização interativa das conexões do ecossistema NEØ
-         * @namespace
-         */
         (function() {
-            // Verificar se D3.js está carregado
-            if (typeof d3 === 'undefined') {
-                console.error('D3.js não foi carregado. Verifique a conexão com a CDN.');
-                document.body.innerHTML = '<div style="padding: 20px; color: #fff; text-align: center;"><h1>Erro ao carregar D3.js</h1><p>Por favor, verifique sua conexão com a internet.</p></div>';
+            if (typeof d3 === 'undefined' || typeof NEO_ECOSYSTEM_GRAPH_DATA === 'undefined') {
+                document.body.innerHTML = '<div style="padding:40px;color:#fff;text-align:center;"><h1>Erro</h1><p>D3 ou ecosystem-graph-data.js não carregou.</p></div>';
                 return;
             }
+            const data = NEO_ECOSYSTEM_GRAPH_DATA;
+            const nodes = data.nodes.map(n => ({ ...n }));
+            const edges = data.edges.map(e => ({ ...e, source: e.source, target: e.target }));
+            const notConnected = (data.notConnected || []).map(n => ({ ...n }));
 
-            // Aguardar DOM estar pronto
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', init);
-            } else {
-                init();
-            }
+            const typeColor = { 'repo-public': '#FF2E9A', 'repo-private': '#F59E0B', 'workflow': '#9333EA', 'component': '#10B981' };
+            const typeLabel = { 'repo-public': 'Repo público', 'repo-private': 'Repo privado', 'workflow': 'Workflow / CI', 'component': 'Componente' };
+            const radius = d => (d.type && d.type.startsWith('repo')) ? 26 : (d.type === 'workflow' ? 20 : 16);
 
-            function init() {
-            // Dados do ecossistema NEØ (pós-migração: 3 repositórios separados)
-            const data = {
-            nodes: [
-                // Repositórios
-                { id: 'neo-smart-factory', label: 'neo-smart-factory', type: 'repo-core', description: 'Repositório principal com contratos, CLI e operações internas' },
-                { id: 'smart-ui', label: 'smart-ui', type: 'repo-ui', description: 'Dashboard React com API routes (repositório único)' },
-                { id: 'smart-ui-landing', label: 'smart-ui-landing', type: 'repo-ui', description: 'Landing page React + Vite (repositório separado)' },
-                { id: 'smart-ui-mobile', label: 'smart-ui-mobile', type: 'repo-ui', description: 'App mobile Vue + Vite (repositório separado)' },
-                { id: 'docs', label: 'docs', type: 'repo-core', description: 'Repositório de documentação centralizada' },
-                
-                // Componentes neo-smart-factory
-                { id: 'forge-core', label: 'forge-core', type: 'component', description: 'Contratos Solidity e ABIs' },
-                { id: 'forge-cli', label: 'forge-cli', type: 'component', description: 'CLI do ecossistema NEØ' },
-                { id: 'internal-ops', label: 'internal-ops', type: 'component', description: 'Operações internas e estado do ecossistema' },
-                { id: 'changelog', label: 'changelog.md', type: 'component', description: 'Changelog centralizado do ecossistema' },
-                { id: 'state', label: 'state.json', type: 'component', description: 'Estado operacional (em internal-ops/)' },
-                
-                // Componentes smart-ui (Dashboard)
-                { id: 'dashboard', label: 'Dashboard (src/)', type: 'ui', description: 'Dashboard principal React com API routes' },
-                { id: 'api', label: 'API Routes (api/)', type: 'ui', description: 'Vercel Serverless Functions' },
-                
-                // Workflows
-                { id: 'protocol-health', label: 'protocol-health.yml', type: 'workflow', description: 'Health check do ecossistema com checkout cross-repo' },
-                { id: 'docs-guard', label: 'docs-guard.yml', type: 'workflow', description: 'Validação de documentação em PRs' },
-                { id: 'smart-mint', label: 'smart-mint-protocol', type: 'workflow', description: 'Workflow de sincronização multi-repo (documentado)' },
-                
-                // Infraestrutura
-                { id: 'vercel', label: 'Vercel', type: 'infra', description: 'Plataforma de deploy (3 projetos separados: dashboard, landing, mobile)' },
-                { id: 'neon', label: 'Neon Database', type: 'infra', description: 'PostgreSQL serverless' },
-                { id: 'alchemy', label: 'Alchemy', type: 'infra', description: 'RPC Provider para Web3' }
-            ],
-            links: [
-                // Conexões cross-repo (GitHub Actions)
-                { source: 'protocol-health', target: 'smart-ui', label: 'checkout', type: 'workflow' },
-                { source: 'protocol-health', target: 'neo-smart-factory', label: 'checkout', type: 'workflow' },
-                { source: 'docs-guard', target: 'smart-ui', label: 'validates', type: 'workflow' },
-                
-                // Workflow smart-mint (sincronização)
-                { source: 'smart-mint', target: 'forge-core', label: 'sync ABIs', type: 'workflow' },
-                { source: 'smart-mint', target: 'changelog', label: 'update', type: 'workflow' },
-                { source: 'smart-mint', target: 'state', label: 'update', type: 'workflow' },
-                { source: 'smart-ui', target: 'smart-mint', label: 'follows', type: 'workflow' },
-                
-                // Estrutura neo-smart-factory
-                { source: 'neo-smart-factory', target: 'forge-core', label: 'contains', type: 'structure' },
-                { source: 'neo-smart-factory', target: 'forge-cli', label: 'contains', type: 'structure' },
-                { source: 'neo-smart-factory', target: 'internal-ops', label: 'contains', type: 'structure' },
-                { source: 'neo-smart-factory', target: 'changelog', label: 'contains', type: 'structure' },
-                { source: 'internal-ops', target: 'state', label: 'contains', type: 'structure' },
-                
-                // Estrutura smart-ui (Dashboard)
-                { source: 'smart-ui', target: 'dashboard', label: 'contains', type: 'structure' },
-                { source: 'smart-ui', target: 'api', label: 'contains', type: 'structure' },
-                { source: 'dashboard', target: 'api', label: 'uses', type: 'structure' },
-                
-                // Workflows executados em smart-ui
-                { source: 'smart-ui', target: 'protocol-health', label: 'runs', type: 'workflow' },
-                { source: 'smart-ui', target: 'docs-guard', label: 'runs', type: 'workflow' },
-                
-                // Deploy e infraestrutura
-                { source: 'smart-ui', target: 'vercel', label: 'deploys to', type: 'deploy' },
-                { source: 'smart-ui-landing', target: 'vercel', label: 'deploys to', type: 'deploy' },
-                { source: 'smart-ui-mobile', target: 'vercel', label: 'deploys to', type: 'deploy' },
-                { source: 'dashboard', target: 'neon', label: 'reads from', type: 'data' },
-                { source: 'api', target: 'neon', label: 'queries', type: 'data' },
-                { source: 'dashboard', target: 'alchemy', label: 'RPC calls', type: 'data' },
-                
-                // Documentação
-                { source: 'smart-ui', target: 'docs', label: 'references', type: 'docs' },
-                { source: 'smart-ui-landing', target: 'docs', label: 'references', type: 'docs' },
-                { source: 'smart-ui-mobile', target: 'docs', label: 'references', type: 'docs' },
-                { source: 'neo-smart-factory', target: 'docs', label: 'references', type: 'docs' },
-                { source: 'docs-guard', target: 'docs', label: 'validates', type: 'docs' }
-            ]
-        };
-
-            // Configuração D3
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-
-            const svg = d3.select('#graph')
-                .attr('width', width)
-                .attr('height', height);
-
+            const width = window.innerWidth, height = window.innerHeight;
+            const svg = d3.select('#graph').attr('width', width).attr('height', height);
             const g = svg.append('g');
 
-            // Zoom
-            const zoom = d3.zoom()
-                .scaleExtent([0.1, 4])
-                .on('zoom', (event) => {
-                    g.attr('transform', event.transform);
-                });
-
+            const zoom = d3.zoom().scaleExtent([0.15, 4]).on('zoom', ev => g.attr('transform', ev.transform));
             svg.call(zoom);
 
-            // Cores por tipo
-            const colorMap = {
-            'repo-core': '#D8F244',
-            'repo-ui': '#FF2E9A',
-            'component': '#D8F244',
-            'ui': '#FF2E9A',
-            'workflow': '#9333EA',
-            'infra': '#00E5FF'
-        };
+            const simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(edges).id(d => d.id).distance(120))
+                .force('charge', d3.forceManyBody().strength(-280))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(d => radius(d) + 12));
 
-            const linkColorMap = {
-                'cross-repo': '#D8F244',
-                'workflow': '#9333EA',
-                'structure': '#666',
-                'deploy': '#00E5FF',
-                'data': '#FF2E9A',
-                'docs': '#D8F244'
-            };
-
-            // Simulação de força
-            const simulation = d3.forceSimulation(data.nodes)
-            .force('link', d3.forceLink(data.links).id(d => d.id).distance(150))
-            .force('charge', d3.forceManyBody().strength(-500))
-            .force('center', d3.forceCenter(width / 2, height / 2))
-            .force('collision', d3.forceCollide().radius(50));
-
-            // Links
-            const link = g.append('g')
+            const link = g.append('g').attr('class', 'links')
                 .selectAll('line')
-                .data(data.links)
+                .data(edges)
                 .join('line')
                 .attr('class', 'link')
-                .attr('stroke', d => linkColorMap[d.type] || '#666')
-                .attr('stroke-width', 2);
+                .attr('stroke', '#D8F244')
+                .attr('stroke-width', 1.5);
 
-            // Labels dos links
-            const linkLabel = g.append('g')
+            const linkLabel = g.append('g').attr('class', 'link-labels')
                 .selectAll('text')
-                .data(data.links)
+                .data(edges)
                 .join('text')
                 .attr('class', 'link-label')
                 .text(d => d.label);
 
-            // Nodes
-            const node = g.append('g')
+            const ncLines = g.append('g').attr('class', 'not-connected-lines')
+                .selectAll('line')
+                .data(notConnected)
+                .join('line')
+                .attr('class', 'link not-connected')
+                .attr('stroke-width', 1);
+
+            const ncLabels = g.append('g').attr('class', 'not-connected-labels')
+                .selectAll('text')
+                .data(notConnected)
+                .join('text')
+                .attr('class', 'link-label not-connected')
+                .text(d => d.reason || 'não conectado');
+
+            const node = g.append('g').attr('class', 'nodes')
                 .selectAll('g')
-                .data(data.nodes)
+                .data(nodes)
                 .join('g')
                 .attr('class', 'node')
-                .call(d3.drag()
-                    .on('start', dragstarted)
-                    .on('drag', dragged)
-                    .on('end', dragended))
+                .call(d3.drag().on('start', dragstart).on('drag', dragged).on('end', dragend))
                 .on('click', showInfo);
 
-        node.append('circle')
-            .attr('r', d => d.type.includes('repo') ? 25 : 15)
-            .attr('fill', d => colorMap[d.type])
-            .attr('stroke', '#0E0E0E')
-            .attr('stroke-width', 3);
+            node.append('circle')
+                .attr('r', radius)
+                .attr('fill', d => typeColor[d.type] || '#666')
+                .attr('stroke', '#0E0E0E')
+                .attr('stroke-width', 2);
+            node.append('text')
+                .attr('class', 'node-label')
+                .attr('dy', d => radius(d) + 14)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#fff')
+                .text(d => d.label);
 
-        node.append('text')
-            .attr('class', 'node-label')
-            .attr('dy', d => d.type.includes('repo') ? 35 : 25)
-            .attr('text-anchor', 'middle')
-            .attr('fill', '#fff')
-            .text(d => d.label);
+            function nodeById(id) { return nodes.find(n => n.id === id); }
 
-            // Atualização da simulação
             simulation.on('tick', () => {
                 link
-                    .attr('x1', d => d.source.x)
-                    .attr('y1', d => d.source.y)
-                    .attr('x2', d => d.target.x)
-                    .attr('y2', d => d.target.y);
-
+                    .attr('x1', d => (d.source.x ?? nodeById(d.source)?.x ?? 0))
+                    .attr('y1', d => (d.source.y ?? nodeById(d.source)?.y ?? 0))
+                    .attr('x2', d => (d.target.x ?? nodeById(d.target)?.x ?? 0))
+                    .attr('y2', d => (d.target.y ?? nodeById(d.target)?.y ?? 0));
                 linkLabel
-                    .attr('x', d => (d.source.x + d.target.x) / 2)
-                    .attr('y', d => (d.source.y + d.target.y) / 2);
-
+                    .attr('x', d => ((d.source.x ?? nodeById(d.source)?.x ?? 0) + (d.target.x ?? nodeById(d.target)?.x ?? 0)) / 2)
+                    .attr('y', d => ((d.source.y ?? nodeById(d.source)?.y ?? 0) + (d.target.y ?? nodeById(d.target)?.y ?? 0)) / 2);
+                ncLines
+                    .attr('x1', d => (nodeById(d.source)?.x ?? 0))
+                    .attr('y1', d => (nodeById(d.source)?.y ?? 0))
+                    .attr('x2', d => (nodeById(d.target)?.x ?? 0))
+                    .attr('y2', d => (nodeById(d.target)?.y ?? 0));
+                ncLabels
+                    .attr('x', d => ((nodeById(d.source)?.x ?? 0) + (nodeById(d.target)?.x ?? 0)) / 2)
+                    .attr('y', d => ((nodeById(d.source)?.y ?? 0) + (nodeById(d.target)?.y ?? 0)) / 2);
                 node.attr('transform', d => `translate(${d.x},${d.y})`);
             });
 
-            // Funções de drag
-            function dragstarted(event, d) {
-                if (!event.active) simulation.alphaTarget(0.3).restart();
-                d.fx = d.x;
-                d.fy = d.y;
-            }
+            function dragstart(ev, d) { if (!ev.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; }
+            function dragged(ev, d) { d.fx = ev.x; d.fy = ev.y; }
+            function dragend(ev, d) { if (!ev.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; }
 
-            function dragged(event, d) {
-                d.fx = event.x;
-                d.fy = event.y;
-            }
-
-            function dragended(event, d) {
-                if (!event.active) simulation.alphaTarget(0);
-                d.fx = null;
-                d.fy = null;
-            }
-
-            // Estado da física
-            let physicsEnabled = true;
-
-            // Funções de controle
-            function resetSimulation() {
-                simulation.alpha(1).restart();
-                svg.transition().duration(750).call(
-                    zoom.transform,
-                    d3.zoomIdentity
-                );
-            }
-
-            function togglePhysics(event) {
-                physicsEnabled = !physicsEnabled;
-                const button = event.target;
-                if (physicsEnabled) {
-                    simulation.alpha(0.3).restart();
-                    button.textContent = '⚡ Física: ON';
-                    button.setAttribute('aria-label', 'Desativar física da simulação');
-                } else {
-                    simulation.stop();
-                    button.textContent = '⚡ Física: OFF';
-                    button.setAttribute('aria-label', 'Ativar física da simulação');
-                }
-            }
-
-            function centerView() {
-                svg.transition().duration(750).call(
-                    zoom.transform,
-                    d3.zoomIdentity.translate(width / 2, height / 2).scale(1)
-                );
-            }
-
-            function showInfo(event, d) {
-                const panel = document.getElementById('infoPanel');
-                const connections = data.links.filter(l => {
-                    const sourceId = typeof l.source === 'object' ? l.source.id : l.source;
-                    const targetId = typeof l.target === 'object' ? l.target.id : l.target;
-                    return sourceId === d.id || targetId === d.id;
-                }).length;
-                
+            function showInfo(ev, d) {
+                ev.stopPropagation();
+                const conn = edges.filter(e => {
+                    const s = typeof e.source === 'object' ? e.source.id : e.source;
+                    const t = typeof e.target === 'object' ? e.target.id : e.target;
+                    return s === d.id || t === d.id;
+                });
+                const nc = notConnected.filter(n => n.source === d.id || n.target === d.id);
                 document.getElementById('infoTitle').textContent = d.label;
-                document.getElementById('infoDescription').textContent = d.description;
-                document.getElementById('infoConnections').textContent = `Conexões: ${connections}`;
-                
-                panel.classList.add('active');
-                panel.setAttribute('aria-hidden', 'false');
-                
-                // Highlight
+                document.getElementById('infoType').textContent = typeLabel[d.type] || d.type || '';
+                document.getElementById('infoDescription').textContent = d.description || '';
+                document.getElementById('infoConnections').innerHTML = conn.length
+                    ? '<strong>Conectado a:</strong><ul>' + conn.map(e => {
+                        const other = (typeof e.source === 'object' ? e.source.id : e.source) === d.id
+                            ? (typeof e.target === 'object' ? e.target.id : e.target)
+                            : (typeof e.source === 'object' ? e.source.id : e.source);
+                        return '<li>' + other + ' — ' + (e.label || '') + '</li>';
+                    }).join('') + '</ul>'
+                    : '<strong>Conectado a:</strong> nenhum.';
+                document.getElementById('infoNotConnected').innerHTML = nc.length
+                    ? '<strong>Não conectado a:</strong><ul>' + nc.map(n => {
+                        const other = n.source === d.id ? n.target : n.source;
+                        return '<li>' + other + ' — ' + (n.reason || '') + '</li>';
+                    }).join('') + '</ul>'
+                    : '';
+                document.getElementById('infoPanel').classList.add('active');
                 node.style('opacity', n => n === d ? 1 : 0.3);
                 link.style('opacity', l => {
-                    const sourceId = typeof l.source === 'object' ? l.source.id : l.source;
-                    const targetId = typeof l.target === 'object' ? l.target.id : l.target;
-                    return sourceId === d.id || targetId === d.id ? 1 : 0.1;
+                    const s = typeof l.source === 'object' ? l.source.id : l.source;
+                    const t = typeof l.target === 'object' ? l.target.id : l.target;
+                    return s === d.id || t === d.id ? 1 : 0.15;
                 });
+                ncLines.style('opacity', l => l.source === d.id || l.target === d.id ? 0.9 : 0.15);
             }
 
-            // Click fora para desselecionar
-            svg.on('click', function(event) {
-                if (event.target === this || event.target.tagName === 'line') {
-                    const panel = document.getElementById('infoPanel');
-                    panel.classList.remove('active');
-                    panel.setAttribute('aria-hidden', 'true');
+            svg.on('click', function(ev) {
+                if (ev.target === this || ev.target.closest?.('.link')) {
+                    document.getElementById('infoPanel').classList.remove('active');
                     node.style('opacity', 1);
-                    link.style('opacity', 0.6);
+                    link.style('opacity', 0.85);
+                    ncLines.style('opacity', 0.5);
                 }
             });
 
-            // Event listeners para botões
-            document.getElementById('btnReset').addEventListener('click', resetSimulation);
-            document.getElementById('btnPhysics').addEventListener('click', togglePhysics);
-            document.getElementById('btnCenter').addEventListener('click', centerView);
+            document.getElementById('btnReset').onclick = () => {
+                simulation.alpha(1).restart();
+                svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+            };
+            let physicsOn = true;
+            document.getElementById('btnPhysics').onclick = () => {
+                physicsOn = !physicsOn;
+                const btn = document.getElementById('btnPhysics');
+                if (physicsOn) { simulation.alpha(0.3).restart(); btn.textContent = '⚡ Física: ON'; }
+                else { simulation.stop(); btn.textContent = '⚡ Física: OFF'; }
+            };
+            document.getElementById('btnCenter').onclick = () => {
+                svg.transition().duration(750).call(zoom.transform,
+                    d3.zoomIdentity.translate(width / 2, height / 2).scale(0.8));
+            };
 
-                // Inicialização
-                resetSimulation();
-            }
+            simulation.alpha(1).restart();
         })();
     </script>
 </body>

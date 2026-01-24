@@ -2,6 +2,8 @@
 
 **Guia rápido para visualizar o gráfico interativo após o deploy.**
 
+- **O que o grafo mostra:** nodes (repos), conexões e não conectados. Ver [ECOSYSTEM_GRAPH_REPOS](./ECOSYSTEM_GRAPH_REPOS.md) — dados, onde hospedar (UI vs ops vs novo repo).
+
 ---
 
 ## 🌐 URLs de Acesso

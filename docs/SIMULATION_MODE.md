@@ -7,6 +7,7 @@ The NΞØ Smart Factory UI includes a **Simulation Mode** that allows users to e
 ## What is Simulated?
 
 ### 1. Wallet Connection
+
 When no Web3 wallet (like MetaMask) is detected in the browser:
 - A random Ethereum-style address is generated
 - Format: `0x` followed by 40 hexadecimal characters
@@ -15,7 +16,9 @@ When no Web3 wallet (like MetaMask) is detected in the browser:
 **Code Location**: `src/App.jsx` - `connectWallet()` function (lines 58-82)
 
 ### 2. Token Deployment
+
 When the user clicks "Forge Token", the deployment is simulated:
+
 - 3-second artificial delay mimics blockchain transaction time
 - Random contract address is generated (40 hex characters)
 - Random transaction hash is generated (64 hex characters)
@@ -29,6 +32,7 @@ When the user clicks "Forge Token", the deployment is simulated:
 ## When Does Simulation Mode Activate?
 
 Simulation mode automatically activates when:
+
 1. No `window.ethereum` object is detected (no Web3 wallet installed)
 2. User rejects wallet connection request
 3. Wallet connection fails for any reason
@@ -36,6 +40,7 @@ Simulation mode automatically activates when:
 ## UI Indicators
 
 When simulation mode is active, users will see:
+
 - 🟠 **Orange warning banner** at the top of the interface
 - Banner text: "⚠️ Simulation Mode Active"
 - Explanation that deployments won't create real contracts
@@ -48,6 +53,7 @@ To implement real blockchain deployments, the following changes are needed:
 ### Required Updates:
 
 1. **Web3 Provider Integration** (`src/App.jsx`)
+
    ```javascript
    // Replace simulation with:
    - Install: ethers.js, wagmi, or web3.js
@@ -56,6 +62,7 @@ To implement real blockchain deployments, the following changes are needed:
    ```
 
 2. **Contract Deployment** (`handleForge` function)
+
    ```javascript
    // Replace setTimeout simulation with:
    - Import contract factory from forge-core ABIs
@@ -87,6 +94,7 @@ NEXT_PUBLIC_ALCHEMY_ID=""              # Alternative RPC Provider
 ## Database Impact
 
 **Important**: Simulated deployments ARE written to the database (`deploys` table) with:
+
 - Fake contract address
 - Fake transaction hash
 - Real network selection
@@ -98,6 +106,7 @@ This means the deployment history will contain both real and simulated deploymen
 ## Recommended Development Workflow
 
 ### Local Development (Simulation Mode)
+
 ```bash
 npm run dev
 # Runs Vite dev server on localhost:3000
@@ -106,6 +115,7 @@ npm run dev
 ```
 
 ### Full Development with API Routes
+
 ```bash
 vercel dev
 # Runs Vercel dev server
@@ -114,6 +124,7 @@ vercel dev
 ```
 
 ### Production Deployment
+
 ```bash
 npm run build
 vercel deploy --prod
@@ -141,6 +152,7 @@ vercel deploy --prod
 ## Next Steps (From NEXT_STEPS.md)
 
 Phase 1: Web3 Integration is the priority
+
 - [ ] Replace Demo Fallback with Dynamic.xyz SDK
 - [ ] Import real ABIs from forge-core
 - [ ] Replace setTimeout simulation with contract writes
@@ -149,7 +161,8 @@ Phase 1: Web3 Integration is the priority
 ---
 
 **Last Updated**: January 22, 2026
-**Related Files**: 
+**Related Files**:
+
 - `src/App.jsx` (main application logic)
 - `api/deploys.js` (database recording)
 - `docs/NEXT_STEPS.md` (roadmap)

@@ -150,6 +150,9 @@ The following files contain references to private repositories in **policy/docum
 - Enforce policy in code reviews
 - Update policy as needed with governance approval
 
+### Follow-up
+- [AUDITORIA_VISIBILIDADE_ORGANIZACAO.md](./AUDITORIA_VISIBILIDADE_ORGANIZACAO.md) (2026-01-24): auditoria de visibilidade, violações (ecosystem-graph, Makefile), exceções formalizadas e sugestões de remediação.
+
 ---
 
 ## 🛡️ ENFORCEMENT COMMITMENT

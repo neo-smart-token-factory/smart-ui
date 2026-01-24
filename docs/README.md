@@ -11,9 +11,11 @@
 ### 🏛️ Documentos Arquiteturais Fundamentais
 
 #### [ARCHITECTURAL_ADDENDUMS.md](./ARCHITECTURAL_ADDENDUMS.md)
+
 **Adendos Arquiteturais — Considerações Fundamentais**
 
 Documento crítico que estabelece as posições técnicas e estratégicas do projeto sobre:
+
 - MCP, Automação, MPC e Extensões de Carteiras
 - KYC, Governança e Estratégia de Lançamento
 - Organização Técnica e Governança Pública
@@ -24,6 +26,7 @@ Documento crítico que estabelece as posições técnicas e estratégicas do pro
 ---
 
 #### [ORGANIZATION.md](./ORGANIZATION.md)
+
 **Organização Técnica neo-smart-token-factory**
 
 Descrição da organização pública que governa o projeto:
@@ -148,6 +151,16 @@ Lista de verificação para diagnóstico e validação da interface.
 
 ---
 
+#### [ECOSYSTEM_GRAPH_REPOS.md](./ECOSYSTEM_GRAPH_REPOS.md)
+**Grafo de Repositórios e Conexões**
+
+Nodes (repos da org), conexões e não conectados. Onde hospedar (smart-ui, ops, novo repo). Dados em `public/ecosystem-graph-data.js`.
+
+**Complexidade**: ⭐  
+**Audiência**: DevOps, governança
+
+---
+
 ### 🗄️ Documentação de Infraestrutura
 
 #### [DATABASE_SCHEMA.sql](./DATABASE_SCHEMA.sql)
@@ -216,28 +229,36 @@ Outros documentos são mais estáveis e requerem revisão formal:
 - Mudanças significativas devem ser documentadas
 - ADRs são imutáveis após aceitos (criar novo ADR para mudanças)
 
+### Sync para o repositório docs
+
+- [SYNC_POLICIES_TO_DOCS_REPO.md](./SYNC_POLICIES_TO_DOCS_REPO.md) — Envio da base de padrões, políticas, auditorias, organização e ADRs para [neo-smart-token-factory/docs](https://github.com/neo-smart-token-factory/docs).
+
 ---
 
 ## 📝 Como Contribuir com Documentação
 
 ### 1. Identifique a Necessidade
+
 - Lacuna na documentação existente
 - Nova decisão arquitetural
 - Mudança significativa no projeto
 
 ### 2. Escolha o Formato Apropriado
+
 - **ADR**: Para decisões arquiteturais
 - **Guia**: Para tutoriais e how-tos
 - **Referência**: Para especificações técnicas
 - **Overview**: Para visões gerais
 
 ### 3. Siga os Padrões
+
 - Use markdown com formatação consistente
 - Inclua metadados (data, versão, status)
 - Adicione links para documentos relacionados
 - Use linguagem clara e objetiva
 
 ### 4. Revise e Submeta
+
 - Revise ortografia e gramática
 - Valide links
 - Solicite revisão de pares
@@ -248,14 +269,17 @@ Outros documentos são mais estáveis e requerem revisão formal:
 ## 🔗 Links Úteis
 
 ### Organização
+
 - [neo-smart-token-factory](https://github.com/neo-smart-token-factory)
 
 ### Repositórios
+
 - [smart-ui](https://github.com/neo-smart-token-factory/smart-ui)
 - [landing](https://github.com/neo-smart-token-factory/landing)
 - [docs](https://github.com/neo-smart-token-factory/docs)
 
 ### Padrões
+
 - [ADR Template](https://github.com/joelparkerhenderson/architecture-decision-record)
 - [Markdown Guide](https://www.markdownguide.org/)
 
