@@ -124,13 +124,9 @@ make dev-vercel   # Com API routes (recomendado)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  FRONTEND
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · 
- · ·                                                     · · · 
- · ·         Dashboard NΞØ Smart UI                      · · · 
- · ·         (React 18 + Vite 7.3.1)                     · · · 
- · ·         Simulation Mode (não executa transações)    · · · 
- · ·                                                     · · · 
- · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · 
+ Dashboard NΞØ Smart UI
+ (React 18 + Vite 7.3.1)
+ Simulation Mode (não executa transações reais) 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
                     │
                     ▼
@@ -154,14 +150,8 @@ make dev-vercel   # Com API routes (recomendado)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  DATABASE (Neon PostgreSQL)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ 
- ▒ ▒                                                                 ▒ ▒ ▒ 
- ▒ ▒                    Neon Database                                ▒ ▒ ▒ 
- ▒ ▒                    (PostgreSQL)                                 ▒ ▒ ▒ 
- ▒ ▒                    ⚠️ Persistência para demo/analytics          ▒ ▒ ▒ 
- ▒ ▒                    (não autoritativo para protocolo)            ▒ ▒ ▒ 
- ▒ ▒                                                                 ▒ ▒ ▒ 
- ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ 
+ Neon Database (PostgreSQL)
+ ⚠️ Persistência demo/analytics (não autoritativo) 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
