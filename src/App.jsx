@@ -92,8 +92,6 @@ export default function SmartMint() {
     : userAddress;
   
   const [deployHistory, setDeployHistory] = useState([]);
-  // isDemoMode agora é determinado pelos feature flags
-  const isDemoMode = !isWeb3Enabled || !isRealTransactionsEnabled;
   const [leadId, setLeadId] = useState(null);
   const [sessionId] = useState(() => getOrCreateSessionId());
   
@@ -453,26 +451,59 @@ export default function SmartMint() {
 
     setLoading(true);
 
-    try {
-      // ⚠️ SIMULATION MODE: This is a mock deployment for demonstration purposes
-      // Feature Flag: Real transactions are disabled in Phase 1
-      // TODO: Replace with real Web3 contract deployment using ethers.js/wagmi
-      // Real implementation should:
-      // 1. Deploy actual ERC-20 contract to selected network
-      // 2. Wait for transaction confirmation
-      // 3. Listen for TokenCreated events from the blockchain
-      // 4. Return real contract address and tx hash
-      
-      // Simulate transaction wait (3 seconds)
-      await new Promise(resolve => setTimeout(resolve, 3000));
+    // Mostrar TransactionStatus como pending
+    if (isRealTransactionsEnabled) {
+      setTransactionState({
+        status: TRANSACTION_STATUS.PENDING,
+        txHash: null,
+        network: formData.network,
+      });
+    }
 
-      // Generate simulated contract address and transaction hash
-      const result = {
-        ...formData,
-        address: '0x' + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
-        txHash: '0x' + Array(64).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
-        status: 'FORGED'
-      };
+    try {
+      let result;
+      
+      if (isRealTransactionsEnabled && dynamicWallet.signer) {
+        // TODO: Implementar deploy real via Smart CLI quando estiver pronto
+        // Por enquanto, ainda usa simulation mode mesmo com Web3 habilitado
+        // porque o CLI ainda não está implementado
+        console.info("[WEB3] Real transactions enabled but CLI not yet implemented. Using simulation.");
+        
+        // Simulate transaction wait (3 seconds)
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
+        // Generate simulated contract address and transaction hash
+        result = {
+          ...formData,
+          address: '0x' + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
+          txHash: '0x' + Array(64).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
+          status: 'FORGED'
+        };
+      } else {
+        // ⚠️ SIMULATION MODE: This is a mock deployment for demonstration purposes
+        // Feature Flag: Real transactions are disabled in Phase 1
+        
+        // Simulate transaction wait (3 seconds)
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
+        // Generate simulated contract address and transaction hash
+        result = {
+          ...formData,
+          address: '0x' + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
+          txHash: '0x' + Array(64).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
+          status: 'FORGED'
+        };
+      }
+
+      // Atualizar TransactionStatus como confirmed
+      if (isRealTransactionsEnabled) {
+        setTransactionState({
+          status: TRANSACTION_STATUS.CONFIRMED,
+          txHash: result.txHash,
+          contractAddress: result.address,
+          network: formData.network,
+        });
+      }
 
       // Record deployment in DB
       try {
@@ -503,6 +534,15 @@ export default function SmartMint() {
           console.warn("[PROTOCOL] Failed to record deployment in database");
         }
       } catch (error) {
+        // Atualizar TransactionStatus como failed
+        if (isRealTransactionsEnabled) {
+          setTransactionState({
+            status: TRANSACTION_STATUS.FAILED,
+            error: error.message || 'Deployment failed',
+            network: formData.network,
+          });
+        }
+        
         // Don't block deployment if API is unavailable
         if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
           // Expected in vite dev mode
