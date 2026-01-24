@@ -39,4 +39,14 @@ jobs:
             - name: Run NΞØ Health Check
               run: |
                   cd smart-ui
+                  echo "======================================"
+                  echo "🏥 NΞØ PROTOCOL HEALTH CHECK"
+                  echo "======================================"
+                  echo ""
+                  echo "📊 Running ecosystem health verification..."
+                  echo ""
                   make health
+                  echo ""
+                  echo "======================================"
+                  echo "✅ Health check completed successfully"
+                  echo "======================================"

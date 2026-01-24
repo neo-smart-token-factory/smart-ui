@@ -17,24 +17,140 @@ jobs:
         run: |
           # Get the list of changed files
           CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} ${{ github.sha }})
-          
+
           CODE_CHANGED=false
           DOCS_CHANGED=false
-          
-          echo "Files changed:"
-          echo "$CHANGED_FILES"
-          
-          for file in $CHANGED_FILES; do
-            if [[ $file == docs/* ]] || [[ $file == *.md ]]; then
-              DOCS_CHANGED=true
-            else
-              CODE_CHANGED=true
-            fi
-          done
-          
+
+          # Arrays to store categorized files
+          CODE_FILES=()
+          DOC_FILES=()
+
+          echo "======================================"
+          echo "📋 DOCS GUARD - FILE CHANGE ANALYSIS"
+          echo "======================================"
+          echo ""
+          echo "🔍 Analyzing files changed in this PR..."
+          echo ""
+
+          # Categorize changed files
+          if [[ -n "$CHANGED_FILES" ]]; then
+            while IFS= read -r file; do
+              if [[ -n "$file" ]]; then
+                if [[ $file == docs/* ]] || [[ $file == *.md ]]; then
+                  DOCS_CHANGED=true
+                  DOC_FILES+=("$file")
+                else
+                  CODE_CHANGED=true
+                  CODE_FILES+=("$file")
+                fi
+              fi
+            done <<< "$CHANGED_FILES"
+          fi
+
+          # Display categorized files
+          echo "📂 FILES REQUIRING DOCUMENTATION CHECK:"
+          echo "----------------------------------------"
+          if [ ${#CODE_FILES[@]} -gt 0 ]; then
+            echo ""
+            echo "⚙️  Code/Configuration files changed (${#CODE_FILES[@]}):"
+            for file in "${CODE_FILES[@]}"; do
+              echo "   • $file"
+            done
+          else
+            echo "   No code files changed"
+          fi
+
+          echo ""
+          if [ ${#DOC_FILES[@]} -gt 0 ]; then
+            echo "📚 Documentation files updated (${#DOC_FILES[@]}):"
+            for file in "${DOC_FILES[@]}"; do
+              echo "   ✓ $file"
+            done
+          else
+            echo "⚠️  No documentation files updated"
+          fi
+
+          echo ""
+          echo "======================================"
+
+          # Perform documentation check
           if [ "$CODE_CHANGED" = true ] && [ "$DOCS_CHANGED" = false ]; then
-            echo "Error: Code changes require documentation updates."
+            echo ""
+            echo "❌ DOCUMENTATION CHECK FAILED"
+            echo "======================================"
+            echo ""
+            echo "📝 This PR modifies code but does not update any documentation."
+            echo ""
+            echo "🔧 Files that changed:"
+            for file in "${CODE_FILES[@]}"; do
+              echo "   • $file"
+            done
+            echo ""
+            echo "💡 SUGGESTED ACTIONS:"
+            echo "----------------------------------------"
+            echo ""
+            echo "Please update at least one of the following documentation files:"
+            echo ""
+
+            # Provide specific suggestions based on changed files
+            SUGGESTED_DOCS=()
+            for file in "${CODE_FILES[@]}"; do
+              if [[ $file == .github/workflows/* ]]; then
+                if [[ ! " ${SUGGESTED_DOCS[@]} " =~ " docs/GITHUB_ACTIONS_SETUP.md " ]]; then
+                  SUGGESTED_DOCS+=("docs/GITHUB_ACTIONS_SETUP.md")
+                fi
+              elif [[ $file == src/* ]] || [[ $file == components/* ]] || [[ $file == pages/* ]]; then
+                if [[ ! " ${SUGGESTED_DOCS[@]} " =~ " docs/PROJECT_OVERVIEW.md " ]]; then
+                  SUGGESTED_DOCS+=("docs/PROJECT_OVERVIEW.md")
+                fi
+                if [[ ! " ${SUGGESTED_DOCS[@]} " =~ " README.md " ]]; then
+                  SUGGESTED_DOCS+=("README.md")
+                fi
+              elif [[ $file == api/* ]]; then
+                if [[ ! " ${SUGGESTED_DOCS[@]} " =~ " docs/PROJECT_OVERVIEW.md " ]]; then
+                  SUGGESTED_DOCS+=("docs/PROJECT_OVERVIEW.md")
+                fi
+              elif [[ $file == scripts/* ]] || [[ $file == Makefile ]]; then
+                if [[ ! " ${SUGGESTED_DOCS[@]} " =~ " README.md " ]]; then
+                  SUGGESTED_DOCS+=("README.md")
+                fi
+              elif [[ $file == package.json ]] || [[ $file == *config* ]]; then
+                if [[ ! " ${SUGGESTED_DOCS[@]} " =~ " README.md " ]]; then
+                  SUGGESTED_DOCS+=("README.md")
+                fi
+              fi
+            done
+
+            # If no specific suggestions, provide general ones
+            if [ ${#SUGGESTED_DOCS[@]} -eq 0 ]; then
+              SUGGESTED_DOCS+=("README.md" "docs/PROJECT_OVERVIEW.md")
+            fi
+
+            for doc in "${SUGGESTED_DOCS[@]}"; do
+              echo "   📄 $doc"
+            done
+
+            echo ""
+            echo "📋 Documentation should include:"
+            echo "   • Description of what changed and why"
+            echo "   • Updated usage examples (if applicable)"
+            echo "   • New configuration options (if applicable)"
+            echo "   • Updated setup/installation steps (if applicable)"
+            echo ""
+            echo "ℹ️  Note: Even small code changes should be reflected in documentation"
+            echo "   to maintain consistency and help future contributors."
+            echo ""
+            echo "======================================"
             exit 1
           fi
-          
-          echo "Documentation check passed."
+
+          echo ""
+          echo "✅ DOCUMENTATION CHECK PASSED"
+          echo "======================================"
+          echo ""
+          if [ "$CODE_CHANGED" = true ]; then
+            echo "✓ Code changes detected and documentation updated"
+          else
+            echo "✓ Only documentation changes (no code changes)"
+          fi
+          echo ""
