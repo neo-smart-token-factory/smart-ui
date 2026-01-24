@@ -23,7 +23,7 @@ import { useDynamicWallet } from './components/WalletConnect';
 import TransactionStatus from './components/TransactionStatus';
 import { useTransactionStatus } from './components/TransactionStatus';
 import useFeatures from './hooks/useFeatures';
-import { TokenConfig, TRANSACTION_STATUS } from './types/cli';
+import { TRANSACTION_STATUS } from './types/cli';
 
 // Input sanitization
 const sanitizeInput = (val) => String(val).replace(/[<>]/g, '');
@@ -67,7 +67,7 @@ const safeApiCall = async (url, options = {}) => {
 
 export default function SmartMint() {
   // Feature Flags
-  const { isEnabled, currentPhase, phaseInfo } = useFeatures();
+  const { isEnabled, phaseInfo } = useFeatures();
   const isWeb3Enabled = isEnabled('phase2', 'web3');
   const isRealTransactionsEnabled = isEnabled('phase2', 'realTransactions');
   
@@ -98,7 +98,7 @@ export default function SmartMint() {
   const [sessionId] = useState(() => getOrCreateSessionId());
   
   // Transaction Status
-  const { transaction, setTransaction, clearTransaction } = useTransactionStatus();
+  const { transaction, setTransaction: setTransactionState, clearTransaction } = useTransactionStatus();
 
   // Fetch History with retry logic
   const fetchDeploys = useCallback(async () => {
