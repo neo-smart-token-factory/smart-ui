@@ -4,11 +4,6 @@
   "description": "NΞØ SMART FACTORY — UI Interface (Smart Mint)",
   "private": true,
   "type": "module",
-  "workspaces": [
-    "landing",
-    "nuxt-app",
-    "packages/*"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/neo-smart-token-factory/smart-ui.git"

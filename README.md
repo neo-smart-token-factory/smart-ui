@@ -47,10 +47,7 @@ Documentação detalhada: [PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)
 ## 🛠️ Stack Técnica
 - **Build Tool**: Vite 7.3.1 (ultra-rápido HMR)
 - **Framework Principal**: React 18 + Vite
-- **Workspaces**:
-  - `src/`: React 18 (Dashboard Principal)
-  - `landing/`: React + Vite (Landing Page)
-  - `nuxt-app/`: Nuxt 3 + Vue (Mobile App)
+- **Este repo**: Dashboard Principal (`src/`) + API routes (`api/`)
 - **Estilo**: Tailwind CSS + Design Tokens Customizados
 - **Ícones**: Lucide React / Vue
 - **Web3**: Ethers.js v6 (Viem mencionado como opção futura)
@@ -72,6 +69,14 @@ npm run dev
 Este projeto está licenciado sob a **Licença MIT**.
 
 Se você utilizar esta UI como base para seu projeto, solicitamos a **Atribuição** ao Protocolo NΞØ, mantendo os créditos de design e referência à fábrica original.
+
+## 📦 Repositórios Relacionados
+
+Este projeto faz parte do ecossistema NEØ Smart Factory:
+
+- **Dashboard** (este repo): https://github.com/neo-smart-token-factory/smart-ui
+- **Landing Page**: https://github.com/neo-smart-token-factory/smart-ui-landing
+- **Mobile App**: https://github.com/neo-smart-token-factory/smart-ui-mobile
 
 ---
 **Build v0.5.3** — *Transformando código em ativos líquidos.*

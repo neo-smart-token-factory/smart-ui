@@ -1,6 +1,4 @@
 # Vercel Ignore for Dashboard (Root)
-landing/
-nuxt-app/
 .git/
 .github/
 docs/

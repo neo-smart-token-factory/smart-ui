@@ -84,8 +84,6 @@ DIRS=(
   "api"
   "docs"
   "docs/adr"
-  "landing"
-  "nuxt-app"
   "packages/shared"
   "scripts"
   "migrations"
