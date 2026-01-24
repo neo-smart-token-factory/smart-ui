@@ -1,7 +1,7 @@
 # NΞØ SMART FACTORY — Interface de Gestão e Fábrica de Tokens
 
 ==============================================
-              AVISO DE STATUS ARQUITETURAL
+      AVISO DE STATUS ARQUITETURAL
 ==============================================
 
 Este repositório está **intencionalmente congelado** em termos de **estrutura e arquitetura**.
@@ -9,10 +9,10 @@ Este repositório está **intencionalmente congelado** em termos de **estrutura 
 O Smart UI é classificado como **Demo and Intent Layer**, conforme definido em:
 • `docs/ui-status.md`
 • `ADR 0002 — Smart UI as Demo and Intent Layer`
-
--------------------------------------------------------------------------------
+```
+----------------------------------------------------------------
  O QUE ISSO SIGNIFICA
--------------------------------------------------------------------------------
+----------------------------------------------------------------
 Este repositório é um **projeto ativo** para desenvolvimento de UI/UX e features de interface, mas com limites arquiteturais claros:
 
 - **Estrutura e arquitetura:** Congeladas (arquitetura NEØ)
@@ -22,9 +22,9 @@ Este repositório é um **projeto ativo** para desenvolvimento de UI/UX e featur
 
 Desenvolvimento permitido: UI/UX, features de interface, tracking/analytics, API routes para demo.
 
--------------------------------------------------------------------------------
+----------------------------------------------------------------
  MUDANÇAS PERMITIDAS
--------------------------------------------------------------------------------
+----------------------------------------------------------------
  [✓] Correções críticas de build
  [✓] Atualizações de segurança de dependências
  [✓] Melhorias de UI/UX
@@ -32,17 +32,17 @@ Desenvolvimento permitido: UI/UX, features de interface, tracking/analytics, API
  [✓] Tracking e analytics
  [✓] Rotulagem explícita de demo/simulação
 
--------------------------------------------------------------------------------
+----------------------------------------------------------------
  MUDANÇAS PROIBIDAS
--------------------------------------------------------------------------------
+----------------------------------------------------------------
  [✗] Modificar estrutura de pastas (arquitetura NEØ)
  [✗] Adicionar lógica de protocolo/autoridade
  [✗] Integrações diretas com smart-core
  [✗] Deploy real de contratos (apenas simulação)
  [✗] Expandir backend como infraestrutura de produção
-
+```
 Qualquer mudança fora deste escopo requer uma decisão arquitetural explícita (ADR).
-
+```
 ==============================================
 
 ## 🌐 Visão Geral
@@ -53,33 +53,34 @@ A **NΞØ Smart Factory** é uma **interface de demonstração** para o ecossist
 
 ## 🚀 Estética e Design
 
-┌──────────────────────────────────────────────┐
-│ ▓▓▓ VISUAL                                                  │
-├──────────────────────────────────────────────┤
-│ └─ Tema: Modo Escuro (Obsidian)                             │
-│ └─ Destaque: Neon Acid (#D8F244)                            │
-│ └─ Efeitos: Glassmorphism e Gradientes Cinéticos            │
-│ └─ Interações: Micro-animações fluidas                      │
-└──────────────────────────────────────────────┘
+─────────────────────────────────────────────
+ ▓▓▓ VISUAL                                                  
+──────────────────────────────────────────────
+ └─ Tema: Modo Escuro (Obsidian)                             
+ └─ Destaque: Neon Acid (#D8F244)                            
+ └─ Efeitos: Glassmorphism e Gradientes Cinéticos            
+ └─ Interações: Micro-animações fluidas                      
+──────────────────────────────────────────────
 
 ## 🛠️ Stack Técnica
 
-┌──────────────────────────────────────────────┐
-│ ▓▓▓ TECNOLOGIAS                                             │
-├──────────────────────────────────────────────┤
-│ └─ Build Tool: Vite 7.3.1 (ultra-rápido HMR)               │
-│ └─ Framework: React 18 + Vite                               │
-│ └─ Escopo: Dashboard Principal (src/) + API routes (api/)   │
-│ └─ Estilo: Tailwind CSS + Design Tokens Customizados        │
-│ └─ Ícones: Lucide React                                     │
-│ └─ Web3: Ethers.js v6 (simulation mode)                     │
-│ └─ Database: Neon PostgreSQL (demo/analytics)               │
-└──────────────────────────────────────────────┘
+──────────────────────────────────────────────
+ ▓▓▓ TECNOLOGIAS                                             
+──────────────────────────────────────────────
+ └─ Build Tool: Vite 7.3.1 (ultra-rápido HMR)               
+ └─ Framework: React 18 + Vite                               
+ └─ Escopo: Dashboard Principal (src/)
+      + API routes (api/)   
+ └─ Estilo: Tailwind CSS + Design Tokens Customizados        
+ └─ Ícones: Lucide React                                     
+ └─ Web3: Ethers.js v6 (simulation mode)                     
+ └─ Database: Neon PostgreSQL (demo/analytics)               
+──────────────────────────────────────────────
 
 ## 📦 Funcionalidades Demonstradas
 
 ==============================================
-              STATUS DE IMPLEMENTAÇÃO - v0.5.3
+    STATUS DE IMPLEMENTAÇÃO - v0.5.3
 ==============================================
 
 [####] FABRICA MULTICHAIN ................................................. OK
@@ -114,12 +115,12 @@ make dev-vercel   # Com API routes (recomendado)
 ```
 
 **Deploy:** Veja [docs/DEPLOY_DASHBOARD.md](docs/DEPLOY_DASHBOARD.md) (Neon + Vercel + migrations).
-
+```
 ## 📐 Arquitetura do Sistema
 
-┌──────────────────────────────────────────────┐
-│              ARQUITETURA DO SISTEMA                         │
-└──────────────────────────────────────────────┘
+┌─────────────────────────────────────────────
+│              ARQUITETURA DO SISTEMA                         
+└─────────────────────────────────────────────
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  FRONTEND
@@ -133,10 +134,10 @@ make dev-vercel   # Com API routes (recomendado)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  API LAYER (Vercel Serverless Functions)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- ⚠️ Para demo/persistência temporária (não autoritativo)
+ ⚠️ Para demo/persistência temporária _(não autoritativo)_
 
- ┌───────────┐  ┌──────────┐   ┌───────────┐
- │/api/deploy│  │/api/draft│   │/api/leads │
+ ┌───────────┐  ┌───────────┐  ┌───────────┐
+ │/api/deploy│  │/api/draft │  │ /api/leads│
  └─────┬─────┘  └─────┬─────┘  └─────┬─────┘
        │              │              │
        └──────────────┴──────────────┘
@@ -149,18 +150,18 @@ make dev-vercel   # Com API routes (recomendado)
  Neon Database (PostgreSQL)
  ⚠️ Persistência demo/analytics (não autoritativo)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
+
 
 **Nota sobre APIs e Database:**
 - As API routes (`/api/*`) são **funcionais** e conectam a um **database real** (Neon)
 - Elas servem para: persistir dados de demo, tracking de marketing, analytics
 - **Não** representam autoridade de protocolo ou execução real de transações
 - São componentes **transicionais** para demo e coleta de intenção do usuário
-
+```
 ## 📜 Atribuição e Licença
 
 Este projeto está licenciado sob a **Licença MIT**.
-
+```
 ## 📦 Repositórios Relacionados
 
 ──────────────────────────────────────────────
@@ -178,7 +179,7 @@ Este projeto está licenciado sob a **Licença MIT**.
        smart-ui-mobile                                       
    └─ PWA mobile-first                                     
 ──────────────────────────────────────────────
-
+```
 ## ❓ Perguntas Frequentes
 
 **Este dashboard executa transações reais?**  
