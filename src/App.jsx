@@ -18,7 +18,12 @@ import AssetPack from './components/AssetPack';
 import LandingSection from './components/LandingSection';
 import CustomService from './components/CustomService';
 import OpsDashboard from './components/OpsDashboard';
+import WalletConnect from './components/WalletConnect';
+import { useDynamicWallet } from './components/WalletConnect';
+import TransactionStatus from './components/TransactionStatus';
+import { useTransactionStatus } from './components/TransactionStatus';
 import useFeatures from './hooks/useFeatures';
+import { TokenConfig, TRANSACTION_STATUS } from './types/cli';
 
 // Input sanitization
 const sanitizeInput = (val) => String(val).replace(/[<>]/g, '');
@@ -66,6 +71,9 @@ export default function SmartMint() {
   const isWeb3Enabled = isEnabled('phase2', 'web3');
   const isRealTransactionsEnabled = isEnabled('phase2', 'realTransactions');
   
+  // Web3 Wallet (Dynamic.xyz) - só funciona se Phase 2 habilitada
+  const dynamicWallet = useDynamicWallet();
+  
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -77,12 +85,20 @@ export default function SmartMint() {
     description: ''
   });
 
+  // Wallet address: usa Dynamic.xyz se Web3 habilitado, senão usa estado local
   const [userAddress, setUserAddress] = useState(null);
+  const effectiveUserAddress = isWeb3Enabled && dynamicWallet.isConnected 
+    ? dynamicWallet.address 
+    : userAddress;
+  
   const [deployHistory, setDeployHistory] = useState([]);
   // isDemoMode agora é determinado pelos feature flags
   const isDemoMode = !isWeb3Enabled || !isRealTransactionsEnabled;
   const [leadId, setLeadId] = useState(null);
   const [sessionId] = useState(() => getOrCreateSessionId());
+  
+  // Transaction Status
+  const { transaction, setTransaction, clearTransaction } = useTransactionStatus();
 
   // Fetch History with retry logic
   const fetchDeploys = useCallback(async () => {
@@ -210,64 +226,51 @@ export default function SmartMint() {
     }
   }, [step, leadId, sessionId]);
 
-  // Wallet Connection (Ready for Ethers.js)
-  const connectWallet = async () => {
-    setError(null);
-    if (typeof window !== 'undefined' && window.ethereum) {
-      try {
-        setLoading(true);
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        if (accounts.length > 0) {
-          const address = accounts[0];
-          setUserAddress(address);
+  // Wallet Connection Handler (para compatibilidade com código existente)
+  // Se Web3 está habilitado, usa Dynamic.xyz (via componente WalletConnect)
+  // Senão, usa fallback para simulation mode
+  const handleWalletConnect = async (address) => {
+    if (address) {
+      setUserAddress(address);
+      
+      // Marketing: Atualizar lead com wallet_address
+      if (sessionId && leadId) {
+        await safeApiCall('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            session_id: sessionId,
+            wallet_address: address,
+            conversion_status: 'wallet_connected'
+          })
+        });
 
-          // Marketing: Atualizar lead com wallet_address
-          if (sessionId && leadId) {
-            await safeApiCall('/api/leads', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                session_id: sessionId,
-                wallet_address: address,
-                conversion_status: 'wallet_connected'
-              })
-            });
+        // Registrar evento wallet_connect
+        await safeApiCall('/api/events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            lead_id: leadId,
+            session_id: sessionId,
+            event_type: 'wallet_connect',
+            event_data: { provider: 'dynamic' }
+          })
+        });
+      }
+    }
+  };
 
-            // Registrar evento wallet_connect
-            await safeApiCall('/api/events', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                lead_id: leadId,
-                session_id: sessionId,
-                event_type: 'wallet_connect',
-                event_data: { provider: 'metamask' }
-              })
-            });
-          }
-        }
-      } catch {
-        setError("User alignment rejected connection.");
-        // Fallback for demo if no provider or Web3 not enabled
-        if (!isWeb3Enabled) {
-          console.info("[FEATURES] Web3 not enabled in Phase 1. Using simulation mode.");
-        } else {
-          console.warn("Wallet extension not detected, using sandbox mode.");
-        }
-        const demoAddress = '0x' + Math.random().toString(16).slice(2, 42).padEnd(40, '0');
-        setUserAddress(demoAddress);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      // Demo fallback - No Web3 wallet detected or Web3 not enabled
-      if (!isWeb3Enabled) {
-        console.info("[FEATURES] Web3 not enabled in Phase 1. Using simulation mode.");
-      } else {
-        console.warn("No Web3 wallet detected, entering simulation mode.");
-      }
+  const handleWalletDisconnect = () => {
+    setUserAddress(null);
+  };
+
+  // Fallback para simulation mode quando Web3 não está habilitado
+  const connectWalletFallback = async () => {
+    if (!isWeb3Enabled) {
+      console.info("[FEATURES] Web3 not enabled in Phase 1. Using simulation mode.");
       const demoAddress = '0x' + Math.random().toString(16).slice(2, 42).padEnd(40, '0');
       setUserAddress(demoAddress);
+      handleWalletConnect(demoAddress);
     }
   };
 
@@ -434,7 +437,7 @@ export default function SmartMint() {
     if (!formData.tokenName || formData.tokenName.length < 3) return "Token name must be at least 3 chars.";
     if (!formData.tokenSymbol || formData.tokenSymbol.length < 2) return "Token symbol must be at least 2 chars.";
     if (!formData.tokenSupply || Number(formData.tokenSupply) <= 0) return "Genesis supply must be positive.";
-    if (!userAddress) return "Wallet connection required for protocol deployment.";
+    if (!effectiveUserAddress) return "Wallet connection required for protocol deployment.";
     return null;
   };
 
@@ -478,7 +481,7 @@ export default function SmartMint() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contract_address: result.address,
-            owner_address: userAddress,
+            owner_address: effectiveUserAddress,
             network: formData.network,
             tx_hash: result.txHash,
             token_name: sanitizeForStorage(formData.tokenName),
@@ -579,13 +582,22 @@ export default function SmartMint() {
         </div>
         <div className="flex items-center gap-4">
           <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest hidden md:inline">Protocol Status: <span className="text-green-400">Online</span></span>
-          <button
-            onClick={connectWallet}
-            disabled={loading}
-            className={`btn-secondary !py-2 !px-4 !text-xs flex items-center gap-2 ${userAddress ? 'border-neon-acid/50 text-neon-acid' : ''}`}
-          >
-            <Wallet className="w-3 h-3" /> {userAddress ? `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}` : 'Connect Wallet'}
-          </button>
+          {isWeb3Enabled ? (
+            <WalletConnect
+              userAddress={effectiveUserAddress}
+              setUserAddress={setUserAddress}
+              onConnect={handleWalletConnect}
+              onDisconnect={handleWalletDisconnect}
+            />
+          ) : (
+            <button
+              onClick={connectWalletFallback}
+              disabled={loading}
+              className={`btn-secondary !py-2 !px-4 !text-xs flex items-center gap-2 ${effectiveUserAddress ? 'border-neon-acid/50 text-neon-acid' : ''}`}
+            >
+              <Wallet className="w-3 h-3" /> {effectiveUserAddress ? `${effectiveUserAddress.slice(0, 6)}...${effectiveUserAddress.slice(-4)}` : 'Connect Wallet'}
+            </button>
+          )}
         </div>
       </header>
 
@@ -647,6 +659,20 @@ export default function SmartMint() {
               <Info className="w-4 h-4 text-gray-400 hover:text-[#D8F244] transition-colors" />
             </motion.button>
           </motion.div>
+
+          {/* Transaction Status */}
+          {transaction && isRealTransactionsEnabled && (
+            <TransactionStatus
+              status={transaction.status}
+              txHash={transaction.txHash}
+              network={transaction.network}
+              contractAddress={transaction.contractAddress}
+              error={transaction.error}
+              blockNumber={transaction.blockNumber}
+              onDismiss={clearTransaction}
+              className="mb-6"
+            />
+          )}
 
           {error && (
             <motion.div

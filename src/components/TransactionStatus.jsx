@@ -217,5 +217,3 @@ export function useTransactionStatus() {
     clearTransaction,
   };
 }
-
-export default TransactionStatus;

@@ -8,9 +8,8 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Wallet, CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { Wallet } from 'lucide-react';
 import { DynamicContextProvider, DynamicWidget } from '@dynamic-labs/sdk-react-core';
-import { EthersExtension } from '@dynamic-labs/ethers-v6';
 import useFeatures from '../hooks/useFeatures';
 
 /**
@@ -139,15 +138,25 @@ export default function WalletConnect({
  * @returns {Object} - { address, isConnected, provider, signer }
  */
 export function useDynamicWallet() {
-  const { useDynamicContext } = require('@dynamic-labs/sdk-react-core');
-  const { primaryWallet, isAuthenticated } = useDynamicContext();
+  try {
+    const { useDynamicContext } = require('@dynamic-labs/sdk-react-core');
+    const { primaryWallet, isAuthenticated } = useDynamicContext();
 
-  return {
-    address: primaryWallet?.address || null,
-    isConnected: isAuthenticated && !!primaryWallet,
-    provider: primaryWallet?.connector?.getPublicClient?.() || null,
-    signer: primaryWallet?.connector?.getSigner?.() || null,
-  };
+    return {
+      address: primaryWallet?.address || null,
+      isConnected: isAuthenticated && !!primaryWallet,
+      provider: primaryWallet?.connector?.getPublicClient?.() || null,
+      signer: primaryWallet?.connector?.getSigner?.() || null,
+    };
+  } catch (error) {
+    // Se Dynamic não estiver disponível, retorna valores padrão
+    return {
+      address: null,
+      isConnected: false,
+      provider: null,
+      signer: null,
+    };
+  }
 }
 
 // Export default já está no início do arquivo
