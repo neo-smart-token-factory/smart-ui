@@ -1,63 +1,109 @@
-## ⚠️ Architectural Status Notice
-
-This repository is **intentionally frozen**.
-
-The Smart UI is classified as a **Demo and Intent Layer**, as defined in:
-- `docs/ui-status.md`
-- `ADR 0002 — Smart UI as Demo and Intent Layer`
-
-### What this means
-
-- This UI demonstrates flows and concepts.
-- It does NOT represent protocol authority.
-- It does NOT deploy contracts or execute transactions.
-- Backend logic present here is transitional and non-authoritative.
-
-### Allowed changes
-
-- Critical build fixes
-- Security dependency updates
-- Explicit demo/simulation labeling
-
-### Forbidden changes
-
-- New features
-- New backend logic
-- Protocol rules
-- Direct core integrations
-
-Any change outside this scope requires an explicit architectural decision (ADR).
-
-**Do not treat this repository as production infrastructure.**
-
-
 # NΞØ SMART FACTORY — Interface de Gestão e Fábrica de Tokens
 
-## 🌐 Visão Geral
-A **NΞØ Smart Factory** é a interface definitiva para o ecossistema de criação de ativos da NEO. Desenvolvida como uma fábrica de tokens multichain, ela permite que usuários compilem e publiquem contratos inteligentes com precisão técnica e segurança.
+===============================================================================
+                        AVISO DE STATUS ARQUITETURAL
+===============================================================================
 
-Documentação detalhada: [PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)
+Este repositório está **intencionalmente congelado** em termos de **estrutura e arquitetura**.
+
+O Smart UI é classificado como **Demo and Intent Layer**, conforme definido em:
+• `docs/ui-status.md`
+• `ADR 0002 — Smart UI as Demo and Intent Layer`
+
+-------------------------------------------------------------------------------
+ O QUE ISSO SIGNIFICA
+-------------------------------------------------------------------------------
+Este repositório é um **projeto ativo** para desenvolvimento de UI/UX e features de interface, mas com limites arquiteturais claros:
+
+- **Estrutura e arquitetura:** Congeladas (arquitetura NEØ)
+- **Lógica de protocolo:** Não pode ser adicionada (autoridade está no core)
+- **Transações reais:** Não executa (opera em simulation mode)
+- **Backend como infraestrutura:** Não deve ser expandido como produção
+
+Desenvolvimento permitido: UI/UX, features de interface, tracking/analytics, API routes para demo.
+
+-------------------------------------------------------------------------------
+ MUDANÇAS PERMITIDAS
+-------------------------------------------------------------------------------
+ [✓] Correções críticas de build
+ [✓] Atualizações de segurança de dependências
+ [✓] Melhorias de UI/UX
+ [✓] Features de interface (sem lógica de protocolo)
+ [✓] Tracking e analytics
+ [✓] Rotulagem explícita de demo/simulação
+
+-------------------------------------------------------------------------------
+ MUDANÇAS PROIBIDAS
+-------------------------------------------------------------------------------
+ [✗] Modificar estrutura de pastas (arquitetura NEØ)
+ [✗] Adicionar lógica de protocolo/autoridade
+ [✗] Integrações diretas com smart-core
+ [✗] Deploy real de contratos (apenas simulação)
+ [✗] Expandir backend como infraestrutura de produção
+
+Qualquer mudança fora deste escopo requer uma decisão arquitetural explícita (ADR).
+
+===============================================================================
+
+## 🌐 Visão Geral
+
+A **NΞØ Smart Factory** é uma **interface de demonstração** para o ecossistema de criação de ativos da NEO. Desenvolvida como protótipo de uma fábrica de tokens multichain, ela **demonstra fluxos** para compilação e publicação de contratos inteligentes.
+
+**⚠️ Importante:** Esta interface opera em **simulation mode** e não executa transações reais na blockchain. É uma camada de demonstração e coleta de intenção do usuário.
 
 ## 🚀 Estética e Design
-- **Tema**: Modo Escuro (Obsidian)
-- **Destaque**: Neon Acid (`#D8F244`)
-- **Efeitos**: Glassmorphism e Gradientes Cinéticos.
-- **Interações**: Micro-animações fluidas.
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ▓▓▓ VISUAL                                                                  │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ └─ Tema: Modo Escuro (Obsidian)                                             │
+│ └─ Destaque: Neon Acid (#D8F244)                                            │
+│ └─ Efeitos: Glassmorphism e Gradientes Cinéticos                            │
+│ └─ Interações: Micro-animações fluidas                                      │
+└─────────────────────────────────────────────────────────────────────────────┘
 
 ## 🛠️ Stack Técnica
-- **Build Tool**: Vite 7.3.1 (ultra-rápido HMR)
-- **Framework Principal**: React 18 + Vite
-- **Este repo**: Dashboard Principal (`src/`) + API routes (`api/`)
-- **Estilo**: Tailwind CSS + Design Tokens Customizados
-- **Ícones**: Lucide React / Vue
-- **Web3**: Ethers.js v6 (Viem mencionado como opção futura)
 
-## 📦 Funcionalidades
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ▓▓▓ TECNOLOGIAS                                                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ └─ Build Tool: Vite 7.3.1 (ultra-rápido HMR)                                │
+│ └─ Framework: React 18 + Vite                                               │
+│ └─ Escopo: Dashboard Principal (src/) + API routes (api/)                   │
+│ └─ Estilo: Tailwind CSS + Design Tokens Customizados                        │
+│ └─ Ícones: Lucide React                                                     │
+│ └─ Web3: Ethers.js v6 (simulation mode - não executa transações reais)     │
+│ └─ Database: Neon PostgreSQL (persistência para demo/analytics)             │
+└─────────────────────────────────────────────────────────────────────────────┘
 
-- [x] **Fábrica Multichain**: Suporte integrado para Base, Polygon e outras redes EVM.
-- [x] **Compilação de Contratos**: Interface para configurar e compilar novos tokens sem código.
-- [x] **Gerador de Ativos**: Criação automática de planos de marketing e rascunhos de whitepaper.
-- [x] **Pronto para MiniApp**: Design responsivo otimizado para frames do Telegram MiniApp.
+## 📦 Funcionalidades Demonstradas
+
+===============================================================================
+                        STATUS DE IMPLEMENTAÇÃO - v0.5.3
+===============================================================================
+
+[####] FABRICA MULTICHAIN ................................................. OK
+       Demonstra suporte para Base, Polygon e outras redes EVM
+       ⚠️ Operação em simulation mode (não executa transações reais)
+
+[####] COMPILACAO DE CONTRATOS ............................................ OK
+       Interface para configurar e compilar novos tokens sem código
+       ⚠️ Gera contratos simulados (mock addresses/hashes)
+
+[####] GERADOR DE ATIVOS .................................................. OK
+       Criação automática de planos de marketing e rascunhos de whitepaper
+       ⚠️ Funcionalidade de demonstração
+
+[####] PRONTO PARA MINIAPP ................................................ OK
+       Design responsivo otimizado para frames do Telegram MiniApp
+
+[####] MARKETING & ANALYTICS .............................................. OK
+       Sistema completo de tracking de leads, eventos e recuperação de usuários
+       ✅ Funcional (captura visitantes, eventos, abandono)
+
+===============================================================================
+STATUS: 5/5 funcionalidades demonstradas
+===============================================================================
 
 ## 🏃 Como Rodar Localmente
 
@@ -69,19 +115,97 @@ make dev-vercel   # Com API routes (recomendado)
 
 **Deploy:** Veja [docs/DEPLOY_DASHBOARD.md](docs/DEPLOY_DASHBOARD.md) (Neon + Vercel + migrations).
 
+## 📐 Arquitetura do Sistema
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          ARQUITETURA DO SISTEMA                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ FRONTEND
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · 
+ · ·                                                                 · · · 
+ · ·             Dashboard NΞØ Smart UI                              · · · 
+ · ·             (React 18 + Vite 7.3.1)                             · · · 
+ · ·             Simulation Mode (não executa transações reais)      · · · 
+ · ·                                                                 · · · 
+ · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                               │
+                               ▼
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ API LAYER (Vercel Serverless Functions)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ 
+ ░ ░                                                                 ░ ░ ░ 
+ ░ ░       ⚠️ Para demo/persistência temporária (não autoritativo)   ░ ░ ░ 
+ ░ ░                                                                 ░ ░ ░ 
+ ░ ░  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────┐ ░ ░ ░ 
+ ░ ░  │ /api/deploys │  │ /api/drafts  │  │ /api/leads   │  │ ...  │ ░ ░ ░ 
+ ░ ░  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └──┬───┘ ░ ░ ░ 
+ ░ ░         │                 │                 │             │     ░ ░ ░ 
+ ░ ░         └─────────────────┴─────────────────┴─────────────┘     ░ ░ ░ 
+ ░ ░                                │                                ░ ░ ░ 
+ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                                  │
+                                  ▼
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ DATABASE (Neon PostgreSQL)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ 
+ ▒ ▒                                                                 ▒ ▒ ▒ 
+ ▒ ▒                    Neon Database                                ▒ ▒ ▒ 
+ ▒ ▒                    (PostgreSQL)                                 ▒ ▒ ▒ 
+ ▒ ▒                    ⚠️ Persistência para demo/analytics          ▒ ▒ ▒ 
+ ▒ ▒                    (não autoritativo para protocolo)            ▒ ▒ ▒ 
+ ▒ ▒                                                                 ▒ ▒ ▒ 
+ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Nota sobre APIs e Database:**
+- As API routes (`/api/*`) são **funcionais** e conectam a um **database real** (Neon)
+- Elas servem para: persistir dados de demo, tracking de marketing, analytics
+- **Não** representam autoridade de protocolo ou execução real de transações
+- São componentes **transicionais** para demo e coleta de intenção do usuário
+
 ## 📜 Atribuição e Licença
 
 Este projeto está licenciado sob a **Licença MIT**.
 
-Se você utilizar esta UI como base para seu projeto, solicitamos a **Atribuição** ao Protocolo NΞØ, mantendo os créditos de design e referência à fábrica original.
-
 ## 📦 Repositórios Relacionados
 
-Este projeto faz parte do ecossistema NEØ Smart Factory:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ▓▓▓ ECOSSISTEMA NEØ SMART FACTORY                                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ └─ Dashboard (este repo)                                                    │
+│    └─ https://github.com/neo-smart-token-factory/smart-ui                   │
+│    └─ Interface de gestão e fábrica de tokens (simulation mode)             │
+│ └─ Landing Page                                                             │
+│    └─ https://github.com/neo-smart-token-factory/smart-ui-landing           │
+│    └─ Página pública de marketing                                           │
+│ └─ Mobile App                                                               │
+│    └─ https://github.com/neo-smart-token-factory/smart-ui-mobile            │
+│    └─ PWA mobile-first                                                      │
+└─────────────────────────────────────────────────────────────────────────────┘
 
-- **Dashboard** (este repo): https://github.com/neo-smart-token-factory/smart-ui
-- **Landing Page**: https://github.com/neo-smart-token-factory/smart-ui-landing
-- **Mobile App**: https://github.com/neo-smart-token-factory/smart-ui-mobile
+## ❓ Perguntas Frequentes
+
+**Este dashboard executa transações reais?**  
+Não. Opera em simulation mode. Gera mock addresses e hashes para demonstração.
+
+**Posso usar isso em produção?**  
+Não. É um protótipo de demonstração. Para produção, veja o repositório smart-core.
+
+**O database armazena dados reais?**  
+Sim, mas apenas para analytics, tracking de marketing e persistência de demos.
+
+**Posso contribuir com melhorias de UI?**  
+Sim! Veja a seção "MUDANÇAS PERMITIDAS" no aviso arquitetural.
 
 ---
-**Build v0.5.3** — *Transformando código em ativos líquidos.*
+
+**Build v0.5.3** — *Demonstrando a transformação de código em ativos.*  
+**Status:** Demo and Intent Layer — Simulation Mode
