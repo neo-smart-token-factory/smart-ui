@@ -4,6 +4,8 @@
 > **Organização**: [neo-smart-token-factory](https://github.com/neo-smart-token-factory)  
 > **Status**: Ativo
 
+> 🗺️ **Navegação:** Para um índice visual completo de todos os documentos, veja [NAVIGATION_INDEX.md](./NAVIGATION_INDEX.md)
+
 ---
 
 ## 📚 Índice de Documentação
