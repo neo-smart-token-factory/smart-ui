@@ -79,7 +79,7 @@ Este repositório (`smart-ui`) segue uma estratégia de **lançamento por fases 
 
 **Status:** 🚧 **Em desenvolvimento** | Previsão: Q1 2026
 
-### Features que serão liberadas
+### Features
 
 -  🚧 Wallet connection (Dynamic.xyz)
 -  🚧 Transações blockchain reais
