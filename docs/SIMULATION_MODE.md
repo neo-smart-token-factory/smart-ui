@@ -1,5 +1,12 @@
 # Simulation Mode Documentation
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Arquitetura  
+**Audiência:** Desenvolvedores
+
+---
+
 ## Overview
 
 The NΞØ Smart Factory UI includes a **Simulation Mode** that allows users to explore the interface and understand the token deployment workflow without requiring a Web3 wallet or actual blockchain transactions.

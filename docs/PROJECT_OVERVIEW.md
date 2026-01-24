@@ -1,5 +1,12 @@
 # NΞØ SMART FACTORY — Visão Geral Técnica e Estratégica
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Arquitetura  
+**Audiência:** Todos
+
+---
+
 ## 🌌 A Visão
 A **NΞØ SMART FACTORY** é uma infraestrutura completa de **Fábrica de Tokens e Contratos Inteligentes**. Nosso objetivo é democratizar o acesso a protocolos on-chain através de um modelo "Hacker Ethics": sem barreiras de KYC, focado em segurança por design e transparência radical.
 

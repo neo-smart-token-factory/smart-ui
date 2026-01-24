@@ -1,6 +1,13 @@
 # NΞØ Smart UI — Mapa de Navegação (3-Frontends)
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Guia  
+**Audiência:** Desenvolvedores
+
 Este documento serve como guia operacional para desenvolvedores que acessam o ecossistema `smart-ui` pela primeira vez.
+
+---
 
 ## 🗺️ Arquitetura de Front-End
 

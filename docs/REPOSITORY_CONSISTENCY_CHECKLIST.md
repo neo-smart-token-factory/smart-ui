@@ -1,5 +1,10 @@
 # ✅ Checklist de Consistência entre Repositórios
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Guia  
+**Audiência:** DevOps
+
 **Objetivo:** Garantir que `smart-ui-landing` e `smart-ui-mobile` mantenham o mesmo padrão de `smart-ui` (Dashboard).
 
 ---

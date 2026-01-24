@@ -1,11 +1,15 @@
-# UI Diagnostic Checklist  
-## Smart UI — Read-Only Assessment
+# UI Diagnostic Checklist
 
-**Status:** Completed
-**Audience:** Human maintainers, AI assistants  
-**Mode:** Diagnostic only (no changes allowed)
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Guia  
+**Audiência:** Desenvolvedores
+
+> **Mode:** Diagnostic only (no changes allowed)
 
 ---
+
+## Smart UI — Read-Only Assessment
 
 ## 0. Diagnostic Mode Declaration
 

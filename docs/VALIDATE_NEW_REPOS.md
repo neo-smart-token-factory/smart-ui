@@ -1,5 +1,10 @@
 # ✅ Validação dos Novos Repositórios (Landing e Mobile)
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Guia  
+**Audiência:** DevOps
+
 Guia prático para validar que `smart-ui-landing` e `smart-ui-mobile` estão consistentes após a migração.
 
 ---

@@ -1,5 +1,10 @@
 # Sync: Base de Padrões e POLICIES → docs repo
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Guia  
+**Audiência:** DevOps
+
 **Objetivo:** Enviar ao repositório [neo-smart-token-factory/docs](https://github.com/neo-smart-token-factory/docs) a base de padrões, políticas, auditorias, organização e ADRs mantidos no **smart-ui**.
 
 **Quando usar:** Antes de remediar violações ou esboçar visibility-guard; sempre que políticas/audits forem atualizados e precisarem refletir no docs central.
@@ -12,7 +17,7 @@
 |-------------------|----------------|
 | `docs/REPOSITORY_VISIBILITY_POLICY.md` | `operations/standards/REPOSITORY_VISIBILITY_POLICY.md` |
 | `docs/SECURITY_ENFORCEMENT_REPORT.md` | `operations/standards/SECURITY_ENFORCEMENT_REPORT.md` |
-| `docs/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md` | `auditoria/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md` |
+| `docs/archive/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md` | `auditoria/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md` |
 | `docs/ANALISE_CONEXAO_DOCS_REPO.md` | `ecosystem/ANALISE_CONEXAO_DOCS_REPO.md` |
 | `docs/ORGANIZATION.md` | `ORGANIZATION.md` (raiz) |
 | `docs/ARCHITECTURAL_ADDENDUMS.md` | `architecture/ARCHITECTURAL_ADDENDUMS.md` |
@@ -63,7 +68,7 @@ Na seção **RELATED POLICIES**, troque:
 | `./adr/0003-wallet-extensions-mpc-automation-posture.md` | `../../architecture/adr/0003-wallet-extensions-mpc-automation-posture.md` |
 | `./adr/0004-kyc-governance-strategy.md` | `../../architecture/adr/0004-kyc-governance-strategy.md` |
 | `./ORGANIZATION.md` | `../../ORGANIZATION.md` |
-| `./AUDITORIA_VISIBILIDADE_ORGANIZACAO.md` | `../../auditoria/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md` |
+| `./archive/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md` | `../../auditoria/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md` |
 
 ### `operations/standards/SECURITY_ENFORCEMENT_REPORT.md`
 

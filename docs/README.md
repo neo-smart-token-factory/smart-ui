@@ -293,7 +293,7 @@ Documentos históricos e relatórios de processos concluídos foram movidos para
 - `VALIDATION_REPORT.md` - Relatório intermediário de validação
 - `VALIDATION_FINAL_REPORT.md` - Relatório final de validação
 - `ANALISE_CONEXAO_DOCS_REPO.md` - Análise de conexão com repositório docs
-- `AUDITORIA_VISIBILIDADE_ORGANIZACAO.md` - Auditoria de visibilidade
+- `archive/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md` - Auditoria de visibilidade (arquivado)
 
 Estes documentos são mantidos para referência histórica.
 

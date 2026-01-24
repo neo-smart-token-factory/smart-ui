@@ -1,9 +1,14 @@
 # Smart UI — Status Document
 
-**Repository:** smart-ui  
-**Status:** Frozen (Demo & Intent Layer)  
-**Last Decision:** ADR 0002  
-**Authority:** docs
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Arquitetura  
+**Audiência:** Todos
+
+> **Repository:** smart-ui  
+> **Status:** Frozen (Demo & Intent Layer)  
+> **Last Decision:** ADR 0002  
+> **Authority:** docs
 
 ---
 

@@ -1,6 +1,13 @@
 # Configuração do GitHub Actions — NΞØ Smart Mint Protocol
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Guia  
+**Audiência:** DevOps
+
 Este documento descreve a configuração dos workflows de GitHub Actions para o repositório Smart UI, incluindo o **Docs Guard** e o **NΞØ Protocol Health Check**.
+
+---
 
 ## Workflow: Docs Guard
 

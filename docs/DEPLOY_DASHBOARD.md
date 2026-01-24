@@ -1,5 +1,10 @@
 # 🚀 Deploy do Dashboard (smart-ui)
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Guia  
+**Audiência:** DevOps
+
 Guia para colocar o **Dashboard** no ar com Neon (DB), Vercel e API routes + simulation mode.
 
 ---

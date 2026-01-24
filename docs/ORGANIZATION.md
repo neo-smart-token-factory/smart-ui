@@ -1,6 +1,10 @@
 # Organização Técnica — neo-smart-token-factory
 
-> **Status**: Ativa e Pública  
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Arquitetura  
+**Audiência:** Todos
+
 > **Tipo**: Organização GitHub Open Source  
 > **URL**: [github.com/neo-smart-token-factory](https://github.com/neo-smart-token-factory)
 

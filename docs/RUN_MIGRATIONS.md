@@ -1,5 +1,10 @@
 # 🗄️ Executar Migrations - Opções
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Guia  
+**Audiência:** DevOps
+
 Como você já tem as variáveis configuradas no Vercel, aqui estão as opções para executar as migrations:
 
 > 💡 **Dica:** Se quiser trazer TODAS as variáveis do Vercel para `.env` local, use: `make sync-env`  

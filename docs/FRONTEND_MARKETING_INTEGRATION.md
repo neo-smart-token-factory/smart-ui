@@ -1,17 +1,24 @@
 # 🎯 Integração de Marketing no Frontend - Resumo
 
-**Status:** ✅ **Integrado e Funcional**
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** API  
+**Audiência:** Desenvolvedores
+
+> ✅ **Integrado e Funcional**
 
 ---
 
 ## 📋 O Que Foi Implementado
 
 ### 1. **Session ID Management**
+
 - Geração automática de `session_id` no primeiro load
 - Armazenado em `localStorage` como `neosmart_session_id`
 - Persiste entre recarregamentos da página
 
 ### 2. **Lead Creation (Primeira Visita)**
+
 - Cria lead automaticamente quando usuário visita a página
 - Captura: `user_agent`, `referrer`, UTM parameters (`utm_source`, `utm_medium`, `utm_campaign`)
 - Status inicial: `visitor`
@@ -31,12 +38,14 @@ Eventos registrados automaticamente:
 | `token_created` | Cria token | contract_address, network, tx_hash |
 
 ### 4. **Session Tracking**
+
 - Cria/atualiza sessão ao preencher formulário
 - Salva `form_data_snapshot` (o que usuário preencheu)
 - Rastreia `step_reached` (qual step alcançou)
 - `conversion_funnel` com timestamps de cada step
 
 ### 5. **Lead Status Updates**
+
 Status atualizado automaticamente:
 
 ```

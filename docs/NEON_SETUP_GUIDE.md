@@ -1,5 +1,10 @@
 # 🗄️ Guia Rápido: Configurar Neon Database
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Guia  
+**Audiência:** DevOps
+
 Guia passo a passo para configurar Neon e executar migrations.
 
 ---

@@ -1,5 +1,10 @@
 # 🔄 Sincronizar Variáveis de Ambiente do Vercel
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Guia  
+**Audiência:** DevOps
+
 Guia para trazer todas as variáveis de ambiente configuradas no Vercel para o projeto local.
 
 ---

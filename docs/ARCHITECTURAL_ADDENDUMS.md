@@ -1,8 +1,11 @@
 # Adendos Arquiteturais — NΞØ Smart Factory
 
-> **Versão**: 1.0.0  
-> **Data**: Janeiro 2026  
-> **Status**: Ativo  
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Versão:** 1.0.0  
+**Categoria:** Arquitetura  
+**Audiência:** Todos
+
 > **Classificação**: Documento Arquitetural Fundamental
 
 ---

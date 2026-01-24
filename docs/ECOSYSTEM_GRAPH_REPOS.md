@@ -1,6 +1,11 @@
 # Grafo de Repositórios e Conexões — NEØ
 
-**Objetivo:** Visualizar **nodes** (repositórios da organização), **conexões** entre eles e **não conectados**, em conformidade com a [REPOSITORY_VISIBILITY_POLICY](./REPOSITORY_VISIBILITY_POLICY.md).
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Guia  
+**Audiência:** DevOps
+
+**Objetivo:** Visualizar **nodes** (repositórios da organização), **conexões entre eles e **não conectados**, em conformidade com a [REPOSITORY_VISIBILITY_POLICY](./REPOSITORY_VISIBILITY_POLICY.md).
 
 ---
 
@@ -24,7 +29,7 @@
 | **Grafo** | `public/ecosystem-graph.html` | D3.js, tipos (repo-public, repo-private, workflow, component), legenda. Servido em `/ecosystem-graph.html`. |
 | **Acesso** | [ECOSYSTEM_GRAPH_ACCESS](./ECOSYSTEM_GRAPH_ACCESS.md) | URLs produção/dev, verificação pós-deploy. |
 
-O grafo vive no **smart-ui** e é servido com o dashboard (Vercel). **Pré-lançamento:** inclui privados; após lançamento, ver [AUDITORIA_VISIBILIDADE_ORGANIZACAO](./AUDITORIA_VISIBILIDADE_ORGANIZACAO.md) para conformidade.
+O grafo vive no **smart-ui** e é servido com o dashboard (Vercel). **Pré-lançamento:** inclui privados; após lançamento, ver [AUDITORIA_VISIBILIDADE_ORGANIZACAO](./archive/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md) para conformidade.
 
 ---
 
@@ -105,7 +110,7 @@ Ao adicionar novos repos, workflows ou integrações, atualizar `ecosystem-graph
 ## 7. Links
 
 - [REPOSITORY_VISIBILITY_POLICY](./REPOSITORY_VISIBILITY_POLICY.md)
-- [AUDITORIA_VISIBILIDADE_ORGANIZACAO](./AUDITORIA_VISIBILIDADE_ORGANIZACAO.md)
+- [AUDITORIA_VISIBILIDADE_ORGANIZACAO](./archive/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md)
 - [ECOSYSTEM_GRAPH_ACCESS](./ECOSYSTEM_GRAPH_ACCESS.md)
 
 ---

@@ -1,9 +1,12 @@
 # Repository Visibility Policy — NΞØ Smart Factory
 
-**Status**: ENFORCED  
-**Classification**: SECURITY CRITICAL  
-**Compliance**: MANDATORY  
-**Last Updated**: 2026-01-22
+**Data:** 2026-01-22  
+**Status:** Ativo  
+**Categoria:** Política  
+**Audiência:** Todos
+
+> **Classification**: SECURITY CRITICAL  
+> **Compliance**: MANDATORY
 
 ---
 
@@ -279,7 +282,7 @@ This policy is enforced by the **neo-smart-token-factory** governance team.
 - [ADR 0003: Wallet Extensions & MPC](./adr/0003-wallet-extensions-mpc-automation-posture.md)
 - [ADR 0004: KYC & Governance Strategy](./adr/0004-kyc-governance-strategy.md)
 - [ORGANIZATION.md](./ORGANIZATION.md)
-- [AUDITORIA_VISIBILIDADE_ORGANIZACAO.md](./AUDITORIA_VISIBILIDADE_ORGANIZACAO.md) — Auditoria de conformidade e sugestões (2026-01-24)
+- [AUDITORIA_VISIBILIDADE_ORGANIZACAO.md](./archive/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md) — Auditoria de conformidade e sugestões (2026-01-24)
 
 ---
 

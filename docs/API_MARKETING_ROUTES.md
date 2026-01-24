@@ -1,5 +1,10 @@
 # 📡 API Routes - Marketing & Analytics
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** API  
+**Audiência:** Desenvolvedores
+
 Documentação das novas API routes para marketing e recuperação de usuários.
 
 ---

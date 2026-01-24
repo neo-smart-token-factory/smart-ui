@@ -1,5 +1,12 @@
 # 📊 Marketing & User Recovery Schema - Explicação
 
+**Data:** 2026-01-24  
+**Status:** Ativo  
+**Categoria:** Arquitetura  
+**Audiência:** Desenvolvedores
+
+---
+
 ## 🎯 Problema Identificado
 
 O schema atual (`deploys` + `drafts`) só captura:

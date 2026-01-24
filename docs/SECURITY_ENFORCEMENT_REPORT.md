@@ -1,8 +1,11 @@
 # Security Enforcement Report — Repository Visibility Policy
 
-**Date**: 2026-01-22  
-**Status**: ENFORCED  
-**Classification**: SECURITY CRITICAL
+**Data:** 2026-01-22  
+**Status:** Ativo  
+**Categoria:** Relatório  
+**Audiência:** Todos
+
+> **Classification**: SECURITY CRITICAL
 
 ---
 
@@ -151,7 +154,7 @@ The following files contain references to private repositories in **policy/docum
 - Update policy as needed with governance approval
 
 ### Follow-up
-- [AUDITORIA_VISIBILIDADE_ORGANIZACAO.md](./AUDITORIA_VISIBILIDADE_ORGANIZACAO.md) (2026-01-24): auditoria de visibilidade, violações (ecosystem-graph, Makefile), exceções formalizadas e sugestões de remediação.
+- [AUDITORIA_VISIBILIDADE_ORGANIZACAO.md](./archive/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md) (2026-01-24): auditoria de visibilidade, violações (ecosystem-graph, Makefile), exceções formalizadas e sugestões de remediação.
 
 ---
 
