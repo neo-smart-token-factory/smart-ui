@@ -648,27 +648,6 @@ export default function SmartMint() {
             </motion.button>
           </motion.div>
 
-          {/* Simulation Mode Warning (se aplicável) */}
-          {isDemoMode && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mb-6 p-4 bg-orange-500/10 border border-orange-500/30 rounded-xl flex items-center gap-3 text-orange-400 text-sm"
-            >
-              <AlertTriangle className="w-5 h-5 flex-shrink-0" />
-              <div>
-                <p className="font-bold mb-1">⚠️ Simulation Mode Active</p>
-                <p className="text-xs text-orange-300/80">
-                  {!isWeb3Enabled 
-                    ? `Web3 features estão bloqueadas na ${phaseInfo?.name}. Transações blockchain reais estarão disponíveis na Phase 2 (Q1 2026).`
-                    : "No Web3 wallet detected. Deployments are simulated and won't create real blockchain contracts. Install MetaMask or another Web3 wallet to deploy real tokens."
-                  }
-                </p>
-              </div>
-            </motion.div>
-          )}
-
           {error && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
