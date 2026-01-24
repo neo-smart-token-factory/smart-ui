@@ -256,12 +256,14 @@
             }
 
             function init() {
-            // Dados do ecossistema NEØ
+            // Dados do ecossistema NEØ (pós-migração: 3 repositórios separados)
             const data = {
             nodes: [
                 // Repositórios
                 { id: 'neo-smart-factory', label: 'neo-smart-factory', type: 'repo-core', description: 'Repositório principal com contratos, CLI e operações internas' },
-                { id: 'smart-ui', label: 'smart-ui', type: 'repo-ui', description: 'Interface de gestão e fábrica de tokens (monorepo)' },
+                { id: 'smart-ui', label: 'smart-ui', type: 'repo-ui', description: 'Dashboard React com API routes (repositório único)' },
+                { id: 'smart-ui-landing', label: 'smart-ui-landing', type: 'repo-ui', description: 'Landing page React + Vite (repositório separado)' },
+                { id: 'smart-ui-mobile', label: 'smart-ui-mobile', type: 'repo-ui', description: 'App mobile Vue + Vite (repositório separado)' },
                 { id: 'docs', label: 'docs', type: 'repo-core', description: 'Repositório de documentação centralizada' },
                 
                 // Componentes neo-smart-factory
@@ -271,10 +273,8 @@
                 { id: 'changelog', label: 'changelog.md', type: 'component', description: 'Changelog centralizado do ecossistema' },
                 { id: 'state', label: 'state.json', type: 'component', description: 'Estado operacional (em internal-ops/)' },
                 
-                // Componentes smart-ui
+                // Componentes smart-ui (Dashboard)
                 { id: 'dashboard', label: 'Dashboard (src/)', type: 'ui', description: 'Dashboard principal React com API routes' },
-                { id: 'landing-ui', label: 'Landing (landing/)', type: 'ui', description: 'Landing page workspace (React)' },
-                { id: 'mobile', label: 'Mobile (nuxt-app/)', type: 'ui', description: 'App mobile Nuxt/Vue workspace' },
                 { id: 'api', label: 'API Routes (api/)', type: 'ui', description: 'Vercel Serverless Functions' },
                 
                 // Workflows
@@ -283,7 +283,7 @@
                 { id: 'smart-mint', label: 'smart-mint-protocol', type: 'workflow', description: 'Workflow de sincronização multi-repo (documentado)' },
                 
                 // Infraestrutura
-                { id: 'vercel', label: 'Vercel', type: 'infra', description: 'Plataforma de deploy (3 projetos: dashboard, landing, mobile)' },
+                { id: 'vercel', label: 'Vercel', type: 'infra', description: 'Plataforma de deploy (3 projetos separados: dashboard, landing, mobile)' },
                 { id: 'neon', label: 'Neon Database', type: 'infra', description: 'PostgreSQL serverless' },
                 { id: 'alchemy', label: 'Alchemy', type: 'infra', description: 'RPC Provider para Web3' }
             ],
@@ -306,10 +306,8 @@
                 { source: 'neo-smart-factory', target: 'changelog', label: 'contains', type: 'structure' },
                 { source: 'internal-ops', target: 'state', label: 'contains', type: 'structure' },
                 
-                // Estrutura smart-ui (monorepo com workspaces)
+                // Estrutura smart-ui (Dashboard)
                 { source: 'smart-ui', target: 'dashboard', label: 'contains', type: 'structure' },
-                { source: 'smart-ui', target: 'landing-ui', label: 'contains', type: 'structure' },
-                { source: 'smart-ui', target: 'mobile', label: 'contains', type: 'structure' },
                 { source: 'smart-ui', target: 'api', label: 'contains', type: 'structure' },
                 { source: 'dashboard', target: 'api', label: 'uses', type: 'structure' },
                 
@@ -319,12 +317,16 @@
                 
                 // Deploy e infraestrutura
                 { source: 'smart-ui', target: 'vercel', label: 'deploys to', type: 'deploy' },
+                { source: 'smart-ui-landing', target: 'vercel', label: 'deploys to', type: 'deploy' },
+                { source: 'smart-ui-mobile', target: 'vercel', label: 'deploys to', type: 'deploy' },
                 { source: 'dashboard', target: 'neon', label: 'reads from', type: 'data' },
                 { source: 'api', target: 'neon', label: 'queries', type: 'data' },
                 { source: 'dashboard', target: 'alchemy', label: 'RPC calls', type: 'data' },
                 
                 // Documentação
                 { source: 'smart-ui', target: 'docs', label: 'references', type: 'docs' },
+                { source: 'smart-ui-landing', target: 'docs', label: 'references', type: 'docs' },
+                { source: 'smart-ui-mobile', target: 'docs', label: 'references', type: 'docs' },
                 { source: 'neo-smart-factory', target: 'docs', label: 'references', type: 'docs' },
                 { source: 'docs-guard', target: 'docs', label: 'validates', type: 'docs' }
             ]

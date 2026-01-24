@@ -35,6 +35,7 @@ help:
 	@echo "  make health            - Verifica integridade do ecossistema"
 	@echo "  make validate          - Valida estrutura (validate-onboarding.sh)"
 	@echo "  make ops-sync          - Sincroniza com Internal Ops e Docs"
+	@echo "  make sync-env          - Sincroniza variáveis do Vercel para .env local"
 	@echo ""
 	@echo "🚢 Deploy:"
 	@echo "  make deploy            - Safe Commit + Push (Triggers Vercel)"
@@ -180,3 +181,12 @@ migratedb:
 	@echo "Running Database Migrations..."
 	@test -f .env || (echo "❌ Crie .env com DATABASE_URL (copie de .env.example)"; exit 1)
 	@set -a && . ./.env && set +a && node scripts/migrate.js
+
+migratedb-vercel:
+	@echo "Running Database Migrations (using Vercel env vars)..."
+	@./scripts/migrate-from-vercel.sh
+
+sync-env:
+	@echo "Sincronizando variáveis de ambiente do Vercel para .env local..."
+	@chmod +x scripts/sync-env-from-vercel.sh
+	@./scripts/sync-env-from-vercel.sh
