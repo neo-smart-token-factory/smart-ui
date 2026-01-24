@@ -33,17 +33,17 @@ Este repositório (`smart-ui`) está classificado como **Demo and Intent Layer**
 *Focus: Melhorias de interface dentro das limitações arquiteturais.*
 
 -  [ ] **Melhorias de UX**
-  -  Refinar fluxos de demonstração para melhor clareza
-  -  Adicionar mais rotulagem explícita de "simulation mode"
-  -  Melhorar feedback visual durante simulações
+-  Refinar fluxos de demonstração para melhor clareza
+-  Adicionar mais rotulagem explícita de "simulation mode"
+-  Melhorar feedback visual durante simulações
 
 -  [ ] **Analytics & Tracking**
-  -  Expandir tracking de marketing (já implementado)
-  -  Adicionar métricas de engajamento na demo
+-  Expandir tracking de marketing (já implementado)
+-  Adicionar métricas de engajamento na demo
 
 -  [ ] **Documentação Visual**
-  -  Criar guias visuais para novos desenvolvedores
-  -  Melhorar documentação de componentes UI
+-  Criar guias visuais para novos desenvolvedores
+-  Melhorar documentação de componentes UI
 
 ---
 
@@ -52,16 +52,16 @@ Este repositório (`smart-ui`) está classificado como **Demo and Intent Layer**
 *Focus: Preparar estrutura para futuras integrações (quando ADR permitir).*
 
 -  [ ] **Type Safety**
-  -  Garantir tipos consistentes entre Database schema e Frontend
-  -  Documentar interfaces de dados compartilhadas
+-  Garantir tipos consistentes entre Database schema e Frontend
+-  Documentar interfaces de dados compartilhadas
 
 -  [ ] **API Routes Documentation**
-  -  Documentar todas as API routes de demo
-  -  Criar exemplos de uso para cada endpoint
+-  Documentar todas as API routes de demo
+-  Criar exemplos de uso para cada endpoint
 
 -  [ ] **Component Library**
-  -  Documentar componentes reutilizáveis
-  -  Criar Storybook ou similar para visualização
+-  Documentar componentes reutilizáveis
+-  Criar Storybook ou similar para visualização
 
 ---
 
@@ -70,12 +70,12 @@ Este repositório (`smart-ui`) está classificado como **Demo and Intent Layer**
 *Focus: Coordenação com outros repositórios do ecossistema.*
 
 -  [ ] **Sincronização com `smart-core`**
-  -  Documentar como o UI reflete decisões do core
-  -  Criar guias de integração (quando permitido por ADR)
+-  Documentar como o UI reflete decisões do core
+-  Criar guias de integração (quando permitido por ADR)
 
 -  [ ] **Coordenação com `smart-ui-landing` e `smart-ui-mobile`**
-  -  Alinhar padrões de design
-  -  Compartilhar componentes via npm packages (quando aplicável)
+-  Alinhar padrões de design
+-  Compartilhar componentes via npm packages (quando aplicável)
 
 ---
 
@@ -86,13 +86,13 @@ Este repositório (`smart-ui`) está classificado como **Demo and Intent Layer**
 > ⚠️ **Nota:** Estas fases requerem uma nova ADR para permitir mudanças arquiteturais.
 
 -  [ ] **Web3 Integration** (quando permitido)
-  -  Integração com Dynamic.xyz para wallet connection
-  -  Conexão com contratos reais do `forge-core`
-  -  Event listening on-chain
+-  Integração com Dynamic.xyz para wallet connection
+-  Conexão com contratos reais do `forge-core`
+-  Event listening on-chain
 
 -  [ ] **AI Integration** (quando permitido)
-  -  Doctor AI endpoint via Modal.com
-  -  Narrative generator automático
+-  Doctor AI endpoint via Modal.com
+-  Narrative generator automático
 
 ---
 
