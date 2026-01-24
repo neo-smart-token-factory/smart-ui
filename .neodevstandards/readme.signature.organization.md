@@ -51,7 +51,7 @@ Este documento apresenta opções de assinatura padrão para uso nos READMEs dos
 [![Website](https://img.shields.io/badge/Website-neosmart.space-D8F244?style=flat-square&logo=internet-explorer&logoColor=000)](https://neosmart.space)
 [![GitHub](https://img.shields.io/badge/GitHub-neo--smart--token--factory-C0E030?style=flat-square&logo=github&logoColor=000)](https://github.com/neo-smart-token-factory)
 [![Twitter](https://img.shields.io/badge/Twitter-@neosmartfactory-A8C81C?style=flat-square&logo=twitter&logoColor=000)](https://x.com/neosmartfactory)
-[![Email](https://img.shields.io/badge/Email-neosmart.factory@gmail.com-90B008?style=flat-square&logo=gmail&logoColor=fff)](mailto:neosmart.factory@gmail.com)
+[![Email](https://img.shields.io/badge/Email-neosmart.factory@gmail.com-90B008?style=flat-square&logo=gmail&logoColor=000)](mailto:neosmart.factory@gmail.com)
 
 </div>
 
@@ -71,7 +71,7 @@ Este documento apresenta opções de assinatura padrão para uso nos READMEs dos
 [![Website](https://img.shields.io/badge/Website-neosmart.space-D8F244?style=flat-square&logo=internet-explorer&logoColor=000)](https://neosmart.space)
 [![GitHub](https://img.shields.io/badge/GitHub-neo--smart--token--factory-C0E030?style=flat-square&logo=github&logoColor=000)](https://github.com/neo-smart-token-factory)
 [![Twitter](https://img.shields.io/badge/Twitter-@neosmartfactory-A8C81C?style=flat-square&logo=twitter&logoColor=000)](https://x.com/neosmartfactory)
-[![Email](https://img.shields.io/badge/Email-neosmart.factory@gmail.com-90B008?style=flat-square&logo=gmail&logoColor=fff)](mailto:neosmart.factory@gmail.com)
+[![Email](https://img.shields.io/badge/Email-neosmart.factory@gmail.com-90B008?style=flat-square&logo=gmail&logoColor=000)](mailto:neosmart.factory@gmail.com)
 
 </div>
 ```

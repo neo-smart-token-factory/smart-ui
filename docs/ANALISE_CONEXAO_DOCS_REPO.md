@@ -11,12 +11,31 @@
 
 ### Evidências
 
-| Aspecto | Situação |
-|--------|----------|
-| **Git submodule** | Não existe `.gitmodules`. Nenhum submodule apontando para `docs`. |
-| **Remote** | Único remote: `origin` → `git@github.com:neo-smart-token-factory/smart-ui.git`. |
-| **Workflows** | `docs-guard.yml` valida só `docs/*` e `*.md` **locais** do smart-ui. `protocol-health.yml` faz checkout de `neo-smart-factory` (Core/Ops), **não** do repo `docs`. |
-| **Makefile** | `DOCS_DIR = ../docs`. Usado em `ops-sync` para checar `$(DOCS_DIR)/changelog.md`. Assume **clone paralelo** em `../docs` (dev local), não dependência de build/CI. |
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ▓▓▓ GIT SUBMODULE                                                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ └─ Nao existe .gitmodules                                                   │
+│ └─ Nenhum submodule apontando para docs                                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ ▓▓▓ REMOTE                                                                  │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ └─ origin → git@github.com:neo-smart-token-factory/smart-ui.git             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ ▓▓▓ WORKFLOWS                                                               │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ └─ docs-guard.yml                                                           │
+│    └─ Valida so docs/* e *.md LOCAIS do smart-ui                            │
+│ └─ protocol-health.yml                                                      │
+│    └─ Faz checkout de neo-smart-factory (Core/Ops)                          │
+│    └─ NAO do repo docs                                                      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ ▓▓▓ MAKEFILE                                                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ └─ DOCS_DIR = ../docs                                                       │
+│ └─ Usado em ops-sync para checar $(DOCS_DIR)/changelog.md                   │
+│ └─ Assume CLONE PARALELO em ../docs (dev local)                             │
+│ └─ Nao e dependencia de build/CI                                            │
+└─────────────────────────────────────────────────────────────────────────────┘
 
 ### Referências ao repositório docs
 
@@ -49,16 +68,37 @@ Com base no conteúdo público do `neo-smart-token-factory/docs`:
 
 ## 4. Smart-ui segue esses padrões?
 
-| Padrão | Situação no smart-ui |
-|--------|----------------------|
-| **Documentação versionada com código** | ✅ `docs-guard` exige atualização de `docs/*` ou `*.md` quando há mudança de código em PRs. |
-| **ADRs** | ✅ `docs/adr/` com 0001–0004; formato e numeração consistentes. |
-| **Links para o repo docs** | ✅ README, ORGANIZATION, REPOSITORY_VISIBILITY_POLICY referenciam `docs`. |
-| **Autoridade em docs** | ✅ `ui-status` declara `Authority: docs`; smart-ui como demo/intent layer. |
-| **Estrutura `docs/`** | ✅ `docs/` com PROJECT_OVERVIEW, ADRs, GITHUB_ACTIONS_SETUP, DATABASE_SCHEMA, etc. Escopo **específico do dashboard**; não duplica a estrutura do repo docs (architecture/core/ecosystem), o que faz sentido. |
-| **CONTRIBUTING na raiz** | ❌ Repo docs tem `CONTRIBUTING.md`; smart-ui não. Existe “Como Contribuir” em `docs/README.md` e em `ORGANIZATION`, mas não há `CONTRIBUTING.md` na raiz. |
-| **Changelog** | ⚠️ Makefile (`ops-sync`) espera `../docs/changelog.md`. Uso **opcional** (dev local com `../docs` clonado). Não bloqueia CI nem deploy. |
+===============================================================================
+                        ANALISE DE CONFORMIDADE - v1.0
+===============================================================================
 
+[####] DOCUMENTACAO VERSIONADA COM CODIGO ................................. OK
+       docs-guard exige atualizacao de docs/* ou *.md em PRs
+
+[####] ADRs ............................................................... OK
+       docs/adr/ com 0001-0004; formato e numeracao consistentes
+
+[####] LINKS PARA O REPO DOCS ............................................. OK
+       README, ORGANIZATION, REPOSITORY_VISIBILITY_POLICY referenciam docs
+
+[####] AUTORIDADE EM DOCS ................................................. OK
+       ui-status declara Authority: docs; smart-ui como demo/intent layer
+
+[####] ESTRUTURA docs/ .................................................... OK
+       PROJECT_OVERVIEW, ADRs, GITHUB_ACTIONS_SETUP, DATABASE_SCHEMA, etc
+       Escopo especifico do dashboard; nao duplica estrutura do repo docs
+
+[#---] CHANGELOG ......................................................... WARN
+       Makefile (ops-sync) espera ../docs/changelog.md
+       Uso opcional (dev local); nao bloqueia CI nem deploy
+
+[    ] CONTRIBUTING NA RAIZ .............................................. FAIL
+       Repo docs tem CONTRIBUTING.md; smart-ui nao
+       Existe "Como Contribuir" em docs/README.md e ORGANIZATION
+
+===============================================================================
+STATUS: 5/7 completos | 1 warning | 1 pendente
+===============================================================================
 ---
 
 ## 5. Recomendações

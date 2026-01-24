@@ -850,7 +850,7 @@ export default function SmartMint() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2 opacity-50">
               <Hexagon className="w-4 h-4 text-neon-acid" />
-              <span className="text-[10px] font-bold tracking-widest uppercase">NODE NEØ PROTOCOL — EST. 2026</span>
+              <span className="text-[10px] font-bold tracking-widest uppercase">NEØ PROTOCOL — EST. 2025</span>
             </div>
             <div className="flex gap-10">
               <a
