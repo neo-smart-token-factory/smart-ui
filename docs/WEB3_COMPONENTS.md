@@ -18,10 +18,12 @@ Componente para conexão de wallet usando **Dynamic.xyz**.
 **Localização:** `src/components/WalletConnect.jsx`
 
 **Dependências:**
+
 - `@dynamic-labs/sdk-react-core`
 - `@dynamic-labs/ethers-v6`
 
 **Variável de Ambiente:**
+
 - `VITE_DYNAMIC_ENVIRONMENT_ID` ou `NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID`
 
 **Uso Básico:**

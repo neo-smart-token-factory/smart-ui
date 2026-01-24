@@ -84,6 +84,7 @@ Este índice organiza toda a documentação do projeto de forma visual e navegá
 | [API_MARKETING_ROUTES.md](./api/API_MARKETING_ROUTES.md) | Rotas de API para marketing | Desenvolvedores |
 | [MARKETING_SCHEMA_EXPLANATION.md](./api/MARKETING_SCHEMA_EXPLANATION.md) | Explicação do schema de marketing | Desenvolvedores |
 | [FRONTEND_MARKETING_INTEGRATION.md](./api/FRONTEND_MARKETING_INTEGRATION.md) | Integração de marketing no frontend | Desenvolvedores |
+| [TAVILY_INTEGRATION.md](./guides/TAVILY_INTEGRATION.md) | Integração Tavily AI (pesquisa e validação) | Desenvolvedores |
 | [DATABASE_SCHEMA.sql](./DATABASE_SCHEMA.sql) | Schema do banco de dados | Desenvolvedores |
 
 ---

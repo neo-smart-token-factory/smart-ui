@@ -27,6 +27,12 @@ Esta pasta contém guias práticos para setup, deploy e operações.
 | [ECOSYSTEM_GRAPH_ACCESS.md](./ECOSYSTEM_GRAPH_ACCESS.md) | Acesso ao gráfico do ecossistema | DevOps |
 | [ECOSYSTEM_GRAPH_REPOS.md](./ECOSYSTEM_GRAPH_REPOS.md) | Dados do gráfico de repositórios | DevOps |
 
+## 🤖 Integrações e APIs
+
+| Documento | Descrição | Para Quem |
+|-----------|-----------|-----------|
+| [TAVILY_INTEGRATION.md](./TAVILY_INTEGRATION.md) | Integração com Tavily AI para pesquisa e validação | Desenvolvedores |
+
 ## ✅ Validação e Consistência
 
 | Documento | Descrição | Para Quem |

@@ -53,6 +53,7 @@ O Protocolo NΞØ não é apenas um código; é um diferencial de mercado que un
 > **⚠️ Atualizado:** Após migração para multi-repos (2026-01-24), esta fase foi concluída.
 
 Os frontends estão agora em repositórios separados:
+
 - `smart-ui` (Dashboard)
 - `smart-ui-landing` (Landing Page)
 - `smart-ui-mobile` (Mobile App)
@@ -60,10 +61,12 @@ Os frontends estão agora em repositórios separados:
 **Próximos passos:** Compartilhar ABIs e constantes via npm packages quando necessário.
 
 ### **Fase 2: O Cérebro na Cloud (Modal.com)**
+
 Deploy imediato de uma API de IA na Modal.
 - **Função:** Receber bytecode/código e retornar diagnósticos de segurança para o `nxf doctor`.
 
 ### **Fase 3: Monetização "Code-is-Law"**
+
 Implementar a taxa de 5% (500 bps) diretamente no contrato da Factory.
 - **Transparência:** Exibir na UI exatamente quanto o tesouro NEØ receberá de cada deploy.
 

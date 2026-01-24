@@ -39,6 +39,7 @@ A documentação completa da API está disponível em formato OpenAPI 3.0:
 - `POST /api/drafts` — Salvar draft
 
 ### Operations
+
 - `GET /api/ops-status` — Status operacional
 
 ### Marketing & Analytics
@@ -49,6 +50,15 @@ A documentação completa da API está disponível em formato OpenAPI 3.0:
 - `POST /api/sessions` — Criar/atualizar sessão
 - `GET /api/events` — Buscar eventos de conversão
 - `POST /api/events` — Registrar evento
+
+### AI & Research (Tavily Integration)
+
+- `POST /api/tavily/validate-token-name` — Validar nome/símbolo de token
+- `POST /api/tavily/market-research` — Pesquisa de mercado e tendências
+- `POST /api/tavily/generate-whitepaper-base` — Gerar base de whitepaper (Premium)
+- `POST /api/tavily/marketing-suggestions` — Sugestões de marketing (Premium)
+
+> 📖 **Documentação completa:** Veja [TAVILY_INTEGRATION.md](../guides/TAVILY_INTEGRATION.md)
 
 ---
 
