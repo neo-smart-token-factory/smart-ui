@@ -102,7 +102,7 @@ The following files contain references to private repositories in **policy/docum
 - `docs/adr/0001-smart-ui-backend-boundary.md` — Historical ADR (internal doc)
 - `docs/adr/0002-ui-as-demo-and-intent-layer.md` — Historical ADR (internal doc)
 - `docs/GITHUB_ACTIONS_SETUP.md` — Internal setup guide
-- `docs/adr/0002-ui-as-demo-and-intent-layer.md` — Definição do Smart UI como Demo Layer
+- `docs/ui-status.md` — Internal status document
 
 **These are acceptable** because:
 1. They are internal documentation

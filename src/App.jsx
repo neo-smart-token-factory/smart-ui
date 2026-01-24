@@ -10,13 +10,15 @@ import {
   Hexagon,
   LayoutDashboard,
   Wallet,
-  AlertTriangle
+  AlertTriangle,
+  Info
 } from 'lucide-react';
 import NetworkSelector from './components/NetworkSelector';
 import AssetPack from './components/AssetPack';
 import LandingSection from './components/LandingSection';
 import CustomService from './components/CustomService';
 import OpsDashboard from './components/OpsDashboard';
+import useFeatures from './hooks/useFeatures';
 
 // Input sanitization
 const sanitizeInput = (val) => String(val).replace(/[<>]/g, '');
@@ -59,6 +61,11 @@ const safeApiCall = async (url, options = {}) => {
 };
 
 export default function SmartMint() {
+  // Feature Flags
+  const { isEnabled, currentPhase, phaseInfo } = useFeatures();
+  const isWeb3Enabled = isEnabled('phase2', 'web3');
+  const isRealTransactionsEnabled = isEnabled('phase2', 'realTransactions');
+  
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -72,7 +79,8 @@ export default function SmartMint() {
 
   const [userAddress, setUserAddress] = useState(null);
   const [deployHistory, setDeployHistory] = useState([]);
-  const [isDemoMode, setIsDemoMode] = useState(false);
+  // isDemoMode agora é determinado pelos feature flags
+  const isDemoMode = !isWeb3Enabled || !isRealTransactionsEnabled;
   const [leadId, setLeadId] = useState(null);
   const [sessionId] = useState(() => getOrCreateSessionId());
 
@@ -212,7 +220,6 @@ export default function SmartMint() {
         if (accounts.length > 0) {
           const address = accounts[0];
           setUserAddress(address);
-          setIsDemoMode(false);
 
           // Marketing: Atualizar lead com wallet_address
           if (sessionId && leadId) {
@@ -241,20 +248,26 @@ export default function SmartMint() {
         }
       } catch {
         setError("User alignment rejected connection.");
-        // Fallback for demo if no provider
-        console.warn("Wallet extension not detected, using sandbox mode.");
+        // Fallback for demo if no provider or Web3 not enabled
+        if (!isWeb3Enabled) {
+          console.info("[FEATURES] Web3 not enabled in Phase 1. Using simulation mode.");
+        } else {
+          console.warn("Wallet extension not detected, using sandbox mode.");
+        }
         const demoAddress = '0x' + Math.random().toString(16).slice(2, 42).padEnd(40, '0');
         setUserAddress(demoAddress);
-        setIsDemoMode(true);
       } finally {
         setLoading(false);
       }
     } else {
-      // Demo fallback - No Web3 wallet detected
-      console.warn("No Web3 wallet detected, entering simulation mode.");
+      // Demo fallback - No Web3 wallet detected or Web3 not enabled
+      if (!isWeb3Enabled) {
+        console.info("[FEATURES] Web3 not enabled in Phase 1. Using simulation mode.");
+      } else {
+        console.warn("No Web3 wallet detected, entering simulation mode.");
+      }
       const demoAddress = '0x' + Math.random().toString(16).slice(2, 42).padEnd(40, '0');
       setUserAddress(demoAddress);
-      setIsDemoMode(true);
     }
   };
 
@@ -439,6 +452,7 @@ export default function SmartMint() {
 
     try {
       // ⚠️ SIMULATION MODE: This is a mock deployment for demonstration purposes
+      // Feature Flag: Real transactions are disabled in Phase 1
       // TODO: Replace with real Web3 contract deployment using ethers.js/wagmi
       // Real implementation should:
       // 1. Deploy actual ERC-20 contract to selected network
@@ -577,6 +591,46 @@ export default function SmartMint() {
 
       <main className="container mx-auto px-6 pt-32 pb-20 max-w-4xl">
         <AnimatePresence mode="wait">
+          {/* Phase Status Banner */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 p-4 bg-[#D8F244]/10 border border-[#D8F244]/30 rounded-xl"
+          >
+            <div className="flex items-start gap-3">
+              <Info className="w-5 h-5 flex-shrink-0 text-[#D8F244] mt-0.5" />
+              <div className="flex-1">
+                <p className="font-bold mb-1 text-[#D8F244]">
+                  🚀 Você está usando: {phaseInfo?.name} ({phaseInfo?.status})
+                </p>
+                <p className="text-xs text-gray-300 mb-2">
+                  {phaseInfo?.description}
+                </p>
+                {phaseInfo?.availableFeatures && (
+                  <div className="text-xs text-gray-400 mb-2">
+                    <p className="font-semibold text-gray-300 mb-1">Features disponíveis:</p>
+                    <ul className="list-disc list-inside space-y-1">
+                      {phaseInfo.availableFeatures.map((feature, idx) => (
+                        <li key={idx}>{feature}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {phaseInfo?.lockedFeatures && phaseInfo.lockedFeatures.length > 0 && (
+                  <div className="text-xs text-gray-400">
+                    <p className="font-semibold text-gray-300 mb-1">🔜 Próximas features:</p>
+                    <ul className="list-disc list-inside space-y-1">
+                      {phaseInfo.lockedFeatures.map((feature, idx) => (
+                        <li key={idx}>{feature}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Simulation Mode Warning (se aplicável) */}
           {isDemoMode && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
@@ -588,8 +642,10 @@ export default function SmartMint() {
               <div>
                 <p className="font-bold mb-1">⚠️ Simulation Mode Active</p>
                 <p className="text-xs text-orange-300/80">
-                  No Web3 wallet detected. Deployments are simulated and won&apos;t create real blockchain contracts. 
-                  Install MetaMask or another Web3 wallet to deploy real tokens.
+                  {!isWeb3Enabled 
+                    ? `Web3 features estão bloqueadas na ${phaseInfo?.name}. Transações blockchain reais estarão disponíveis na Phase 2 (Q1 2026).`
+                    : "No Web3 wallet detected. Deployments are simulated and won't create real blockchain contracts. Install MetaMask or another Web3 wallet to deploy real tokens."
+                  }
                 </p>
               </div>
             </motion.div>
