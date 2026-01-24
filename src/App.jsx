@@ -44,9 +44,27 @@ export default function SmartMint() {
   const fetchDeploys = useCallback(async () => {
     try {
       const res = await fetch('/api/deploys');
+      
+      // Check if response is actually JSON (not source code)
+      const contentType = res.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        // Response is not JSON (likely source code in vite dev mode)
+        console.info("[PROTOCOL] API routes not available. Use 'vercel dev' for full API support.");
+        return;
+      }
+      
       if (res.ok) {
-        const data = await res.json();
-        setDeployHistory(Array.isArray(data) ? data : []);
+        try {
+          const data = await res.json();
+          setDeployHistory(Array.isArray(data) ? data : []);
+        } catch (jsonError) {
+          // JSON parse error - likely received source code instead
+          if (jsonError.message.includes('JSON') || jsonError.message.includes('Unexpected token')) {
+            console.info("[PROTOCOL] API routes require 'vercel dev'. Received source code instead of JSON.");
+          } else {
+            console.warn("[PROTOCOL] Failed to parse response:", jsonError);
+          }
+        }
       } else {
         // API route not available in vite dev mode
         if (res.status === 404 || res.status === 503) {
@@ -109,6 +127,13 @@ export default function SmartMint() {
             })
           });
           
+          // Check if response is actually JSON (not source code)
+          const contentType = res.headers.get('content-type');
+          if (!contentType || !contentType.includes('application/json')) {
+            // Response is not JSON (likely source code in vite dev mode)
+            return; // Silently fail - expected in vite dev
+          }
+          
           if (!res.ok && res.status !== 404) {
             // Only log if it's a real error (not just API unavailable)
             console.warn("[CLOUD] Auto-save failed:", res.status);
@@ -116,6 +141,11 @@ export default function SmartMint() {
         } catch (error) {
           // Silently fail in dev mode (API routes require vercel dev)
           if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+            // Expected in vite dev mode, don't log
+            return;
+          }
+          // Check for JSON parse errors (source code instead of JSON)
+          if (error.message && (error.message.includes('JSON') || error.message.includes('Unexpected token'))) {
             // Expected in vite dev mode, don't log
             return;
           }
@@ -134,12 +164,37 @@ export default function SmartMint() {
       const loadDraft = async () => {
         try {
           const res = await fetch(`/api/drafts?address=${userAddress}`);
-          if (res.ok) {
-            const draftData = await res.json();
-            setFormData(prev => ({ ...prev, ...draftData }));
+          
+          // Check if response is actually JSON (not source code)
+          const contentType = res.headers.get('content-type');
+          if (!contentType || !contentType.includes('application/json')) {
+            // Response is not JSON (likely source code in vite dev mode)
+            return; // Silently fail - expected in vite dev
           }
-        } catch {
-          console.warn("[CLOUD] State retrieval skipped");
+          
+          if (res.ok) {
+            try {
+              const draftData = await res.json();
+              setFormData(prev => ({ ...prev, ...draftData }));
+            } catch (jsonError) {
+              // JSON parse error - likely received source code instead
+              if (jsonError.message && (jsonError.message.includes('JSON') || jsonError.message.includes('Unexpected token'))) {
+                // Expected in vite dev mode, don't log
+                return;
+              }
+              console.warn("[CLOUD] Failed to parse draft data:", jsonError);
+            }
+          }
+        } catch (error) {
+          // Silently fail in dev mode (API routes require vercel dev)
+          if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+            return;
+          }
+          // Check for JSON parse errors
+          if (error.message && (error.message.includes('JSON') || error.message.includes('Unexpected token'))) {
+            return;
+          }
+          console.warn("[CLOUD] State retrieval skipped:", error);
         }
       };
       loadDraft();
@@ -203,14 +258,29 @@ export default function SmartMint() {
           })
         });
 
+        // Check if response is actually JSON (not source code)
+        const contentType = deployRes.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          // Response is not JSON (likely source code in vite dev mode)
+          // Silently continue - expected in vite dev
+          return;
+        }
+
         if (!deployRes.ok && deployRes.status !== 404) {
           console.warn("[PROTOCOL] Failed to record deployment in database");
         }
       } catch (error) {
         // Don't block deployment if API is unavailable
-        if (error.name !== 'TypeError' || !error.message.includes('Failed to fetch')) {
-          console.warn("[PROTOCOL] Database sync error:", error);
+        if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+          // Expected in vite dev mode
+          return;
         }
+        // Check for JSON parse errors (source code instead of JSON)
+        if (error.message && (error.message.includes('JSON') || error.message.includes('Unexpected token'))) {
+          // Expected in vite dev mode
+          return;
+        }
+        console.warn("[PROTOCOL] Database sync error:", error);
       }
 
       setForgeResult(result);

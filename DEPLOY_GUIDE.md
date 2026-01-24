@@ -5,6 +5,18 @@
 
 ---
 
+## ⚠️ IMPORTANTE: Configuração de Monorepo no Vercel
+
+Este projeto é um **monorepo** com 3 frontends. Você precisa criar **3 projetos separados** no Vercel:
+
+1. **Dashboard** (raiz `/`) → Root Directory: `.`
+2. **Landing** (`/landing`) → Root Directory: `landing`
+3. **Mobile** (`/nuxt-app`) → Root Directory: `nuxt-app`
+
+**📖 Guia Completo:** Veja [VERCEL_SETUP.md](./VERCEL_SETUP.md) para instruções detalhadas.
+
+---
+
 ## ✅ Validação Pré-Deploy
 
 ### Status Atual do Código
@@ -62,21 +74,43 @@ make dev-all         # Todos simultaneamente
 
 #### 3.1 Conectar Repositório
 
+**⚠️ IMPORTANTE:** Este é um monorepo. Você precisa criar **3 projetos separados** no Vercel.
+
+**Opção A: Via Dashboard (Recomendado para primeira vez)**
+
+1. Acesse [vercel.com](https://vercel.com)
+2. **Add New** → **Project**
+3. Importe `neo-smart-token-factory/smart-ui`
+4. Configure **Root Directory** conforme o projeto:
+   - **Dashboard:** `.` (raiz)
+   - **Landing:** `landing`
+   - **Mobile:** `nuxt-app`
+
+**Opção B: Via CLI**
+
 ```bash
 # No diretório do projeto
 cd /Users/nettomello/CODIGOS/NEO\ SMART\ TOKEN/smart-ui
 
-# Conectar ao Vercel
+# Conectar ao Vercel (Dashboard - raiz)
 vercel link
 ```
 
-**Perguntas do Vercel:**
+**Perguntas do Vercel (Dashboard):**
 - **Set up and deploy?** → `Y`
 - **Which scope?** → Seu usuário/org
 - **Link to existing project?** → `N` (primeira vez)
-- **Project name?** → `smart-ui` (ou o nome que preferir)
-- **Directory?** → `./` (raiz)
+- **Project name?** → `smart-ui-dashboard`
+- **Directory?** → `.` (raiz - deixe vazio ou coloque ".")
 - **Override settings?** → `N`
+
+**Para Landing e Mobile, repita o processo em seus diretórios:**
+```bash
+cd landing && vercel link  # Projeto: smart-ui-landing
+cd ../nuxt-app && vercel link  # Projeto: smart-ui-mobile
+```
+
+**📖 Veja [VERCEL_SETUP.md](./VERCEL_SETUP.md) para guia completo.**
 
 #### 3.2 Configurar Variáveis de Ambiente
 

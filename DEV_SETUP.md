@@ -24,6 +24,7 @@ npm run dev:vercel
 ```
 
 **Vantagens:**
+
 - ✅ API routes funcionam (`/api/drafts`, `/api/deploys`)
 - ✅ Variáveis de ambiente do `.env` carregadas
 - ✅ Comportamento idêntico à produção
@@ -40,12 +41,14 @@ npm run dev
 ```
 
 **Limitações:**
+
 - ❌ API routes retornam 404
 - ❌ Drafts não salvam
 - ❌ Deploy history não carrega
 - ⚠️ Erros silenciosos no console (esperado)
 
 **Quando usar:**
+
 - Desenvolvimento de UI/UX
 - Testes de componentes
 - Quando não precisa de funcionalidades de API
@@ -57,6 +60,7 @@ npm run dev
 **Problema:** Não permitia digitar espaços entre palavras.
 
 **Solução:**
+
 - Removido `sanitizeInput` do `onChange` do textarea
 - `sanitizeInput` agora só remove caracteres perigosos (`<`, `>`)
 - `trim()` aplicado apenas no momento de salvar (não durante digitação)
@@ -66,6 +70,7 @@ npm run dev
 **Problema:** API routes não disponíveis em `vite dev`.
 
 **Solução:**
+
 - Adicionado tratamento de erro silencioso
 - Mensagens informativas no console
 - Instruções para usar `vercel dev`
@@ -75,6 +80,7 @@ npm run dev
 **Problema:** Mesmo problema - API routes não disponíveis.
 
 **Solução:**
+
 - Tratamento de erro melhorado
 - Não bloqueia funcionalidade principal
 - Mensagens informativas
@@ -91,11 +97,13 @@ npm run dev
 ### Desenvolvimento Diário
 
 **Com API (Recomendado):**
+
 ```bash
 make dev-vercel
 ```
 
 **Sem API (Apenas UI):**
+
 ```bash
 make dev
 ```
@@ -119,6 +127,7 @@ npm i -g vercel
 **Causa:** Usando `vite dev` em vez de `vercel dev`
 
 **Solução:**
+
 ```bash
 # Parar vite dev (Ctrl+C)
 make dev-vercel

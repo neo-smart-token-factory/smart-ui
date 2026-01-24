@@ -1,6 +1,6 @@
 # NΞØ SMART FACTORY — Makefile
 
-.PHONY: dev dev-dashboard dev-landing dev-mobile dev-all build build-all build-dashboard build-landing build-mobile start lint clean install help ops-sync health test test-dashboard test-landing test-mobile
+.PHONY: dev dev-dashboard dev-landing dev-mobile dev-all build build-all build-dashboard build-landing build-mobile start lint clean install help ops-sync health test test-dashboard test-landing test-mobile validate
 
 # Variáveis
 DASHBOARD_DIR = .
@@ -49,6 +49,7 @@ help:
 	@echo "  make lint              - Executa linter"
 	@echo "  make clean             - Remove node_modules e artefatos de build"
 	@echo "  make health            - Verifica integridade do ecossistema"
+	@echo "  make validate          - Valida estrutura documentada (onboarding)"
 	@echo "  make ops-sync          - Sincroniza com Internal Ops e Docs"
 	@echo ""
 	@echo "🚢 Deploy:"
@@ -218,6 +219,19 @@ health:
 lint:
 	@echo "🔍 Linting code..."
 	cd $(DASHBOARD_DIR) && npm run lint
+
+# ============================================
+# Validação
+# ============================================
+
+validate:
+	@echo "🔍 Validando estrutura documentada..."
+	@if [ -f "./validate-onboarding.sh" ]; then \
+		./validate-onboarding.sh; \
+	else \
+		echo "❌ Script validate-onboarding.sh não encontrado"; \
+		exit 1; \
+	fi
 
 # ============================================
 # Limpeza
