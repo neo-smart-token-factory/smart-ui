@@ -5,15 +5,12 @@
 
 ---
 
-## ⚠️ IMPORTANTE: Configuração de Monorepo no Vercel
+## 🎯 Deploy do Dashboard (este repositório)
 
-Este projeto é um **monorepo** com 3 frontends. Você precisa criar **3 projetos separados** no Vercel:
+**Este repo contém apenas o Dashboard.** Landing e Mobile estão em repositórios separados.
 
-1. **Dashboard** (raiz `/`) → Root Directory: `.`
-2. **Landing** (`/landing`) → Root Directory: `landing`
-3. **Mobile** (`/nuxt-app`) → Root Directory: `nuxt-app`
-
-**📖 Guia Completo:** Veja [VERCEL_SETUP.md](./VERCEL_SETUP.md) para instruções detalhadas.
+- **📖 Guia completo:** [docs/DEPLOY_DASHBOARD.md](./docs/DEPLOY_DASHBOARD.md) — Neon, Vercel, migrations, simulation mode.
+- **Resumo:** Neon (DB) → `make migratedb` → Vercel (1 projeto, Root = `.`) → configurar `DATABASE_URL` + `VITE_*`.
 
 ---
 

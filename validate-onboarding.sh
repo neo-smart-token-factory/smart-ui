@@ -139,13 +139,13 @@ echo -e "${YELLOW}📦 Validando package.json...${NC}"
 echo ""
 
 if [ -f "package.json" ]; then
-  # Verificar se é workspace
+  # Verificar se NÃO é workspace (single repo)
   if grep -q '"workspaces"' package.json; then
-    echo -e "${GREEN}✅ package.json configura workspaces${NC}"
-    ((PASSED++))
+    echo -e "${RED}❌ package.json ainda configura workspaces (deve ser single repo)${NC}"
+    ((FAILED++))
   else
-    echo -e "${YELLOW}⚠️  package.json não configura workspaces${NC}"
-    ((WARNINGS++))
+    echo -e "${GREEN}✅ package.json é single repo (sem workspaces)${NC}"
+    ((PASSED++))
   fi
   
   # Verificar dependências críticas

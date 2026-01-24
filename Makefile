@@ -178,4 +178,5 @@ deploy-force:
 
 migratedb:
 	@echo "Running Database Migrations..."
-	node scripts/migrate.js
+	@test -f .env || (echo "❌ Crie .env com DATABASE_URL (copie de .env.example)"; exit 1)
+	@set -a && . ./.env && set +a && node scripts/migrate.js

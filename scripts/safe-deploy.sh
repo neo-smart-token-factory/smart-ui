@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # NΞØ SMART FACTORY — Safe Deploy & Commit Strategy
-# Handles 3 Frontends: Dashboard (Root), Landing, Mobile (Nuxt/Vue)
+# Dashboard (smart-ui) — Single Repository
 
 set -e # Exit immediately if a command exits with a non-zero status.
 
@@ -23,28 +23,15 @@ npm audit --audit-level=critical || echo -e "${RED}⚠️  Critical vulnerabilit
 echo "Running Linter..."
 npm run lint -- --no-error-on-unmatched-pattern || echo -e "${YELLOW}⚠️  Lint warnings detected.${NC}"
 
-# 2. INTELLIGENT BUILD CHECK
-# Check what changed to decide what to build locally before pushing
-echo -e "${YELLOW}🏗️  [2/4] Verifying Builds for Changed Modules...${NC}"
+# 2. BUILD CHECK
+echo -e "${YELLOW}🏗️  [2/4] Verifying Build...${NC}"
 
 CHANGED_FILES=$(git diff --name-only HEAD)
 
 # Check Dashboard (Root)
-if echo "$CHANGED_FILES" | grep -qE "^src/|^public/|vite.config|package.json|postcss.config|tailwind.config"; then
+if echo "$CHANGED_FILES" | grep -qE "^src/|^public/|^api/|vite.config|package.json|postcss.config|tailwind.config"; then
     echo -e "${GREEN}Detected changes in Dashboard. Building...${NC}"
     npm run build
-fi
-
-# Check Landing
-if echo "$CHANGED_FILES" | grep -qE "^landing/"; then
-    echo -e "${GREEN}Detected changes in Landing Page. Building...${NC}"
-    cd landing && npm install && npm run build && cd ..
-fi
-
-# Check Mobile App
-if echo "$CHANGED_FILES" | grep -qE "^nuxt-app/"; then
-    echo -e "${GREEN}Detected changes in Mobile App. Building...${NC}"
-    cd nuxt-app && npm install && npm run build && cd ..
 fi
 
 echo -e "${GREEN}✅ Build verification passed.${NC}"
@@ -67,7 +54,9 @@ echo -e "${YELLOW}🚀 [4/4] Pushing to Vercel (via Git)...${NC}"
 git push origin main
 
 echo -e "${GREEN}✅ DEPLOY SEQUENCE COMPLETE!${NC}"
-echo -e "Vercel will now auto-deploy the updated frontends:"
+echo -e "Vercel will now auto-deploy the Dashboard:"
 echo -e "  - Dashboard: https://smart-ui-delta.vercel.app"
-echo -e "  - Landing:   https://landing-jet-seven.vercel.app"
-echo -e "  - Mobile:    https://nuxt-app-vert.vercel.app"
+echo -e ""
+echo -e "📦 Related repositories:"
+echo -e "  - Landing: https://github.com/neo-smart-token-factory/smart-ui-landing"
+echo -e "  - Mobile:  https://github.com/neo-smart-token-factory/smart-ui-mobile"
