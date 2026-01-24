@@ -13,6 +13,7 @@ info:
     url: https://github.com/neo-smart-token-factory/smart-ui
   license:
     name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://smart-ui-dashboard.vercel.app/api
@@ -29,10 +30,16 @@ tags:
     description: Marketing and analytics endpoints
   - name: Operations
     description: Operational status and health checks
+  - name: AI & Research
+    description: Tavily AI integration for validation, research, and content generation
+
+# Security: Public API (simulation mode, no authentication required)
+security: []
 
 paths:
   /deploys:
     get:
+      operationId: listDeploys
       summary: List recent deploys
       description: Returns the 50 most recent token deployments (simulated)
       tags:
@@ -46,6 +53,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Deploy'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '503':
           description: Database connection not available
           content:
@@ -53,6 +66,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
+      operationId: createDeploy
       summary: Record a new deploy
       description: Records a new token deployment (simulation mode)
       tags:
@@ -95,6 +109,7 @@ paths:
 
   /drafts:
     get:
+      operationId: getDraft
       summary: Get user draft
       description: Retrieves a saved draft for a user address
       tags:
@@ -139,6 +154,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
+      operationId: saveDraft
       summary: Save user draft
       description: Saves or updates a user draft configuration
       tags:
@@ -147,19 +163,17 @@ paths:
         required: true
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/DraftInput'
+              schema:
+                $ref: '#/components/schemas/DraftInput'
       responses:
         '200':
           description: Draft saved successfully
+        '400':
+          description: Invalid input
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
+                $ref: '#/components/schemas/Error'
         '500':
           description: Failed to save draft
           content:
@@ -175,6 +189,7 @@ paths:
 
   /ops-status:
     get:
+      operationId: getOpsStatus
       summary: Get operational status
       description: Returns the operational status of the protocol
       tags:
@@ -186,6 +201,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OpsStatus'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
           description: Failed to retrieve status
           content:
@@ -195,6 +216,7 @@ paths:
 
   /leads:
     get:
+      operationId: getLead
       summary: Get lead by identifier
       description: Retrieves a lead by session_id, wallet_address, or email
       tags:
@@ -238,6 +260,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
+      operationId: createOrUpdateLead
       summary: Create or update lead
       description: Creates a new lead or updates an existing one
       tags:
@@ -270,6 +293,7 @@ paths:
 
   /analytics:
     get:
+      operationId: getAnalytics
       summary: Get analytics data
       description: Retrieves analytics and metrics
       tags:
@@ -322,6 +346,7 @@ paths:
 
   /sessions:
     get:
+      operationId: getSession
       summary: Get user session
       description: Retrieves a user session by session_id
       tags:
@@ -358,6 +383,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
+      operationId: createOrUpdateSession
       summary: Create or update session
       description: Creates a new session or updates an existing one
       tags:
@@ -390,6 +416,7 @@ paths:
 
   /events:
     get:
+      operationId: getEvents
       summary: Get conversion events
       description: Retrieves conversion events with optional filters
       tags:
@@ -434,6 +461,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
+      operationId: createEvent
       summary: Record conversion event
       description: Records a new conversion event
       tags:
@@ -463,6 +491,154 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /tavily/validate-token-name:
+    post:
+      operationId: validateTokenName
+      summary: Validate token name and symbol
+      description: |
+        Validates a token name and symbol by checking for conflicts and existing tokens.
+        Returns validation results with potential conflicts and suggestions.
+      tags:
+        - AI & Research
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenValidationInput'
+      responses:
+        '200':
+          description: Validation results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenValidationResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error or Tavily API unavailable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error'
+                  - $ref: '#/components/schemas/FallbackResponse'
+
+  /tavily/market-research:
+    post:
+      operationId: getMarketResearch
+      summary: Market research and trends
+      description: |
+        Performs market research and trend analysis for a given category and keywords.
+        Returns market insights, competitor analysis, and identified market gaps.
+      tags:
+        - AI & Research
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarketResearchInput'
+      responses:
+        '200':
+          description: Market research insights
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketResearchResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error or Tavily API unavailable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error'
+                  - $ref: '#/components/schemas/FallbackResponse'
+
+  /tavily/generate-whitepaper-base:
+    post:
+      operationId: generateWhitepaperBase
+      summary: Generate whitepaper base content (Premium)
+      description: |
+        Generates a base structure for a token whitepaper using AI research.
+        This is a premium feature that requires research across multiple topics.
+      tags:
+        - AI & Research
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WhitepaperInput'
+      responses:
+        '200':
+          description: Whitepaper base content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhitepaperResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error or Tavily API unavailable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error'
+                  - $ref: '#/components/schemas/FallbackResponse'
+
+  /tavily/marketing-suggestions:
+    post:
+      operationId: getMarketingSuggestions
+      summary: Marketing campaign suggestions (Premium)
+      description: |
+        Generates marketing campaign suggestions based on market research.
+        Includes social media strategies, content ideas, timing, and channel recommendations.
+      tags:
+        - AI & Research
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarketingInput'
+      responses:
+        '200':
+          description: Marketing suggestions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketingResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error or Tavily API unavailable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error'
+                  - $ref: '#/components/schemas/FallbackResponse'
 
 components:
   schemas:
@@ -721,5 +897,251 @@ components:
       properties:
         error:
           type: string
+        message:
+          type: string
       required:
         - error
+
+    FallbackResponse:
+      type: object
+      description: Response when Tavily API is unavailable (graceful degradation)
+      properties:
+        fallback:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Serviço temporariamente indisponível"
+
+    TokenValidationInput:
+      type: object
+      required:
+        - tokenName
+        - symbol
+      properties:
+        tokenName:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: "MyToken"
+        symbol:
+          type: string
+          minLength: 2
+          maxLength: 10
+          example: "MTK"
+
+    TokenValidationResponse:
+      type: object
+      properties:
+        valid:
+          type: boolean
+          description: Whether the name/symbol is valid (no conflicts)
+        conflicts:
+          type: array
+          description: List of potential conflicts found
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              url:
+                type: string
+              score:
+                type: number
+                format: float
+        suggestions:
+          type: array
+          description: Alternative name suggestions if conflicts found
+          items:
+            type: string
+        totalResults:
+          type: integer
+        fallback:
+          type: boolean
+          description: True if using fallback response
+
+    MarketResearchInput:
+      type: object
+      properties:
+        category:
+          type: string
+          description: Token category (e.g., "DeFi", "NFT", "Gaming")
+          example: "DeFi"
+        keywords:
+          type: string
+          description: Additional keywords for research
+          example: "lending protocol"
+
+    MarketResearchResponse:
+      type: object
+      properties:
+        trends:
+          type: array
+          description: Identified market trends
+          items:
+            type: string
+        competitors:
+          type: array
+          description: Competitor analysis
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              url:
+                type: string
+              relevance:
+                type: number
+                format: float
+              snippet:
+                type: string
+        marketGaps:
+          type: array
+          description: Identified market opportunities
+          items:
+            type: string
+        summary:
+          type: string
+          description: Research summary
+        totalResults:
+          type: integer
+        fallback:
+          type: boolean
+
+    WhitepaperInput:
+      type: object
+      required:
+        - tokenName
+      properties:
+        tokenName:
+          type: string
+          example: "MyToken"
+        category:
+          type: string
+          example: "DeFi"
+        useCase:
+          type: string
+          example: "Lending protocol"
+        targetAudience:
+          type: string
+          example: "Institutional investors"
+
+    WhitepaperResponse:
+      type: object
+      properties:
+        introduction:
+          type: string
+          description: Introduction section content
+        tokenomics:
+          type: string
+          nullable: true
+          description: Tokenomics information
+        useCase:
+          type: string
+          description: Use case details
+        marketAnalysis:
+          type: string
+          description: Market analysis content
+        references:
+          type: array
+          description: Research references
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              url:
+                type: string
+              section:
+                type: string
+                enum: [tokenomics, useCase, market]
+              relevance:
+                type: number
+                format: float
+        generatedAt:
+          type: string
+          format: date-time
+        fallback:
+          type: boolean
+
+    MarketingInput:
+      type: object
+      required:
+        - tokenName
+      properties:
+        tokenName:
+          type: string
+          example: "MyToken"
+        category:
+          type: string
+          example: "DeFi"
+        launchDate:
+          type: string
+          format: date
+          example: "2026-02-01"
+
+    MarketingResponse:
+      type: object
+      properties:
+        socialMedia:
+          type: array
+          description: Social media strategies
+          items:
+            type: object
+            properties:
+              platform:
+                type: string
+                example: "twitter"
+              strategy:
+                type: string
+        contentIdeas:
+          type: array
+          description: Content ideas and suggestions
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              type:
+                type: string
+                enum: [article, announcement, engagement, partnership]
+              suggestion:
+                type: string
+        timing:
+          type: object
+          properties:
+            suggestedDay:
+              type: string
+            reasoning:
+              type: string
+            launchDate:
+              type: string
+              format: date
+              nullable: true
+        channels:
+          type: array
+          description: Recommended marketing channels
+          items:
+            type: object
+            properties:
+              channel:
+                type: string
+              relevance:
+                type: number
+                format: float
+        messaging:
+          type: array
+          description: Messaging patterns and themes
+          items:
+            type: object
+            properties:
+              theme:
+                type: string
+              example:
+                type: string
+        summary:
+          type: string
+        totalResults:
+          type: integer
+        fallback:
+          type: boolean
