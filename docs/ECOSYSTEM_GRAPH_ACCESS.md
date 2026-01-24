@@ -104,23 +104,31 @@ Ao acessar o gráfico, verifique:
 
 **Solução:**
 
-1. Verificar se o arquivo está na raiz do projeto:
+1. **Verificar se o arquivo está em `public/`** (obrigatório para Vite):
    ```bash
-   ls -la ecosystem-graph.html
+   ls -la public/ecosystem-graph.html
+   # Deve existir: public/ecosystem-graph.html
    ```
 
-2. Verificar `.vercelignore` (não deve ignorar o arquivo):
+2. **Se estiver na raiz, mover para `public/`:**
+   ```bash
+   mv ecosystem-graph.html public/ecosystem-graph.html
+   ```
+
+3. Verificar `.vercelignore` (não deve ignorar `public/`):
    ```bash
    cat .vercelignore
-   # Se ecosystem-graph.html estiver listado, remova
+   # public/ NÃO deve estar listado
    ```
 
-3. Fazer redeploy:
+4. Fazer redeploy:
    ```bash
-   git add ecosystem-graph.html
-   git commit -m "fix: ensure ecosystem-graph.html is deployed"
+   git add public/ecosystem-graph.html
+   git commit -m "fix: move ecosystem-graph.html to public folder"
    git push
    ```
+
+**Nota:** No Vite, arquivos HTML estáticos devem estar em `public/` para serem servidos corretamente.
 
 ### Problema: D3.js não carrega
 
