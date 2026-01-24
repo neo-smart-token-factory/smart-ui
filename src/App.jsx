@@ -19,7 +19,10 @@ import CustomService from './components/CustomService';
 import OpsDashboard from './components/OpsDashboard';
 
 // Input sanitization
-const sanitizeInput = (val) => String(val).replace(/[<>]/g, '').trim();
+const sanitizeInput = (val) => String(val).replace(/[<>]/g, '');
+
+// Sanitize for display/storage (with trim)
+const sanitizeForStorage = (val) => sanitizeInput(val).trim();
 
 export default function SmartMint() {
   const [step, setStep] = useState(1);
@@ -44,9 +47,19 @@ export default function SmartMint() {
       if (res.ok) {
         const data = await res.json();
         setDeployHistory(Array.isArray(data) ? data : []);
+      } else {
+        // API route not available in vite dev mode
+        if (res.status === 404 || res.status === 503) {
+          console.warn("[PROTOCOL] API routes require 'vercel dev' for full functionality");
+        }
       }
-    } catch {
-      console.warn("[PROTOCOL] Failed to sync history sequence");
+    } catch (error) {
+      // Only log if it's not a network/CORS error (expected in vite dev)
+      if (error.name !== 'TypeError' && !error.message.includes('Failed to fetch')) {
+        console.warn("[PROTOCOL] Failed to sync history sequence:", error);
+      } else {
+        console.info("[PROTOCOL] API routes not available. Use 'vercel dev' for full API support.");
+      }
     }
   }, []);
 
@@ -87,7 +100,7 @@ export default function SmartMint() {
     if (userAddress && step === 2) {
       const saveDraft = async () => {
         try {
-          await fetch('/api/drafts', {
+          const res = await fetch('/api/drafts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -95,8 +108,18 @@ export default function SmartMint() {
               token_config: formData
             })
           });
-        } catch {
-          console.error("[CLOUD] Auto-save sequence interrupted");
+          
+          if (!res.ok && res.status !== 404) {
+            // Only log if it's a real error (not just API unavailable)
+            console.warn("[CLOUD] Auto-save failed:", res.status);
+          }
+        } catch (error) {
+          // Silently fail in dev mode (API routes require vercel dev)
+          if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+            // Expected in vite dev mode, don't log
+            return;
+          }
+          console.error("[CLOUD] Auto-save sequence interrupted:", error);
         }
       };
 
@@ -166,18 +189,29 @@ export default function SmartMint() {
       };
 
       // Record deployment in DB
-      await fetch('/api/deploys', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contract_address: result.address,
-          owner_address: userAddress,
-          network: formData.network,
-          tx_hash: result.txHash,
-          token_name: sanitizeInput(formData.tokenName),
-          token_symbol: sanitizeInput(formData.tokenSymbol).toUpperCase()
-        })
-      });
+      try {
+        const deployRes = await fetch('/api/deploys', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contract_address: result.address,
+            owner_address: userAddress,
+            network: formData.network,
+            tx_hash: result.txHash,
+            token_name: sanitizeForStorage(formData.tokenName),
+            token_symbol: sanitizeForStorage(formData.tokenSymbol).toUpperCase()
+          })
+        });
+
+        if (!deployRes.ok && deployRes.status !== 404) {
+          console.warn("[PROTOCOL] Failed to record deployment in database");
+        }
+      } catch (error) {
+        // Don't block deployment if API is unavailable
+        if (error.name !== 'TypeError' || !error.message.includes('Failed to fetch')) {
+          console.warn("[PROTOCOL] Database sync error:", error);
+        }
+      }
 
       setForgeResult(result);
       fetchDeploys(); // Refresh history
@@ -342,7 +376,7 @@ export default function SmartMint() {
                         className="neo-input w-full min-h-[140px] resize-none"
                         placeholder="Describe the neural impact and utility of this asset..."
                         value={formData.description}
-                        onChange={e => setFormData({ ...formData, description: sanitizeInput(e.target.value) })}
+                        onChange={e => setFormData({ ...formData, description: e.target.value })}
                       />
                     </div>
 

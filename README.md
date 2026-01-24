@@ -45,10 +45,15 @@ Documentação detalhada: [PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)
 - **Interações**: Micro-animações fluidas.
 
 ## 🛠️ Stack Técnica
-- **Framework**: Next.js 14 / Nuxt 3 (dependendo do módulo)
+- **Build Tool**: Vite 7.3.1 (ultra-rápido HMR)
+- **Framework Principal**: React 18 + Vite
+- **Workspaces**:
+  - `src/`: React 18 (Dashboard Principal)
+  - `landing/`: React + Vite (Landing Page)
+  - `nuxt-app/`: Nuxt 3 + Vue (Mobile App)
 - **Estilo**: Tailwind CSS + Design Tokens Customizados
 - **Ícones**: Lucide React / Vue
-- **Web3**: Ethers.js v6 / Viem
+- **Web3**: Ethers.js v6 (Viem mencionado como opção futura)
 
 ## 📦 Funcionalidades
 - [x] **Fábrica Multichain**: Suporte integrado para Base, Polygon e outras redes EVM.
