@@ -1,17 +1,17 @@
-# NΞØ Smart Factory — Next Steps & Roadmap 🚀
+# NΞØ Smart Factory — Production Roadmap 🚀
 
 **Data:** 2026-01-24  
-**Status:** Ativo  
+**Status:** Production — Phase 1 Active  
 **Categoria:** Guia  
 **Audiência:** Desenvolvedores
 
-> **Current Status:** v0.5.3 (Infrastructure Ready | Demo & Intent Layer)
+> **Current Status:** v0.5.3 (Production Ready | Phase 1 Foundation)
 
 ---
 
 ## 📌 Contexto Atual
 
-Este repositório (`smart-ui`) está classificado como **Demo and Intent Layer** (ver `ADR 0002` em `docs/adr/0002-ui-as-demo-and-intent-layer.md`).
+Este repositório (`smart-ui`) segue uma estratégia de **lançamento por fases em produção**, onde cada fase é liberada após testes que comprovem estabilidade e segurança.
 
 **Status da Migração:**
 
@@ -20,98 +20,173 @@ Este repositório (`smart-ui`) está classificado como **Demo and Intent Layer**
 -  `smart-ui-landing` — Landing Page (repositório separado)
 -  `smart-ui-mobile` — Mobile App (repositório separado)
 
-**Limitações Arquiteturais:**
+**Estratégia de Lançamento:**
 
--  ⚠️ Operação em **simulation mode** (não executa transações reais)
+-  ✅ **Phase 1 (Atual):** Foundation Layer — Features básicas em produção
+-  🔒 **Phase 2 (Q1 2026):** Web3 Integration — Transações blockchain reais
+-  🔒 **Phase 3 (Q2 2026):** AI & Automation — Doctor AI e automações
 -  ⚠️ Estrutura arquitetural congelada (arquitetura NEØ)
--  ⚠️ Não pode adicionar lógica de protocolo (autoridade está no `smart-core`)
+-  ⚠️ Lógica de protocolo autoritativa permanece no `smart-core`
 
 ---
 
-## 🟢 Phase 1: UI/UX Enhancement (Permitido)
+## 🟢 Phase 1: Foundation Layer (PRODUCTION)
 
-*Focus: Melhorias de interface dentro das limitações arquiteturais.*
+**Status:** ✅ **LIVE** | Features disponíveis para uso real  
+**Previsão de conclusão:** Q1 2026
 
--  [ ] **Melhorias de UX**
--  Refinar fluxos de demonstração para melhor clareza
--  Adicionar mais rotulagem explícita de "simulation mode"
--  Melhorar feedback visual durante simulações
+### Features Liberadas (Production)
 
--  [ ] **Analytics & Tracking**
--  Expandir tracking de marketing (já implementado)
--  Adicionar métricas de engajamento na demo
+-  ✅ Dashboard básico e visualização de métricas
+-  ✅ Sistema de autenticação e sessões
+-  ✅ Analytics e tracking de marketing
+-  ✅ API routes para persistência de dados
+-  ✅ Database Neon configurado e operacional
+-  🔒 Transações blockchain reais (Phase 2)
+-  🔒 AI Integration (Phase 3)
+
+### Melhorias Contínuas (Phase 1.1)
+
+-  [ ] **Refinamentos de UX**
+-  Melhorar feedback visual e micro-interações
+-  Otimizar performance de carregamento
+-  Adicionar loading states mais informativos
+
+-  [ ] **Analytics Avançado**
+-  Expandir métricas de engajamento
+-  Dashboard de analytics para marketing
+-  Tracking de conversão aprimorado
 
 -  [ ] **Documentação Visual**
--  Criar guias visuais para novos desenvolvedores
--  Melhorar documentação de componentes UI
+-  Criar guias visuais para usuários
+-  Melhorar documentação de componentes
+-  Adicionar tooltips e help contextual
 
 ---
 
-## 🔵 Phase 2: Integration Readiness (Preparação)
+## 🔵 Phase 2: Web3 Integration (IN DEVELOPMENT)
 
-*Focus: Preparar estrutura para futuras integrações (quando ADR permitir).*
+**Status:** 🚧 **Em desenvolvimento** | Previsão: Q1 2026
+
+### Features que serão liberadas
+
+-  🚧 Wallet connection (Dynamic.xyz)
+-  🚧 Transações blockchain reais
+-  🚧 On-chain event listening
+-  🚧 Deploy de contratos via UI
+-  🔒 AI Doctor (Phase 3)
+
+### Preparação Técnica (Antes do lançamento)
 
 -  [ ] **Type Safety**
 -  Garantir tipos consistentes entre Database schema e Frontend
 -  Documentar interfaces de dados compartilhadas
+-  Validar tipos de contratos Solidity
 
 -  [ ] **API Routes Documentation**
--  Documentar todas as API routes de demo
+-  Documentar todas as API routes
 -  Criar exemplos de uso para cada endpoint
+-  Documentar fluxos de transação
 
 -  [ ] **Component Library**
 -  Documentar componentes reutilizáveis
--  Criar Storybook ou similar para visualização
+-  Criar Storybook para visualização
+-  Padronizar componentes Web3
+
+### Critérios de "Go Live" (Phase 1 → Phase 2)
+
+-  [ ] Todos os testes de segurança passaram
+-  [ ] Performance está dentro do SLA (< 2s response time)
+-  [ ] Documentação de usuário completa
+-  [ ] Rollback plan definido
+-  [ ] Monitoring e alertas configurados
+-  [ ] Testes de integração com smart-core concluídos
+-  [ ] Security audit de smart contracts
+-  [ ] Load testing de transações
+-  [ ] User acceptance testing
 
 ---
 
-## 🟣 Phase 3: Cross-Repo Coordination (Futuro)
+## 🟣 Phase 3: AI & Automation (PLANNED)
 
-*Focus: Coordenação com outros repositórios do ecossistema.*
+**Status:** 📋 **Planejado** | Previsão: Q2 2026
 
--  [ ] **Sincronização com `smart-core`**
--  Documentar como o UI reflete decisões do core
--  Criar guias de integração (quando permitido por ADR)
+### Features planejadas
 
--  [ ] **Coordenação com `smart-ui-landing` e `smart-ui-mobile`**
--  Alinhar padrões de design
--  Compartilhar componentes via npm packages (quando aplicável)
+-  📋 Doctor AI via Modal.com
+-  📋 Narrative generator automático
+-  📋 Predictive analytics
+-  📋 Automated contract validation
+
+### Dependências
+
+-  Conclusão da Phase 2 (Web3 Integration)
+-  Infraestrutura de AI definida e testada
+-  Integração com Modal.com validada
+
+### Critérios de "Go Live" (Phase 2 → Phase 3)
+
+-  [ ] Web3 integration estável por 30 dias
+-  [ ] Nenhum bug crítico reportado
+-  [ ] User satisfaction > 80% (NPS)
+-  [ ] Infraestrutura de AI testada
+-  [ ] Performance de AI dentro do SLA
 
 ---
 
-## 🟠 Phase 4: Protocol Integration (Requer ADR)
+## 📊 Comunicação com Usuário
 
-*Focus: Integração real com protocolo (requer decisão arquitetural).*
+### Feature Flags no Código
 
-> ⚠️ **Nota:** Estas fases requerem uma nova ADR para permitir mudanças arquiteturais.
+```typescript
+// src/config/features.ts
+export const FEATURES = {
+  phase1: {
+    dashboard: true,
+    analytics: true,
+    auth: true,
+    marketing: true,
+  },
+  phase2: {
+    web3: false, // Será true quando lançar Phase 2
+    realTransactions: false,
+    walletConnection: false,
+  },
+  phase3: {
+    aiDoctor: false,
+    narrativeGenerator: false,
+  },
+} as const;
+```
 
--  [ ] **Web3 Integration** (quando permitido)
--  Integração com Dynamic.xyz para wallet connection
--  Conexão com contratos reais do `forge-core`
--  Event listening on-chain
+### Banner de Status (UI)
 
--  [ ] **AI Integration** (quando permitido)
--  Doctor AI endpoint via Modal.com
--  Narrative generator automático
+O dashboard deve exibir claramente:
+
+-  ✅ **"Você está usando: Phase 1 (Foundation)"**
+-  Lista de features disponíveis agora
+-  🔜 **"Próximas features (Phase 2 - Q1 2026)"**
+-  Link para roadmap completo
 
 ---
 
 ## 🏁 Próximos Passos Imediatos
 
-**Prioridade:** Focar em **Phase 1** (UI/UX Enhancement).
+**Prioridade:** Finalizar **Phase 1** e preparar **Phase 2**.
 
-Como este é um **Demo and Intent Layer**, o foco deve estar em:
+### Foco Atual (Phase 1)
 
-1.  Melhorar a experiência de demonstração
-2.  Tornar os fluxos mais claros e educativos
-3.  Expandir analytics e tracking
-4.  Documentar melhor os componentes existentes
+1.  Refinamentos de UX e performance
+2.  Expandir analytics
+3.  Documentar componentes e APIs
+4.  Validar estabilidade para transição para Phase 2
 
-**Para integrações reais com Web3/Protocol:**
+### Preparação para Phase 2
 
 -  Consultar `smart-core` para autoridade de protocolo
 -  Criar nova ADR se mudanças arquiteturais forem necessárias
--  Seguir guidelines em `docs/adr/0002-ui-as-demo-and-intent-layer.md`
+-  Implementar feature flags para controle de liberação
+-  Preparar testes de segurança e performance
 
 ---
 
