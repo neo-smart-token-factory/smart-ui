@@ -24,6 +24,40 @@ const sanitizeInput = (val) => String(val).replace(/[<>]/g, '');
 // Sanitize for display/storage (with trim)
 const sanitizeForStorage = (val) => sanitizeInput(val).trim();
 
+// Marketing & Analytics Helpers
+const getOrCreateSessionId = () => {
+  if (typeof window === 'undefined') return null;
+  let sessionId = localStorage.getItem('neosmart_session_id');
+  if (!sessionId) {
+    sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    localStorage.setItem('neosmart_session_id', sessionId);
+  }
+  return sessionId;
+};
+
+const safeApiCall = async (url, options = {}) => {
+  try {
+    const res = await fetch(url, options);
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      return null; // API not available (vite dev mode)
+    }
+    if (res.ok) {
+      return await res.json();
+    }
+    return null;
+  } catch (error) {
+    if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+      return null; // Expected in vite dev
+    }
+    if (error.message && (error.message.includes('JSON') || error.message.includes('Unexpected token'))) {
+      return null; // Expected in vite dev
+    }
+    console.warn('[MARKETING] API call failed:', error);
+    return null;
+  }
+};
+
 export default function SmartMint() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -39,6 +73,8 @@ export default function SmartMint() {
   const [userAddress, setUserAddress] = useState(null);
   const [deployHistory, setDeployHistory] = useState([]);
   const [isDemoMode, setIsDemoMode] = useState(false);
+  const [leadId, setLeadId] = useState(null);
+  const [sessionId] = useState(() => getOrCreateSessionId());
 
   // Fetch History with retry logic
   const fetchDeploys = useCallback(async () => {
@@ -85,6 +121,87 @@ export default function SmartMint() {
     fetchDeploys();
   }, [fetchDeploys]);
 
+  // Marketing: Criar lead na primeira visita
+  useEffect(() => {
+    if (!sessionId) return;
+
+    const createLead = async () => {
+      // Extrair UTM parameters da URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const utmSource = urlParams.get('utm_source');
+      const utmMedium = urlParams.get('utm_medium');
+      const utmCampaign = urlParams.get('utm_campaign');
+
+      const lead = await safeApiCall('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          session_id: sessionId,
+          user_agent: navigator.userAgent,
+          referrer: document.referrer || null,
+          utm_source: utmSource || null,
+          utm_medium: utmMedium || null,
+          utm_campaign: utmCampaign || null,
+          conversion_status: 'visitor'
+        })
+      });
+
+      if (lead) {
+        setLeadId(lead.id);
+        // Registrar evento page_view
+        await safeApiCall('/api/events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            lead_id: lead.id,
+            session_id: sessionId,
+            event_type: 'page_view',
+            event_data: { page: '/' }
+          })
+        });
+      }
+    };
+
+    createLead();
+  }, [sessionId]);
+
+  // Marketing: Registrar evento quando usuário interage (step 2)
+  useEffect(() => {
+    if (step === 2 && leadId) {
+      // Atualizar lead para 'engaged'
+      safeApiCall('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          session_id: sessionId,
+          conversion_status: 'engaged'
+        })
+      });
+
+      // Registrar evento form_start
+      safeApiCall('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lead_id: leadId,
+          session_id: sessionId,
+          event_type: 'form_start'
+        })
+      });
+
+      // Criar sessão
+      safeApiCall('/api/sessions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lead_id: leadId,
+          session_id: sessionId,
+          step_reached: 1
+        })
+      });
+    }
+  }, [step, leadId, sessionId]);
+
   // Wallet Connection (Ready for Ethers.js)
   const connectWallet = async () => {
     setError(null);
@@ -93,14 +210,41 @@ export default function SmartMint() {
         setLoading(true);
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         if (accounts.length > 0) {
-          setUserAddress(accounts[0]);
+          const address = accounts[0];
+          setUserAddress(address);
           setIsDemoMode(false);
+
+          // Marketing: Atualizar lead com wallet_address
+          if (sessionId && leadId) {
+            await safeApiCall('/api/leads', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                session_id: sessionId,
+                wallet_address: address,
+                conversion_status: 'wallet_connected'
+              })
+            });
+
+            // Registrar evento wallet_connect
+            await safeApiCall('/api/events', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                lead_id: leadId,
+                session_id: sessionId,
+                event_type: 'wallet_connect',
+                event_data: { provider: 'metamask' }
+              })
+            });
+          }
         }
       } catch {
         setError("User alignment rejected connection.");
         // Fallback for demo if no provider
         console.warn("Wallet extension not detected, using sandbox mode.");
-        setUserAddress('0x' + Math.random().toString(16).slice(2, 42).padEnd(40, '0'));
+        const demoAddress = '0x' + Math.random().toString(16).slice(2, 42).padEnd(40, '0');
+        setUserAddress(demoAddress);
         setIsDemoMode(true);
       } finally {
         setLoading(false);
@@ -108,55 +252,94 @@ export default function SmartMint() {
     } else {
       // Demo fallback - No Web3 wallet detected
       console.warn("No Web3 wallet detected, entering simulation mode.");
-      setUserAddress('0x' + Math.random().toString(16).slice(2, 42).padEnd(40, '0'));
+      const demoAddress = '0x' + Math.random().toString(16).slice(2, 42).padEnd(40, '0');
+      setUserAddress(demoAddress);
       setIsDemoMode(true);
     }
   };
 
-  // Cloud State Sync (Drafts)
+  // Cloud State Sync (Drafts + Marketing Session)
   useEffect(() => {
-    if (userAddress && step === 2) {
-      const saveDraft = async () => {
-        try {
-          const res = await fetch('/api/drafts', {
+    if (step === 2) {
+      const saveData = async () => {
+        // Salvar draft (se tiver wallet)
+        if (userAddress) {
+          try {
+            const res = await fetch('/api/drafts', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                user_address: userAddress,
+                token_config: formData,
+                lead_id: leadId,
+                session_id: sessionId
+              })
+            });
+            
+            const contentType = res.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+              return;
+            }
+            
+            if (!res.ok && res.status !== 404) {
+              console.warn("[CLOUD] Auto-save failed:", res.status);
+            }
+          } catch (error) {
+            if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+              return;
+            }
+            if (error.message && (error.message.includes('JSON') || error.message.includes('Unexpected token'))) {
+              return;
+            }
+            console.error("[CLOUD] Auto-save sequence interrupted:", error);
+          }
+        }
+
+        // Atualizar sessão de marketing (com snapshot do form)
+        if (sessionId && leadId) {
+          // Calcular step baseado no que foi preenchido
+          let currentStep = 1;
+          if (formData.tokenName && formData.tokenSymbol) currentStep = 2;
+          if (formData.tokenSupply) currentStep = 3;
+          if (formData.description) currentStep = 4;
+
+          await safeApiCall('/api/sessions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              user_address: userAddress,
-              token_config: formData
+              lead_id: leadId,
+              session_id: sessionId,
+              step_reached: currentStep,
+              form_data_snapshot: formData,
+              conversion_funnel: {
+                step1_at: formData.tokenName ? new Date().toISOString() : null,
+                step2_at: formData.tokenSymbol ? new Date().toISOString() : null,
+                step3_at: formData.tokenSupply ? new Date().toISOString() : null,
+                step4_at: formData.description ? new Date().toISOString() : null
+              }
             })
           });
-          
-          // Check if response is actually JSON (not source code)
-          const contentType = res.headers.get('content-type');
-          if (!contentType || !contentType.includes('application/json')) {
-            // Response is not JSON (likely source code in vite dev mode)
-            return; // Silently fail - expected in vite dev
+
+          // Registrar eventos de progresso
+          if (currentStep >= 2) {
+            await safeApiCall('/api/events', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                lead_id: leadId,
+                session_id: sessionId,
+                event_type: `form_step_${currentStep}`,
+                event_data: { step: currentStep, fields_filled: Object.keys(formData).filter(k => formData[k]) }
+              })
+            });
           }
-          
-          if (!res.ok && res.status !== 404) {
-            // Only log if it's a real error (not just API unavailable)
-            console.warn("[CLOUD] Auto-save failed:", res.status);
-          }
-        } catch (error) {
-          // Silently fail in dev mode (API routes require vercel dev)
-          if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-            // Expected in vite dev mode, don't log
-            return;
-          }
-          // Check for JSON parse errors (source code instead of JSON)
-          if (error.message && (error.message.includes('JSON') || error.message.includes('Unexpected token'))) {
-            // Expected in vite dev mode, don't log
-            return;
-          }
-          console.error("[CLOUD] Auto-save sequence interrupted:", error);
         }
       };
 
-      const timeoutId = setTimeout(saveDraft, 2000); // 2s debounce for performance
+      const timeoutId = setTimeout(saveData, 2000); // 2s debounce for performance
       return () => clearTimeout(timeoutId);
     }
-  }, [formData, userAddress, step]);
+  }, [formData, userAddress, step, sessionId, leadId]);
 
   // Load Cloud State
   useEffect(() => {
@@ -200,6 +383,37 @@ export default function SmartMint() {
       loadDraft();
     }
   }, [userAddress]);
+
+  // Marketing: Detectar abandono (beforeunload)
+  useEffect(() => {
+    if (!sessionId || !leadId || step !== 2) return;
+
+    const handleBeforeUnload = () => {
+      // Usar sendBeacon para garantir que o request seja enviado mesmo ao fechar
+      if (navigator.sendBeacon) {
+        const data = JSON.stringify({
+          session_id: sessionId,
+          abandoned_at: new Date().toISOString(),
+          step_reached: formData.tokenName ? 2 : 1
+        });
+        navigator.sendBeacon('/api/sessions', new Blob([data], { type: 'application/json' }));
+      }
+
+      // Registrar evento de abandono
+      if (navigator.sendBeacon) {
+        const eventData = JSON.stringify({
+          lead_id: leadId,
+          session_id: sessionId,
+          event_type: 'form_abandon',
+          event_data: { step_reached: formData.tokenName ? 2 : 1 }
+        });
+        navigator.sendBeacon('/api/events', new Blob([eventData], { type: 'application/json' }));
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [sessionId, leadId, step, formData]);
 
   const [forgeResult, setForgeResult] = useState(null);
 
@@ -254,7 +468,9 @@ export default function SmartMint() {
             network: formData.network,
             tx_hash: result.txHash,
             token_name: sanitizeForStorage(formData.tokenName),
-            token_symbol: sanitizeForStorage(formData.tokenSymbol).toUpperCase()
+            token_symbol: sanitizeForStorage(formData.tokenSymbol).toUpperCase(),
+            lead_id: leadId,
+            session_id: sessionId
           })
         });
 
@@ -281,6 +497,46 @@ export default function SmartMint() {
           return;
         }
         console.warn("[PROTOCOL] Database sync error:", error);
+      }
+
+      // Marketing: Atualizar lead e sessão para 'token_created'
+      if (sessionId && leadId) {
+        // Atualizar lead
+        await safeApiCall('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            session_id: sessionId,
+            conversion_status: 'token_created'
+          })
+        });
+
+        // Marcar sessão como completada
+        await safeApiCall('/api/sessions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            session_id: sessionId,
+            completed_at: new Date().toISOString(),
+            step_reached: 4
+          })
+        });
+
+        // Registrar evento token_created
+        await safeApiCall('/api/events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            lead_id: leadId,
+            session_id: sessionId,
+            event_type: 'token_created',
+            event_data: {
+              contract_address: result.address,
+              network: formData.network,
+              tx_hash: result.txHash
+            }
+          })
+        });
       }
 
       setForgeResult(result);
@@ -369,7 +625,25 @@ export default function SmartMint() {
                   The most efficient Smart Contract Factory. Compile and deploy stable, liquid protocols in seconds with zero upfront fees.
                 </p>
                 <div className="pt-8">
-                  <button onClick={() => setStep(2)} className="btn-primary flex items-center gap-3 mx-auto text-lg px-12 relative z-10 group">
+                  <button 
+                    onClick={() => {
+                      setStep(2);
+                      // Marketing: Registrar evento de clique no CTA
+                      if (leadId && sessionId) {
+                        safeApiCall('/api/events', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            lead_id: leadId,
+                            session_id: sessionId,
+                            event_type: 'cta_click',
+                            event_data: { cta: 'Open Smart Mint' }
+                          })
+                        });
+                      }
+                    }} 
+                    className="btn-primary flex items-center gap-3 mx-auto text-lg px-12 relative z-10 group"
+                  >
                     Open Smart Mint <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>

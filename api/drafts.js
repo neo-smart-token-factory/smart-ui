@@ -28,15 +28,19 @@ export default async function handler(req, res) {
 
     // POST: Save draft
     if (req.method === 'POST') {
-        const { user_address, token_config } = req.body;
+        const { user_address, token_config, lead_id, session_id } = req.body;
 
         try {
-            // Upsert logic for PostgreSQL
+            // Upsert logic for PostgreSQL (com suporte a lead_id e session_id)
             await sql`
-        INSERT INTO drafts (user_address, token_config, updated_at)
-        VALUES (${user_address}, ${token_config}, NOW())
+        INSERT INTO drafts (user_address, token_config, lead_id, session_id, updated_at)
+        VALUES (${user_address}, ${token_config ? JSON.stringify(token_config) : null}::jsonb, ${lead_id ? parseInt(lead_id) : null}, ${session_id || null}, NOW())
         ON CONFLICT (user_address) 
-        DO UPDATE SET token_config = ${token_config}, updated_at = NOW()
+        DO UPDATE SET 
+          token_config = ${token_config ? JSON.stringify(token_config) : null}::jsonb, 
+          lead_id = COALESCE(${lead_id ? parseInt(lead_id) : null}, drafts.lead_id),
+          session_id = COALESCE(${session_id || null}, drafts.session_id),
+          updated_at = NOW()
       `;
 
             return res.status(200).json({ success: true });

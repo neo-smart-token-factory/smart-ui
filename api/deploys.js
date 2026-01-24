@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
     // POST: Record new deploy
     if (req.method === 'POST') {
-        const { contract_address, owner_address, network, tx_hash, token_name, token_symbol } = req.body;
+        const { contract_address, owner_address, network, tx_hash, token_name, token_symbol, lead_id, session_id } = req.body;
 
         try {
             if (!contract_address || !owner_address) {
@@ -31,8 +31,8 @@ export default async function handler(req, res) {
             }
 
             await sql`
-        INSERT INTO deploys (contract_address, owner_address, network, tx_hash, token_name, token_symbol)
-        VALUES (${contract_address}, ${owner_address}, ${network}, ${tx_hash}, ${token_name}, ${token_symbol})
+        INSERT INTO deploys (contract_address, owner_address, network, tx_hash, token_name, token_symbol, lead_id, session_id)
+        VALUES (${contract_address}, ${owner_address}, ${network}, ${tx_hash}, ${token_name}, ${token_symbol}, ${lead_id ? parseInt(lead_id) : null}, ${session_id || null})
       `;
 
             return res.status(201).json({ success: true });
