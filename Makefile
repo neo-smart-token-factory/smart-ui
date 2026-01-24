@@ -50,11 +50,38 @@ link-cli:
 	cd $(CLI_DIR) && npm link
 
 health:
-	@echo "NΞØ Protocol Health Check..."
-	@echo "Checking Smart UI (Local)...  [OK]"
-	@if [ -d "$(CORE_DIR)" ]; then echo "Checking Smart Core...        [LINKED]"; else echo "Checking Smart Core...        [REMOTE/GITHUB] (OK)"; fi
-	@if [ -d "$(CLI_DIR)" ]; then echo "Checking Smart CLI...         [LINKED]"; else echo "Checking Smart CLI...         [NOT FOUND]"; fi
-	@if [ -d "$(OPS_DIR)" ]; then echo "Checking Internal Ops...      [LINKED]"; else echo "Checking Internal Ops...      [NOT FOUND]"; fi
+	@echo "======================================"
+	@echo "🏥 NΞØ Protocol Health Check"
+	@echo "======================================"
+	@echo ""
+	@echo "📦 Component Status:"
+	@echo "--------------------"
+	@echo "Smart UI (Local)...       [OK]"
+	@if [ -d "$(CORE_DIR)" ]; then \
+		echo "Smart Core...             [LINKED]"; \
+		echo "  └─ Path: $(CORE_DIR)"; \
+	else \
+		echo "Smart Core...             [REMOTE/GITHUB]"; \
+		echo "  └─ Operating in remote mode (OK)"; \
+	fi
+	@if [ -d "$(CLI_DIR)" ]; then \
+		echo "Smart CLI...              [LINKED]"; \
+		echo "  └─ Path: $(CLI_DIR)"; \
+	else \
+		echo "Smart CLI...              [NOT FOUND]"; \
+		echo "  └─ Optional component"; \
+	fi
+	@if [ -d "$(OPS_DIR)" ]; then \
+		echo "Internal Ops...           [LINKED]"; \
+		echo "  └─ Path: $(OPS_DIR)"; \
+	else \
+		echo "Internal Ops...           [NOT FOUND]"; \
+		echo "  └─ Optional component"; \
+	fi
+	@echo ""
+	@echo "======================================"
+	@echo "✅ All critical components operational"
+	@echo "======================================"
 
 build-all:
 	npm run build

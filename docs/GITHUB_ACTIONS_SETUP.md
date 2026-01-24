@@ -1,12 +1,67 @@
 # Configuração do GitHub Actions — NΞØ Smart Mint Protocol
 
-O workflow de **Health Check** funciona sem configuração adicional, mas para habilitar a verificação completa do ecossistema (incluindo o repositório `neo-smart-factory`), você pode opcionalmente configurar um token de acesso.
+Este documento descreve a configuração dos workflows de GitHub Actions para o repositório Smart UI, incluindo o **Docs Guard** e o **NΞØ Protocol Health Check**.
 
-## 1. Gerar o Personal Access Token (PAT) (Opcional)
+## Workflow: Docs Guard
+
+O workflow **Docs Guard** garante que todas as alterações de código sejam acompanhadas de atualizações na documentação.
+
+### Como Funciona
+
+1. **Análise de Arquivos**: O workflow analisa todos os arquivos modificados no PR
+2. **Categorização**: Separa os arquivos em duas categorias:
+   - Arquivos de código/configuração
+   - Arquivos de documentação (*.md e docs/*)
+3. **Verificação**: Se houver mudanças no código sem mudanças na documentação, o workflow falha
+4. **Sugestões Inteligentes**: Fornece sugestões específicas sobre quais arquivos de documentação devem ser atualizados
+
+### Logs Detalhados
+
+O Docs Guard agora fornece logs detalhados incluindo:
+- Lista completa de arquivos alterados categorizados
+- Contagem de arquivos de código vs. documentação
+- Sugestões específicas baseadas nos tipos de arquivos alterados
+- Orientações sobre o que incluir na documentação
+
+### Exemplos de Sugestões
+
+- Mudanças em `.github/workflows/*` → Atualizar `docs/GITHUB_ACTIONS_SETUP.md`
+- Mudanças em `src/*`, `components/*`, `pages/*` → Atualizar `README.md` ou `docs/PROJECT_OVERVIEW.md`
+- Mudanças em `api/*` → Atualizar `docs/PROJECT_OVERVIEW.md`
+- Mudanças em `scripts/*` ou `Makefile` → Atualizar `README.md`
+- Mudanças em `package.json` ou arquivos de configuração → Atualizar `README.md`
+
+## Workflow: NΞØ Protocol Health Check
+
+O workflow de **Health Check** verifica a integridade do ecossistema NΞØ Smart Factory.
+
+### Como Funciona
+
+O workflow executa automaticamente em:
+- Pushes para as branches `main` ou `master`
+- Pull Requests para as branches `main` ou `master`
+
+### Passos de Verificação
+
+1. **Checkout dos Repositórios**: Faz checkout do Smart UI e opcionalmente do neo-smart-factory
+2. **Instalação de Dependências**: Instala as dependências do projeto
+3. **Health Check**: Executa `make health` para verificar o status de todos os componentes
+
+### Logs Detalhados
+
+O Health Check agora fornece logs formatados incluindo:
+- Status de cada componente do ecossistema
+- Paths dos componentes vinculados localmente
+- Indicação clara de componentes opcionais vs. críticos
+- Confirmação visual do status operacional
+
+### Configuração Opcional
+
+O workflow funciona sem configuração adicional, mas para habilitar a verificação completa do ecossistema (incluindo o repositório `neo-smart-factory`), você pode opcionalmente configurar um token de acesso.
+
+### 1. Gerar o Personal Access Token (PAT) (Opcional)
 
 Este token permite que o GitHub Actions do `smart-ui` "enxergue" o repositório `neo-smart-factory` para verificações completas do ecossistema. **Se não configurado, o workflow ainda funcionará, mas sem acesso ao repositório neo-smart-factory.**
-
-1. Acesse seu GitHub e vá em: **Settings** (do perfil) > **Developer settings** > **Personal access tokens** > **Tokens (classic)**.
 2. Clique em **Generate new token (classic)**.
 3. **Note**: Nomeie como `NEO_ECOSYSTEM_ACTION_TOKEN`.
 4. **Expiration**: Escolha uma data de expiração ou "No expiration" (conforme sua política de segurança).
