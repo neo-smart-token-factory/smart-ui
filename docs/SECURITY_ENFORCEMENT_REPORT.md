@@ -102,7 +102,7 @@ The following files contain references to private repositories in **policy/docum
 - `docs/adr/0001-smart-ui-backend-boundary.md` — Historical ADR (internal doc)
 - `docs/adr/0002-ui-as-demo-and-intent-layer.md` — Historical ADR (internal doc)
 - `docs/GITHUB_ACTIONS_SETUP.md` — Internal setup guide
-- `docs/ui-status.md` — Internal status document
+- `docs/adr/0002-ui-as-demo-and-intent-layer.md` — Definição do Smart UI como Demo Layer
 
 **These are acceptable** because:
 1. They are internal documentation
@@ -148,12 +148,14 @@ The following files contain references to private repositories in **policy/docum
 - [ ] Await further instructions (STOP CONDITION)
 
 ### Ongoing
+
 - Monitor for new violations
 - Review all public-facing content
 - Enforce policy in code reviews
 - Update policy as needed with governance approval
 
 ### Follow-up
+
 - [AUDITORIA_VISIBILIDADE_ORGANIZACAO.md](./archive/AUDITORIA_VISIBILIDADE_ORGANIZACAO.md) (2026-01-24): auditoria de visibilidade, violações (ecosystem-graph, Makefile), exceções formalizadas e sugestões de remediação.
 
 ---
@@ -163,6 +165,7 @@ The following files contain references to private repositories in **policy/docum
 **Security and governance take priority over convenience.**
 
 This policy is **NON-NEGOTIABLE** and will be enforced in:
+
 - All pull requests
 - All public documentation
 - All UI components

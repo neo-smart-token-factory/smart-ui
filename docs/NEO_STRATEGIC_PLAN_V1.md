@@ -49,10 +49,15 @@ O Protocolo NΞØ não é apenas um código; é um diferencial de mercado que un
 
 ## 📐 Blueprint de Arquitetura (O Plano de Voo)
 
-### **Fase 1: O Nexus de Dados (Monorepo Interno)**
-Transformar o repositório `smart-ui` em um **npm workspace**.
-- **Objetivo:** Compartilhar ABIs, Hooks (Wagmi/Viem) e constantes entre os 3 frontends.
-- **Vantagem:** Evita o erro de dependência relativa (`../`) na Vercel.
+### **Fase 1: O Nexus de Dados (Multi-Repos)**
+> **⚠️ Atualizado:** Após migração para multi-repos (2026-01-24), esta fase foi concluída.
+
+Os frontends estão agora em repositórios separados:
+- `smart-ui` (Dashboard)
+- `smart-ui-landing` (Landing Page)
+- `smart-ui-mobile` (Mobile App)
+
+**Próximos passos:** Compartilhar ABIs e constantes via npm packages quando necessário.
 
 ### **Fase 2: O Cérebro na Cloud (Modal.com)**
 Deploy imediato de uma API de IA na Modal.
@@ -66,7 +71,7 @@ Implementar a taxa de 5% (500 bps) diretamente no contrato da Factory.
 
 ## 📋 TODO List Imediata (Checklist de Madrugada)
 
-1.  **[x] Workspace Setup:** Workspace "smart-ui" funcional (Dashboard, Landing e Mobile App integrados no monorepo).
+1.  **[x] Multi-Repos Setup:** Migração concluída (2026-01-24). Dashboard, Landing e Mobile App em repositórios separados.
 2.  **[ ] Shared Logic:** Mover ABIs e constantes para `/packages/shared`.
 3.  **[x] Modal Bridge:** Script Python configurado e testado (`get_started.py`).
 4.  **[x] Sentry Connect:** DSN configurada no .env e integration pronta no Dashboard.

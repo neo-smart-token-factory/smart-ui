@@ -133,7 +133,7 @@ Descrição dos múltiplos frontends do projeto:
 
 ---
 
-#### [ui-status.md](./ui-status.md)
+#### [ADR 0002 — UI as Demo and Intent Layer](./adr/0002-ui-as-demo-and-intent-layer.md)
 **Status da UI**
 
 Estado atual da interface de usuário, features implementadas e pendentes.
@@ -143,7 +143,7 @@ Estado atual da interface de usuário, features implementadas e pendentes.
 
 ---
 
-#### [ui-diagnostic-checklist.md](./ui-diagnostic-checklist.md)
+#### [ui-diagnostic-checklist.md](./archive/ui-diagnostic-checklist.md) (Arquivado)
 **Checklist de Diagnóstico da UI**
 
 Lista de verificação para diagnóstico e validação da interface.
@@ -217,8 +217,8 @@ Guia para configurar CI/CD com GitHub Actions.
 ### Documentos Vivos
 Alguns documentos são atualizados frequentemente:
 - `NEXT_STEPS.md`
-- `ui-status.md`
-- `ui-diagnostic-checklist.md`
+- `adr/0002-ui-as-demo-and-intent-layer.md` (substitui ui-status.md)
+- `archive/ui-diagnostic-checklist.md` (arquivado - desatualizado após migração multi-repos)
 
 ### Documentos Estáveis
 Outros documentos são mais estáveis e requerem revisão formal:

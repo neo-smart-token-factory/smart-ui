@@ -39,6 +39,7 @@ The Smart UI has **no authority** over:
 - lifecycle enforcement
 
 All protocol authority lives in:
+
 - `smart-core`
 - `smart-cli`
 - `docs`
@@ -71,6 +72,7 @@ These components:
 The Smart UI is currently **frozen**.
 
 Allowed changes:
+
 - critical build fixes
 - dependency security patches
 - explicit demo labeling

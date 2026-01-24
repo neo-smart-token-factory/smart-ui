@@ -37,8 +37,8 @@
 - `MARKETING_SCHEMA_EXPLANATION.md` - Documentação técnica, mantém
 
 #### Status e Diagnóstico
-- `ui-status.md` - Referenciado no README, mantém
-- `ui-diagnostic-checklist.md` - Checklist ativo, mantém
+- `adr/0002-ui-as-demo-and-intent-layer.md` - ADR que define o status do UI (substitui ui-status.md)
+- `ui-diagnostic-checklist.md` - Arquivado (desatualizado após migração multi-repos)
 - `SIMULATION_MODE.md` - Documentação técnica, mantém
 
 #### Visão Geral

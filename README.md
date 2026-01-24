@@ -7,8 +7,7 @@
 Este repositório está **intencionalmente congelado** em termos de **estrutura e arquitetura**.
 
 O Smart UI é classificado como **Demo and Intent Layer**, conforme definido em:
-• `docs/ui-status.md`
-• `ADR 0002 — Smart UI as Demo and Intent Layer`
+• `ADR 0002 — Smart UI as Demo and Intent Layer` (ver `docs/adr/0002-ui-as-demo-and-intent-layer.md`)
 ```
 ----------------------------------------------------------------
  O QUE ISSO SIGNIFICA

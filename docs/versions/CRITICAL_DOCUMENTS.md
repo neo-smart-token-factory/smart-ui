@@ -24,7 +24,7 @@ Este documento rastreia versões de documentos críticos do projeto.
 
 | Documento | Versão | Data | Status | Mudanças Principais |
 |-----------|--------|------|--------|---------------------|
-| [ui-status.md](../ui-status.md) | 1.0.0 | 2026-01-24 | ✅ Ativo | Status oficial do Smart UI |
+| [ADR 0002](../adr/0002-ui-as-demo-and-intent-layer.md) | 1.0.0 | 2026-01-21 | ✅ Aceito | UI as Demo and Intent Layer |
 | [ARCHITECTURAL_ADDENDUMS.md](../ARCHITECTURAL_ADDENDUMS.md) | 1.0.0 | 2026-01-24 | ✅ Ativo | Adendos arquiteturais fundamentais |
 | [REPOSITORY_VISIBILITY_POLICY.md](../REPOSITORY_VISIBILITY_POLICY.md) | 1.0.0 | 2026-01-22 | ✅ Ativo | Política de visibilidade de repositórios |
 | [NEO_STRATEGIC_PLAN_V1.md](../NEO_STRATEGIC_PLAN_V1.md) | 1.0.0 | 2026-01-24 | ✅ Ativo | Plano estratégico de arquitetura |

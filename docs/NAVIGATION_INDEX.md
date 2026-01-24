@@ -16,7 +16,7 @@ Este índice organiza toda a documentação do projeto de forma visual e navegá
 | [README.md](./README.md) | Visão geral do projeto | Todos |
 | [PROJECT_OVERVIEW.md](./PROJECT_OVERVIEW.md) | Visão técnica e estratégica | Desenvolvedores |
 | [FRONTEND_MAP.md](./FRONTEND_MAP.md) | Mapa dos 3 frontends | Desenvolvedores |
-| [ui-status.md](./ui-status.md) | Status oficial do Smart UI | Todos |
+| [ADR 0002](./adr/0002-ui-as-demo-and-intent-layer.md) | UI as Demo and Intent Layer | Todos |
 
 ---
 
@@ -73,7 +73,6 @@ Este índice organiza toda a documentação do projeto de forma visual e navegá
 |-----------|-----------|-----------|
 | [FRONTEND_MAP.md](./FRONTEND_MAP.md) | Mapa dos 3 frontends | Desenvolvedores |
 | [SIMULATION_MODE.md](./SIMULATION_MODE.md) | Documentação do simulation mode | Desenvolvedores |
-| [ui-diagnostic-checklist.md](./ui-diagnostic-checklist.md) | Checklist de diagnóstico | Desenvolvedores |
 
 ### API e Backend
 
@@ -169,7 +168,7 @@ Ver [`archive/README.md`](./archive/README.md) para índice completo.
 1. Visão geral: [ARCHITECTURAL_ADDENDUMS.md](./ARCHITECTURAL_ADDENDUMS.md)
 2. ADRs: [`adr/`](./adr/) (4 decisões arquiteturais)
 3. Estratégia: [NEO_STRATEGIC_PLAN_V1.md](./NEO_STRATEGIC_PLAN_V1.md)
-4. Status: [ui-status.md](./ui-status.md)
+4. Status: [ADR 0002](./adr/0002-ui-as-demo-and-intent-layer.md)
 
 ### 📊 Gestão/Stakeholders
 

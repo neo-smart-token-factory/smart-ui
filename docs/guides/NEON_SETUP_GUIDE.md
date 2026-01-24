@@ -11,12 +11,12 @@ Guia passo a passo para configurar Neon e executar migrations.
 
 ## 📋 Checklist Rápido
 
-- [ ] Criar conta/projeto no Neon
-- [ ] Copiar `DATABASE_URL`
-- [ ] Criar `.env` local com `DATABASE_URL`
-- [ ] Executar migrations (`make migratedb`)
-- [ ] Verificar tabelas criadas
-- [ ] Configurar `DATABASE_URL` no Vercel (se ainda não fez)
+- [x] Criar conta/projeto no Neon
+- [x] Copiar `DATABASE_URL`
+- [x] Criar `.env` local com `DATABASE_URL`
+- [x] Executar migrations (`make migratedb`)
+- [x] Verificar tabelas criadas
+- [x] Configurar `DATABASE_URL` no Vercel (se ainda não fez)
 
 ---
 

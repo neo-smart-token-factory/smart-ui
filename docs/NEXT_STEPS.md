@@ -11,7 +11,7 @@
 
 ## 📌 Contexto Atual
 
-Este repositório (`smart-ui`) está classificado como **Demo and Intent Layer** (ver `docs/ui-status.md` e `ADR 0002`). 
+Este repositório (`smart-ui`) está classificado como **Demo and Intent Layer** (ver `ADR 0002` em `docs/adr/0002-ui-as-demo-and-intent-layer.md`). 
 
 **Status da Migração:**
 - ✅ **Multi-repo migration concluída** (2026-01-24)
@@ -91,13 +91,13 @@ Como este é um **Demo and Intent Layer**, o foco deve estar em:
 **Para integrações reais com Web3/Protocol:**
 - Consultar `smart-core` para autoridade de protocolo
 - Criar nova ADR se mudanças arquiteturais forem necessárias
-- Seguir guidelines em `docs/ui-status.md`
+- Seguir guidelines em `docs/adr/0002-ui-as-demo-and-intent-layer.md`
 
 ---
 
 ## 📚 Referências
 
-- `docs/ui-status.md` — Status oficial do Smart UI
+- `docs/adr/0002-ui-as-demo-and-intent-layer.md` — Definição do Smart UI como Demo Layer
 - `docs/adr/0002-ui-as-demo-and-intent-layer.md` — ADR que define o papel do UI
 - `docs/FRONTEND_MAP.md` — Mapa dos frontends do ecossistema
 - `docs/archive/MIGRATION_TO_MULTI_REPOS.md` — Histórico da migração

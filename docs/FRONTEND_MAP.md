@@ -1,67 +1,66 @@
-# NΞØ Smart UI — Mapa de Navegação (3-Frontends)
+# NΞØ Smart UI — Mapa de Navegação
 
 **Data:** 2026-01-24  
 **Status:** Ativo  
 **Categoria:** Guia  
 **Audiência:** Desenvolvedores
 
-Este documento serve como guia operacional para desenvolvedores que acessam o ecossistema `smart-ui` pela primeira vez.
+> **⚠️ Atualizado:** Este documento reflete a estrutura atual após a migração para multi-repos (2026-01-24).
+
+Este documento serve como guia operacional para desenvolvedores que acessam o repositório `smart-ui` (Dashboard).
 
 ---
 
 ## 🗺️ Arquitetura de Front-End
 
-Atualmente, o projeto utiliza uma estratégia de **Desacoplamento por Contexto**, dividida em três frentes:
+Após a migração para multi-repos, o ecossistema NΞØ Smart Factory está dividido em **3 repositórios independentes**:
 
-### 1. Main Dashboard (Nexus)
-- **Local:** `/` (Raiz do repositório)
-- **Stack:** Next.js 14 (App Router)
-- **Uso:** Cockpit interno e visualização da saúde do protocolo. É onde o "Doctor CLI" reporta seus dados.
+### 1. smart-ui (Dashboard) — Este Repositório
+- **Repositório:** [neo-smart-token-factory/smart-ui](https://github.com/neo-smart-token-factory/smart-ui)
+- **Stack:** React + Vite + Tailwind CSS
+- **Uso:** Dashboard interno e visualização da saúde do protocolo. Interface de demonstração (Demo & Intent Layer).
 - **Comando:** `npm run dev` (Porta 3000)
+- **Deploy:** Vercel (smart-ui-dashboard)
 
-### 2. User App (Forge PWA)
-- **Local:** `/nuxt-app`
-- **Stack:** Nuxt 3 + Pinia
-- **Uso:** Interface de criação de tokens para o usuário final. Focada em ser instalável (PWA) e rápida no mobile/Telegram.
-- **Comando:** `cd nuxt-app && npm run dev` (Porta 3001)
-
-### 3. Public Landing Page
-- **Local:** `/landing`
+### 2. smart-ui-landing (Landing Page)
+- **Repositório:** [neo-smart-token-factory/smart-ui-landing](https://github.com/neo-smart-token-factory/smart-ui-landing)
 - **Stack:** React + Vite
-- **Uso:** Marketing, captura de leads e narrativa do protocolo. Otimizada para SEO e carregamento instantâneo.
-- **Comando:** `cd landing && npm run dev` (Porta 3002)
+- **Uso:** Marketing, captura de leads e narrativa do protocolo. Otimizada para SEO.
+- **Status:** Repositório separado
+
+### 3. smart-ui-mobile (Mobile App)
+- **Repositório:** [neo-smart-token-factory/smart-ui-mobile](https://github.com/neo-smart-token-factory/smart-ui-mobile)
+- **Stack:** Vue 3 + Nuxt 3
+- **Uso:** Interface de criação de tokens para o usuário final. Focada em PWA e mobile/Telegram.
+- **Status:** Repositório separado
 
 ---
 
-## 🧐 É inteligente trabalhar com 3 Frontends?
+## 📋 Estrutura Atual do smart-ui
 
-**A resposta curta: Sim, se o objetivo for experimentação e resiliência; Não, se você busca baixo custo de manutenção.**
+Este repositório (`smart-ui`) contém apenas o **Dashboard**:
 
-### ✅ Vantagens (Por que fazemos isso agora):
-1.  **Tecnologia sob Medida:** Usamos Vite para a Landing (foco em performance), Nuxt para o App (estabilidade PWA) e Next para o Dashboard (complexidade de visualização de dados).
-2.  **Isolamento de Erro:** Se a Landing Page cair ou sofrer um ataque, a interface de criação de tokens (App) continua operacional.
-3.  **Velocidade de Teste:** Podemos mudar toda a estética da Landing Page sem precisar testar novamente as regras de negócio complexas do App.
-
-### ❌ Desafios (O que precisamos mitigar):
-1.  **Duplicação de Estilo:** Atualmente, os tokens de design (cores, fontes) precisam ser sincronizados manualmente entre as pastas.
-2.  **Overhead de Dependências:** Três `node_modules` diferentes consomem mais espaço e tempo de build.
-
-### 🎯 Estratégia NΞØ:
-Manteremos os três separados enquanto o protocolo amadurece (Fase Experimental). Assim que o design e as regras de negócio estabilizarem, a tendência natural será unificá-los ou mover para um **Monorepo (Turbo/NX)** para compartilhar componentes core.
-
----
-
-## 🛠️ Guia de Inicialização Rápida
-
-Para trabalhar em todo o ecossistema simultaneamente, utilize o Makefile:
-
-```bash
-# Terminal 1: Inicia tudo (Dashboard, Landing e Nuxt via concurrently ou múltiplos terminais)
-make dev-all (Em desenvolvimento) 
-
-# Ou manualmente:
-npm run dev & cd landing && npm run dev & cd nuxt-app && npm run dev
+```
+smart-ui/
+├── src/              # Código do Dashboard
+├── api/              # Vercel Serverless Functions
+├── migrations/       # Database schema
+├── docs/             # Documentação
+└── ...
 ```
 
+**Não contém mais:**
+- ❌ `/landing` (movido para `smart-ui-landing`)
+- ❌ `/nuxt-app` (movido para `smart-ui-mobile`)
+
 ---
+
+## 🔗 Referências
+
+- [Migração para Multi-Repos](./archive/MIGRATION_TO_MULTI_REPOS.md) — Histórico da migração
+- [README Principal](../README.md) — Visão geral do projeto
+- [ADR 0002](./adr/0002-ui-as-demo-and-intent-layer.md) — Definição do Smart UI como Demo Layer
+
+---
+
 *NΞØ Protocol — Operações Cirúrgicas Web3*
