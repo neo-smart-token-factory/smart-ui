@@ -1,60 +1,107 @@
 # NΞØ Smart Factory — Next Steps & Roadmap 🚀
 
-**Data:** 2026-01-22  
+**Data:** 2026-01-24  
 **Status:** Ativo  
 **Categoria:** Guia  
 **Audiência:** Desenvolvedores
 
-> **Current Status:** v0.5.3 (Infrastructure Ready)
-
-The infrastructure is solid. The frontends are alive. The database is secure.
-Now, we must breathe life into the machine.
+> **Current Status:** v0.5.3 (Infrastructure Ready | Demo & Intent Layer)
 
 ---
 
-## 🟢 Phase 1: Web3 Integration (The Spark)
-*Focus: Removing simulations and enabling real blockchain interactions.*
+## 📌 Contexto Atual
 
-- [ ] **Dynamic.xyz Integration**:
-    - Replace the "Demo Fallback" in `connectWallet` with the real Dynamic SDK.
-    - Enable Social Login + Wallet connection.
-- [ ] **Smart Contract Connection**:
-    - Import real ABIs from `forge-core`.
-    - Replace `setTimeout` simulation in `handleForge` with `wagmi` / `viem` contract writes.
-- [ ] **On-Chain Event Listening**:
-    - Listen for `TokenCreated` events instead of relying on API simulation response.
+Este repositório (`smart-ui`) está classificado como **Demo and Intent Layer** (ver `docs/ui-status.md` e `ADR 0002`). 
 
-## 🔵 Phase 2: Architecture & Code Sharing
-*Focus: Professionalizing the Monorepo structure.*
+**Status da Migração:**
+- ✅ **Multi-repo migration concluída** (2026-01-24)
+  - `smart-ui` (Dashboard) — Repositório atual
+  - `smart-ui-landing` — Landing Page (repositório separado)
+  - `smart-ui-mobile` — Mobile App (repositório separado)
 
-- [ ] **Shared Workspace (`/packages/shared`)**:
-    - Create a shared package for ABIs, Constants, and Types.
-    - Consolidate logic to be used by both `smart-ui` (Dashboard) and `nuxt-app` (Mobile).
+**Limitações Arquiteturais:**
+- ⚠️ Operação em **simulation mode** (não executa transações reais)
+- ⚠️ Estrutura arquitetural congelada (arquitetura NEØ)
+- ⚠️ Não pode adicionar lógica de protocolo (autoridade está no `smart-core`)
+
+---
+
+## 🟢 Phase 1: UI/UX Enhancement (Permitido)
+*Focus: Melhorias de interface dentro das limitações arquiteturais.*
+
+- [ ] **Melhorias de UX**:
+    - Refinar fluxos de demonstração para melhor clareza
+    - Adicionar mais rotulagem explícita de "simulation mode"
+    - Melhorar feedback visual durante simulações
+- [ ] **Analytics & Tracking**:
+    - Expandir tracking de marketing (já implementado)
+    - Adicionar métricas de engajamento na demo
+- [ ] **Documentação Visual**:
+    - Criar guias visuais para novos desenvolvedores
+    - Melhorar documentação de componentes UI
+
+## 🔵 Phase 2: Integration Readiness (Preparação)
+*Focus: Preparar estrutura para futuras integrações (quando ADR permitir).*
+
 - [ ] **Type Safety**:
-    - Ensure shared types between the Database schema and Frontend interfaces.
+    - Garantir tipos consistentes entre Database schema e Frontend
+    - Documentar interfaces de dados compartilhadas
+- [ ] **API Routes Documentation**:
+    - Documentar todas as API routes de demo
+    - Criar exemplos de uso para cada endpoint
+- [ ] **Component Library**:
+    - Documentar componentes reutilizáveis
+    - Criar Storybook ou similar para visualização
 
-## 🟣 Phase 3: NΞØ Intelligence (AI)
-*Focus: Utilizing the Modal.com setup.*
+## 🟣 Phase 3: Cross-Repo Coordination (Futuro)
+*Focus: Coordenação com outros repositórios do ecossistema.*
 
-- [ ] **Doctor AI Endpoint**:
-    - Create a Modal function that accepts a contract code/ABI and returns a security score.
-    - Connect the Dashboard `OpsDashboard` to this Modal endpoint.
-- [ ] **Narrative Generator**:
-    - Use Modal to generate the "Mission Narrative" for tokens automatically based on keywords.
+- [ ] **Sincronização com `smart-core`**:
+    - Documentar como o UI reflete decisões do core
+    - Criar guias de integração (quando permitido por ADR)
+- [ ] **Coordenação com `smart-ui-landing` e `smart-ui-mobile`**:
+    - Alinhar padrões de design
+    - Compartilhar componentes via npm packages (quando aplicável)
 
-## 🟠 Phase 4: Mobile Protocol (Nuxt)
-*Focus: Making the mobile app a functional dApp.*
+## 🟠 Phase 4: Protocol Integration (Requer ADR)
+*Focus: Integração real com protocolo (requer decisão arquitetural).*
 
-- [ ] **Telegram Mini App Integration**:
-    - Finalize the Telegram WebApp handshake logic.
-- [ ] **Mobile Minting**:
-    - Port the "Forge" logic to the Vue/Nuxt environment.
+> ⚠️ **Nota:** Estas fases requerem uma nova ADR para permitir mudanças arquiteturais.
+
+- [ ] **Web3 Integration** (quando permitido):
+    - Integração com Dynamic.xyz para wallet connection
+    - Conexão com contratos reais do `forge-core`
+    - Event listening on-chain
+- [ ] **AI Integration** (quando permitido):
+    - Doctor AI endpoint via Modal.com
+    - Narrative generator automático
 
 ---
 
-## 🏁 Immediate Action Item (Next Session)
+## 🏁 Próximos Passos Imediatos
 
-**Priority:** Start **Phase 1**.
-The UI is beautiful but "hollow" (simulated). The next coding session should focus strictly on **wiring the Engine** (Web3) to the Dashboard.
+**Prioridade:** Focar em **Phase 1** (UI/UX Enhancement).
 
-*End of Log.*
+Como este é um **Demo and Intent Layer**, o foco deve estar em:
+1. Melhorar a experiência de demonstração
+2. Tornar os fluxos mais claros e educativos
+3. Expandir analytics e tracking
+4. Documentar melhor os componentes existentes
+
+**Para integrações reais com Web3/Protocol:**
+- Consultar `smart-core` para autoridade de protocolo
+- Criar nova ADR se mudanças arquiteturais forem necessárias
+- Seguir guidelines em `docs/ui-status.md`
+
+---
+
+## 📚 Referências
+
+- `docs/ui-status.md` — Status oficial do Smart UI
+- `docs/adr/0002-ui-as-demo-and-intent-layer.md` — ADR que define o papel do UI
+- `docs/FRONTEND_MAP.md` — Mapa dos frontends do ecossistema
+- `docs/archive/MIGRATION_TO_MULTI_REPOS.md` — Histórico da migração
+
+---
+
+*Última atualização: 2026-01-24*
