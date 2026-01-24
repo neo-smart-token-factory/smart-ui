@@ -204,6 +204,7 @@ Install Command: npm install
 #### 4.3 Root Directory (CRÍTICO)
 
 **No Vercel Dashboard:**
+
 1. Vá em **Settings** → **General**
 2. Em **Root Directory**, coloque: `nuxt-app`
 3. Isso diz ao Vercel para rodar tudo dentro da pasta `nuxt-app/`
