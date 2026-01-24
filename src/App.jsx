@@ -591,43 +591,61 @@ export default function SmartMint() {
 
       <main className="container mx-auto px-6 pt-32 pb-20 max-w-4xl">
         <AnimatePresence mode="wait">
-          {/* Phase Status Banner */}
+          {/* Phase Status Badges - Design Moderno */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-[#D8F244]/10 border border-[#D8F244]/30 rounded-xl"
+            className="mb-6 flex flex-wrap items-center gap-3"
           >
-            <div className="flex items-start gap-3">
-              <Info className="w-5 h-5 flex-shrink-0 text-[#D8F244] mt-0.5" />
-              <div className="flex-1">
-                <p className="font-bold mb-1 text-[#D8F244]">
-                  🚀 Você está usando: {phaseInfo?.name} ({phaseInfo?.status})
-                </p>
-                <p className="text-xs text-gray-300 mb-2">
-                  {phaseInfo?.description}
-                </p>
-                {phaseInfo?.availableFeatures && (
-                  <div className="text-xs text-gray-400 mb-2">
-                    <p className="font-semibold text-gray-300 mb-1">Features disponíveis:</p>
-                    <ul className="list-disc list-inside space-y-1">
-                      {phaseInfo.availableFeatures.map((feature, idx) => (
-                        <li key={idx}>{feature}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {phaseInfo?.lockedFeatures && phaseInfo.lockedFeatures.length > 0 && (
-                  <div className="text-xs text-gray-400">
-                    <p className="font-semibold text-gray-300 mb-1">🔜 Próximas features:</p>
-                    <ul className="list-disc list-inside space-y-1">
-                      {phaseInfo.lockedFeatures.map((feature, idx) => (
-                        <li key={idx}>{feature}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </div>
+            {/* Badge: Fase Atual */}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="glass px-4 py-2 rounded-full flex items-center gap-2 border-[#D8F244]/30"
+            >
+              <div className="w-2 h-2 rounded-full bg-[#D8F244] animate-pulse"></div>
+              <span className="text-xs font-bold text-[#D8F244] uppercase tracking-wider">
+                {phaseInfo?.name}
+              </span>
+              <span className="text-xs text-gray-400 font-mono">
+                {phaseInfo?.status}
+              </span>
+            </motion.div>
+
+            {/* Badge: Features Disponíveis (contador) */}
+            {phaseInfo?.availableFeatures && (
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="glass px-3 py-1.5 rounded-full flex items-center gap-2 border-white/10"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-green-400" />
+                <span className="text-xs text-gray-300 font-medium">
+                  {phaseInfo.availableFeatures.length} Features Ativas
+                </span>
+              </motion.div>
+            )}
+
+            {/* Badge: Próxima Fase (se houver) */}
+            {phaseInfo?.lockedFeatures && phaseInfo.lockedFeatures.length > 0 && (
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="glass px-3 py-1.5 rounded-full flex items-center gap-2 border-orange-500/20"
+              >
+                <Rocket className="w-3.5 h-3.5 text-orange-400" />
+                <span className="text-xs text-orange-300 font-medium">
+                  Phase 2: {phaseInfo?.estimatedRelease || 'Q1 2026'}
+                </span>
+              </motion.div>
+            )}
+
+            {/* Tooltip/Info Button (opcional - expande para ver detalhes) */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="glass p-1.5 rounded-full border-white/10 hover:border-[#D8F244]/30 transition-colors"
+              title="Ver detalhes da fase atual"
+            >
+              <Info className="w-4 h-4 text-gray-400 hover:text-[#D8F244] transition-colors" />
+            </motion.button>
           </motion.div>
 
           {/* Simulation Mode Warning (se aplicável) */}

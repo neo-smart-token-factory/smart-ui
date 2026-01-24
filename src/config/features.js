@@ -71,6 +71,10 @@ export const PHASE_INFO = {
     status: 'IN DEVELOPMENT',
     description: 'Integração com blockchain e transações reais',
     estimatedRelease: 'Q1 2026',
+    lockedFeatures: [
+      'Transações blockchain reais (Phase 2)',
+      'AI Integration (Phase 3)',
+    ],
     plannedFeatures: [
       'Wallet connection (Dynamic.xyz)',
       'Transações blockchain reais',
