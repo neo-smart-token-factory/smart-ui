@@ -1,0 +1,41 @@
+# 📦 Documentos Arquivados
+
+Esta pasta contém documentos históricos e relatórios de processos concluídos.
+
+---
+
+## 📋 Documentos Disponíveis
+
+### Migração
+- **[MIGRATION_TO_MULTI_REPOS.md](./MIGRATION_TO_MULTI_REPOS.md)**
+  - **Data:** 2026-01-23
+  - **Status:** Concluída
+  - **Descrição:** Processo de migração do monorepo para 3 repositórios separados
+
+### Validação
+- **[VALIDATION_REPORT.md](./VALIDATION_REPORT.md)**
+  - **Data:** Janeiro 2026
+  - **Status:** Relatório intermediário
+  - **Descrição:** Relatório de validação dos repositórios (substituído por VALIDATION_FINAL_REPORT.md)
+
+- **[VALIDATION_FINAL_REPORT.md](./VALIDATION_FINAL_REPORT.md)**
+  - **Data:** Janeiro 2026
+  - **Status:** Relatório final
+  - **Descrição:** Relatório final de validação de todos os repositórios
+
+### Análises
+- **[ANALISE_CONEXAO_DOCS_REPO.md](./ANALISE_CONEXAO_DOCS_REPO.md)**
+  - **Data:** 2026-01-24
+  - **Status:** Concluída
+  - **Descrição:** Análise da conexão entre smart-ui e repositório docs
+
+- **[AUDITORIA_VISIBILIDADE_ORGANIZACAO.md](./AUDITORIA_VISIBILIDADE_ORGANIZACAO.md)**
+  - **Data:** 2026-01-24
+  - **Status:** Concluída
+  - **Descrição:** Auditoria de visibilidade da organização (política criada)
+
+---
+
+## 📝 Nota
+
+Estes documentos são mantidos para **referência histórica** e não devem ser atualizados. Para informações atuais, consulte a documentação principal em [`../README.md`](../README.md).

@@ -69,7 +69,7 @@ Conteúdo aqui.
 ```solidity
 /**
  * @dev [Descrição breve do contrato]
- * @author MELLO // POST-HUMAN
+ * @author MELLØ // DEV NODE
  */
 ```
 

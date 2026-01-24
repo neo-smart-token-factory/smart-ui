@@ -285,14 +285,29 @@ Outros documentos são mais estáveis e requerem revisão formal:
 
 ---
 
+## 📦 Documentos Arquivados
+
+Documentos históricos e relatórios de processos concluídos foram movidos para [`archive/`](./archive/):
+
+- `MIGRATION_TO_MULTI_REPOS.md` - Migração monorepo → multi-repos (concluída)
+- `VALIDATION_REPORT.md` - Relatório intermediário de validação
+- `VALIDATION_FINAL_REPORT.md` - Relatório final de validação
+- `ANALISE_CONEXAO_DOCS_REPO.md` - Análise de conexão com repositório docs
+- `AUDITORIA_VISIBILIDADE_ORGANIZACAO.md` - Auditoria de visibilidade
+
+Estes documentos são mantidos para referência histórica.
+
+---
+
 ## 📊 Estatísticas da Documentação
 
-- **Total de Documentos**: 13
+- **Total de Documentos Ativos**: 28
 - **ADRs**: 4
-- **Guias Técnicos**: 5
+- **Documentos Arquivados**: 5
+- **Guias Técnicos**: 8
 - **Documentos Estratégicos**: 4
 
-**Última Atualização**: 2026-01-22
+**Última Atualização**: 2026-01-24
 
 ---
 
