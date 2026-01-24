@@ -3,12 +3,14 @@
 ## 🐛 Problema Identificado
 
 **Erro:**
-```
+
+``
 Error: Could not read package.json: /vercel/path1/package.json
 Error: Command "npm install --no-workspaces" exited with 254
-```
+``
 
 **Causa:**
+
 - Quando especificamos `installCommand` no `vercel.json`, o Vercel pode executar **ANTES** de mudar para o Root Directory
 - Ou pode estar ignorando o Root Directory ao executar o comando customizado
 - O erro mostra que está procurando na raiz (`/vercel/path1/`) em vez do subdiretório
@@ -20,6 +22,7 @@ Error: Command "npm install --no-workspaces" exited with 254
 ### Remover `installCommand` do vercel.json
 
 **ANTES:**
+
 ```json
 {
   "installCommand": "npm install --no-workspaces"
@@ -27,6 +30,7 @@ Error: Command "npm install --no-workspaces" exited with 254
 ```
 
 **DEPOIS:**
+
 ```json
 {
   "framework": "vite",
@@ -36,6 +40,7 @@ Error: Command "npm install --no-workspaces" exited with 254
 ```
 
 **Por quê?**
+
 - O Vercel detecta automaticamente o package manager
 - Quando o Root Directory está configurado, o Vercel **muda para lá primeiro**
 - Depois executa `npm install` no diretório correto
@@ -54,26 +59,29 @@ Error: Command "npm install --no-workspaces" exited with 254
 ## 🔍 Como o Vercel Funciona com Root Directory
 
 **Ordem de execução CORRETA:**
-```
-1. Vercel clona o repositório
+
+``
+1.Vercel clona o repositório
 2. Vercel muda para o Root Directory (landing/ ou nuxt-app/)
 3. Vercel detecta package.json no diretório atual
 4. Vercel executa npm install (padrão) no diretório correto
 5. Vercel executa buildCommand
-```
+``
 
 **Com installCommand customizado (PROBLEMA):**
-```
-1. Vercel clona o repositório
+
+``
+1.Vercel clona o repositório
 2. Vercel executa installCommand (pode estar na raiz ainda)
 3. ❌ Erro: não encontra package.json
-```
+``
 
 ---
 
 ## ⚠️ Nota sobre Workspaces
 
 Mesmo sem `--no-workspaces`, o Vercel deve funcionar porque:
+
 - O Root Directory força o trabalho dentro do subdiretório
 - O `package.json` local tem todas as dependências necessárias
 - O npm install no subdiretório instala apenas as dependências locais

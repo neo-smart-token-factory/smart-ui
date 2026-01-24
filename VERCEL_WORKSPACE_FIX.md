@@ -3,6 +3,7 @@
 ## ✅ Confirmação
 
 **Root Directory está CORRETO:**
+
 - ✅ smart-ui-landing: `landing`
 - ✅ smart-ui-mobile: `nuxt-app`
 
@@ -20,11 +21,13 @@ Error: Could not read package.json: /vercel/path0/nuxt-app/package.json
 ```
 
 **Causa Provável:**
+
 - O Vercel está tentando instalar dependências na **raiz do monorepo** primeiro (por causa dos workspaces)
 - Quando define Root Directory como `nuxt-app`, ele muda para lá, mas o `npm install` pode estar rodando na raiz primeiro
 - O erro mostra que está procurando `nuxt-app/package.json` quando já está dentro de `nuxt-app/`
 
 **Solução:**
+
 1. **Limpar Cache** (sua sugestão é correta!)
 2. Configurar `installCommand` para ignorar workspaces
 3. Ou desabilitar "Include files outside the root directory"
@@ -32,6 +35,7 @@ Error: Could not read package.json: /vercel/path0/nuxt-app/package.json
 ### 2. Landing: "No Output Directory named 'dist' found"
 
 **Causa Provável:**
+
 - Build pode estar falhando silenciosamente
 - Ou o `dist` está sendo gerado mas o Vercel não encontra
 - Pode ser problema de cache também
@@ -60,11 +64,14 @@ Error: Could not read package.json: /vercel/path0/nuxt-app/package.json
 **No Vercel Dashboard, para cada projeto:**
 
 **smart-ui-landing:**
+
 - Settings → Build and Deployment
 - **Install Command:** `npm install --ignore-scripts` ou `npm ci --ignore-scripts`
 
 **smart-ui-mobile:**
-- Settings → Build and Deployment  
+
+- Settings → Build and Deployment
+
 - **Install Command:** `npm install --ignore-scripts` ou `npm ci --ignore-scripts`
 
 **Ou adicionar ao vercel.json:**
@@ -85,6 +92,7 @@ Error: Could not read package.json: /vercel/path0/nuxt-app/package.json
 4. Salve
 
 **Por quê?**
+
 - Com workspaces, isso pode estar causando o Vercel a procurar arquivos na raiz
 - Desabilitar força o Vercel a trabalhar apenas dentro do Root Directory
 
@@ -107,11 +115,13 @@ Error: Could not read package.json: /vercel/path0/nuxt-app/package.json
 ### Por que o erro mostra `/vercel/path0/nuxt-app/package.json`?
 
 Quando Root Directory = `nuxt-app`:
+
 - Vercel muda para `/vercel/path0/nuxt-app/`
 - Deveria procurar `package.json` em `/vercel/path0/nuxt-app/package.json` ✅
 - Mas o erro mostra que está procurando exatamente isso e não encontra
 
 **Possíveis causas:**
+
 1. **Cache antigo** - Vercel tem cache de estrutura antiga
 2. **Workspaces** - `npm install` na raiz instala tudo, depois muda de diretório
 3. **Git não tem o arquivo** - Mas já verificamos que está commitado
@@ -123,12 +133,14 @@ Quando Root Directory = `nuxt-app`:
 ### 1. Limpar Cache (FAÇA PRIMEIRO) ⭐
 
 **Vercel Dashboard:**
+
 1. **smart-ui-landing** → Settings → **Caches** → **Clear All**
 2. **smart-ui-mobile** → Settings → **Caches** → **Clear All**
 
 ### 2. Desabilitar "Include files outside root directory"
 
 **Para ambos projetos:**
+
 1. Settings → Build and Deployment
 2. Root Directory section
 3. **Desabilite** "Include files outside the root directory"
@@ -139,6 +151,7 @@ Quando Root Directory = `nuxt-app`:
 **Adicionar ao vercel.json:**
 
 **landing/vercel.json:**
+
 ```json
 {
   "framework": "vite",
@@ -149,6 +162,7 @@ Quando Root Directory = `nuxt-app`:
 ```
 
 **nuxt-app/vercel.json:**
+
 ```json
 {
   "framework": "vite",
@@ -161,6 +175,7 @@ Quando Root Directory = `nuxt-app`:
 ### 4. Re-deploy
 
 Após fazer as mudanças acima:
+
 1. Commit e push das mudanças no vercel.json
 2. Ou fazer Redeploy manual no Dashboard
 
@@ -168,9 +183,9 @@ Após fazer as mudanças acima:
 
 ## 📋 Checklist de Correção
 
-- [ ] Limpar cache do smart-ui-landing
-- [ ] Limpar cache do smart-ui-mobile
-- [ ] Desabilitar "Include files outside root directory" (ambos)
+- [x] Limpar cache do smart-ui-landing
+- [x] Limpar cache do smart-ui-mobile
+- [x] Desabilitar "Include files outside root directory" (ambos)
 - [ ] Atualizar installCommand para `npm ci --ignore-scripts` (ambos)
 - [ ] Commit e push das mudanças
 - [ ] Re-deploy manual ou aguardar trigger automático

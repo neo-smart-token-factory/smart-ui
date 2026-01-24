@@ -30,86 +30,83 @@ git push
 
 ## ✅ Solução Implementada
 
-### Ignored Build Step (Vercel Native)
+### Ignored Build Step (Vercel Native) - Git Diff Inline
 
-Cada projeto Vercel agora verifica se há mudanças relevantes antes de fazer rebuild.
+Cada projeto Vercel agora verifica se há mudanças relevantes antes de fazer rebuild usando comandos `git diff` inline diretamente no `ignoreCommand`.
 
 **Como Funciona:**
 
 1. Vercel executa o `ignoreCommand` antes do build
-2. Se o script retorna **exit 0** → **Skip build** (não faz rebuild)
-3. Se o script retorna **exit 1** → **Faz build** (rebuild necessário)
+2. Se o comando retorna **exit 0** → **Skip build** (não faz rebuild)
+3. Se o comando retorna **exit 1** → **Faz build** (rebuild necessário)
+
+**Por que Inline?**
+- ✅ Não depende de scripts externos (que podem ser removidos pelo `.vercelignore`)
+- ✅ Mais simples e direto
+- ✅ Funciona mesmo se `.vercelignore` remover pastas
 
 ---
 
-## 📝 Scripts Criados
+## 📝 Configuração nos vercel.json
 
-### 1. `scripts/check-dashboard-changes.sh`
+### 1. Dashboard (`vercel.json` na raiz)
 
-**Verifica mudanças no Dashboard (raiz):**
+**Verifica mudanças fora de `landing/` e `nuxt-app/`:**
 
-```bash
-#!/bin/bash
-# Exit 1 = build SHOULD run
-# Exit 0 = skip build
+```json
+{
+  "ignoreCommand": "git rev-parse HEAD~1 >/dev/null 2>&1 && (bash -c '[ -n \"$(git diff --name-only HEAD~1 HEAD | grep -v \"^landing/\\|^nuxt-app/\")\" ]') || exit 1"
+}
 ```
 
-**Arquivos monitorados:**
-- `src/`
-- `public/`
-- `api/`
-- `lib/`
-- `index.html`
-- `vite.config.js`
-- `tailwind.config.cjs`
-- `postcss.config.cjs`
-- `tsconfig.json`
-- `package.json`
-- `eslint.config.js`
-- `.vercelignore`
-
 **Lógica:**
-- Se detecta mudanças em qualquer arquivo do Dashboard → **Exit 1** (rebuild)
-- Se apenas `landing/` ou `nuxt-app/` mudaram → **Exit 0** (skip)
-- Se outras mudanças (scripts, docs, etc.) → **Exit 1** (rebuild por segurança)
+- Verifica se `HEAD~1` existe (não é primeiro deploy)
+- Lista arquivos modificados entre `HEAD~1` e `HEAD`
+- Remove linhas que começam com `landing/` ou `nuxt-app/`
+- Se há mudanças restantes → **Exit 0** (BUILD)
+- Se vazio ou primeiro deploy → **Exit 1** (BUILD por segurança)
+
+**Arquivos monitorados:**
+- `src/`, `public/`, `api/`, `lib/`, `index.html`, `vite.config.js`, `tailwind.config.cjs`, `package.json`, etc.
+- Qualquer arquivo fora de `landing/` e `nuxt-app/`
 
 ---
 
-### 2. `scripts/check-landing-changes.sh`
+### 2. Landing (`landing/vercel.json`)
 
-**Verifica mudanças na Landing Page:**
+**Verifica mudanças apenas em `landing/`:**
 
-```bash
-#!/bin/bash
-# Exit 1 = build SHOULD run
-# Exit 0 = skip build
+```json
+{
+  "ignoreCommand": "git rev-parse HEAD~1 >/dev/null 2>&1 && (git diff --quiet HEAD~1 HEAD -- landing/ || exit 1; exit 0) || exit 1"
+}
 ```
 
-**Arquivos monitorados:**
-- `landing/` (qualquer arquivo dentro)
-
 **Lógica:**
-- Se detecta mudanças em `landing/` → **Exit 1** (rebuild)
-- Caso contrário → **Exit 0** (skip)
+- Verifica se `HEAD~1` existe
+- `git diff --quiet HEAD~1 HEAD -- landing/` verifica se `landing/` mudou
+  - Se mudou → **Exit 1** (BUILD)
+  - Se não mudou → **Exit 0** (SKIP)
+- Se primeiro deploy → **Exit 1** (BUILD)
 
 ---
 
-### 3. `scripts/check-mobile-changes.sh`
+### 3. Mobile (`nuxt-app/vercel.json`)
 
-**Verifica mudanças no Mobile App:**
+**Verifica mudanças apenas em `nuxt-app/`:**
 
-```bash
-#!/bin/bash
-# Exit 1 = build SHOULD run
-# Exit 0 = skip build
+```json
+{
+  "ignoreCommand": "git rev-parse HEAD~1 >/dev/null 2>&1 && (git diff --quiet HEAD~1 HEAD -- nuxt-app/ || exit 1; exit 0) || exit 1"
+}
 ```
 
-**Arquivos monitorados:**
-- `nuxt-app/` (qualquer arquivo dentro)
-
 **Lógica:**
-- Se detecta mudanças em `nuxt-app/` → **Exit 1** (rebuild)
-- Caso contrário → **Exit 0** (skip)
+- Verifica se `HEAD~1` existe
+- `git diff --quiet HEAD~1 HEAD -- nuxt-app/` verifica se `nuxt-app/` mudou
+  - Se mudou → **Exit 1** (BUILD)
+  - Se não mudou → **Exit 0** (SKIP)
+- Se primeiro deploy → **Exit 1** (BUILD)
 
 ---
 
@@ -122,7 +119,7 @@ Cada projeto Vercel agora verifica se há mudanças relevantes antes de fazer re
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "ignoreCommand": "bash scripts/check-dashboard-changes.sh"
+  "ignoreCommand": "git rev-parse HEAD~1 >/dev/null 2>&1 && (bash -c '[ -n \"$(git diff --name-only HEAD~1 HEAD | grep -v \"^landing/\\|^nuxt-app/\")\" ]') || exit 1"
 }
 ```
 
@@ -133,7 +130,7 @@ Cada projeto Vercel agora verifica se há mudanças relevantes antes de fazer re
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "ignoreCommand": "bash scripts/check-landing-changes.sh"
+  "ignoreCommand": "git rev-parse HEAD~1 >/dev/null 2>&1 && (git diff --quiet HEAD~1 HEAD -- landing/ || exit 1; exit 0) || exit 1"
 }
 ```
 
@@ -144,7 +141,7 @@ Cada projeto Vercel agora verifica se há mudanças relevantes antes de fazer re
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "ignoreCommand": "bash scripts/check-mobile-changes.sh"
+  "ignoreCommand": "git rev-parse HEAD~1 >/dev/null 2>&1 && (git diff --quiet HEAD~1 HEAD -- nuxt-app/ || exit 1; exit 0) || exit 1"
 }
 ```
 
@@ -251,13 +248,9 @@ No primeiro deploy de cada projeto, o Vercel **sempre faz build**, mesmo que o `
 
 Se você alterar arquivos que afetam múltiplos frontends (ex: `package.json` na raiz), o Dashboard pode fazer rebuild mesmo que você não tenha alterado `src/`. Isso é por design (segurança).
 
-### 3. Scripts Precisam Estar Executáveis
+### 3. Comandos Inline (Não Precisa de Scripts)
 
-Os scripts foram criados com `chmod +x`, mas se você clonar o repo em outra máquina, pode precisar executar:
-
-```bash
-chmod +x scripts/check-*.sh
-```
+A solução usa comandos `git diff` inline diretamente no `vercel.json`, então não depende de scripts externos. Isso evita problemas com `.vercelignore` removendo a pasta `scripts/`.
 
 ### 4. Git History Necessário
 
@@ -272,39 +265,38 @@ Os scripts usam `git diff HEAD~1 HEAD`, então precisam de pelo menos 1 commit a
 No Vercel Dashboard, ao fazer deploy, você verá logs como:
 
 ```
-Running "ignoreCommand" command: `bash scripts/check-dashboard-changes.sh`...
-✅ Dashboard changes detected in 'src/' - proceeding with build
+Running "ignoreCommand" command: `git rev-parse HEAD~1...`
+Changes detected - proceeding with build
 ```
 
 Ou:
 
 ```
-Running "ignoreCommand" command: `bash scripts/check-landing-changes.sh`...
-❌ No landing changes detected - skipping landing build
+Running "ignoreCommand" command: `git rev-parse HEAD~1...`
+No changes detected - skipping build
 ```
 
-### Testar Scripts Localmente
+### Testar Comandos Localmente
 
 ```bash
 # Simular mudança na landing
 git diff --name-only HEAD~1 HEAD | grep "^landing/"
 
-# Testar script do dashboard
-bash scripts/check-dashboard-changes.sh
-echo $?  # Deve ser 0 (skip) se apenas landing mudou
+# Testar comando do dashboard (deve retornar exit code)
+git rev-parse HEAD~1 >/dev/null 2>&1 && (bash -c '[ -n "$(git diff --name-only HEAD~1 HEAD | grep -v "^landing/\|^nuxt-app/")" ]') || exit 1
+echo $?  # Deve ser 0 (build) se há mudanças fora de landing/mobile
 
-# Testar script da landing
-bash scripts/check-landing-changes.sh
-echo $?  # Deve ser 1 (rebuild) se landing mudou
+# Testar comando da landing
+git rev-parse HEAD~1 >/dev/null 2>&1 && (git diff --quiet HEAD~1 HEAD -- landing/ || exit 1; exit 0) || exit 1
+echo $?  # Deve ser 1 (build) se landing mudou, 0 (skip) se não mudou
 ```
 
 ---
 
 ## 📋 Checklist de Validação
 
-- [x] Scripts criados e executáveis
-- [x] `vercel.json` atualizados com `ignoreCommand`
-- [x] Scripts testados localmente
+- [x] `vercel.json` atualizados com `ignoreCommand` inline
+- [x] Comandos git diff testados localmente
 - [ ] Primeiro deploy após mudanças (validar que funciona)
 - [ ] Testar mudança apenas na landing
 - [ ] Testar mudança apenas no dashboard

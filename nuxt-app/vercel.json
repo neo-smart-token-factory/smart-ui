@@ -2,5 +2,5 @@
     "framework": "vite",
     "buildCommand": "npm run build",
     "outputDirectory": "dist",
-    "ignoreCommand": "bash scripts/check-mobile-changes.sh"
+    "ignoreCommand": "git rev-parse HEAD~1 >/dev/null 2>&1 && (git diff --quiet HEAD~1 HEAD -- nuxt-app/ || exit 1; exit 0) || exit 1"
 }
