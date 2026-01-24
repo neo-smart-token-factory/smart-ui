@@ -62,6 +62,17 @@ Este repositório (`smart-ui`) segue uma estratégia de **lançamento por fases 
 -  Melhorar documentação de componentes
 -  Adicionar tooltips e help contextual
 
+-  [ ] **Documentação de Desenvolvimento** ⚠️ **PRIORIDADE**
+-  ✅ **Status:** Em andamento (Phase 1.1)
+-  ✅ **Previsão de liberação:** Final de Q1 2026 (antes de Phase 2)
+-  [ ] Guia completo de Feature Flags
+-  [ ] Documentação de componentes React
+-  [ ] Guia de integração com APIs
+-  [ ] Documentação de arquitetura de código
+-  [ ] Guia de contribuição para desenvolvedores
+-  [ ] Exemplos práticos de uso dos Feature Flags
+-  [ ] Storybook ou similar para visualização de componentes
+
 ---
 
 ## 🔵 Phase 2: Web3 Integration (IN DEVELOPMENT)
@@ -190,11 +201,135 @@ O dashboard deve exibir claramente:
 
 ---
 
+## 🔧 Como Liberar Phase 2 (Instruções Práticas)
+
+Quando Phase 2 estiver pronta para produção, siga estes passos:
+
+### 1. Atualizar Feature Flags
+
+Edite `src/config/features.js`:
+
+```javascript
+export const FEATURES = {
+  phase2: {
+    web3: true,                    // ✅ Mudar de false para true
+    realTransactions: true,         // ✅ Mudar de false para true
+    walletConnection: true,        // ✅ Mudar de false para true
+    onChainEvents: true,           // ✅ Mudar de false para true
+    contractDeployment: true,      // ✅ Mudar de false para true
+  },
+};
+```
+
+### 2. Atualizar Informações da Fase
+
+No mesmo arquivo, atualize `PHASE_INFO.phase2`:
+
+```javascript
+phase2: {
+  name: 'Web3 Integration',
+  status: 'LIVE',                  // ✅ Mudar de 'IN DEVELOPMENT' para 'LIVE'
+  description: 'Integração com blockchain e transações reais',
+  estimatedRelease: 'Q1 2026',     // ✅ Atualizar para data real de lançamento
+  // ... resto das informações
+}
+```
+
+### 3. Validar Critérios de "Go Live"
+
+Antes de fazer o commit, confirme que todos os critérios foram atendidos:
+
+-  [ ] Todos os testes de segurança passaram
+-  [ ] Performance está dentro do SLA (< 2s response time)
+-  [ ] Documentação de usuário completa
+-  [ ] Rollback plan definido
+-  [ ] Monitoring e alertas configurados
+-  [ ] Testes de integração com smart-core concluídos
+-  [ ] Security audit de smart contracts
+-  [ ] Load testing de transações
+-  [ ] User acceptance testing
+
+### 4. Testar Localmente
+
+```bash
+# Testar build
+npm run build
+
+# Testar localmente com vercel dev
+npm run dev:vercel
+
+# Verificar que badges mostram "Phase 2 (LIVE)"
+# Verificar que Web3 features estão funcionando
+```
+
+### 5. Commit e Deploy
+
+```bash
+git add src/config/features.js
+git commit -m "feat: libera Phase 2 - Web3 Integration em produção
+
+- Habilita todas as features Web3
+- Atualiza status da Phase 2 para LIVE
+- Transações blockchain reais agora disponíveis"
+
+git push origin main
+```
+
+### 6. Monitorar Deploy
+
+-  Acompanhar deploy no Vercel
+-  Verificar logs de erro
+-  Testar features Web3 em produção
+-  Monitorar métricas de performance
+
+### 7. Comunicar Mudança
+
+-  Atualizar changelog
+-  Notificar usuários (se aplicável)
+-  Atualizar documentação pública
+
+---
+
+## 📚 Documentação de Desenvolvimento
+
+### Status Atual
+
+⚠️ **Documentação de desenvolvimento está em andamento** e será liberada como parte da **Phase 1.1** (Final de Q1 2026).
+
+### O Que Será Documentado
+
+-  **Feature Flags:** Guia completo de uso e configuração
+-  **Componentes React:** Documentação de todos os componentes
+-  **APIs:** Guia de integração e exemplos práticos
+-  **Arquitetura:** Estrutura de código e decisões técnicas
+-  **Contribuição:** Como contribuir para o projeto
+-  **Exemplos:** Casos de uso práticos dos Feature Flags
+
+### Por Que Ainda Não Está Liberada?
+
+A documentação de desenvolvimento está sendo refinada para garantir:
+
+1.  **Precisão:** Todas as informações estão corretas e atualizadas
+2.  **Completude:** Cobre todos os aspectos necessários
+3.  **Clareza:** Fácil de entender e seguir
+4.  **Exemplos práticos:** Casos de uso reais e funcionais
+
+### Quando Será Liberada?
+
+-  **Previsão:** Final de Q1 2026 (antes da liberação da Phase 2)
+-  **Prioridade:** Alta (necessária para onboarding de novos desenvolvedores)
+-  **Status:** Em desenvolvimento ativo
+
+---
+
 ## 📚 Referências
 
 -  `docs/adr/0002-ui-as-demo-and-intent-layer.md` — Definição do Smart UI como Demo Layer
 -  `docs/FRONTEND_MAP.md` — Mapa dos frontends do ecossistema
 -  `docs/archive/MIGRATION_TO_MULTI_REPOS.md` — Histórico da migração
+-  `src/config/features.js` — Configuração de Feature Flags
+-  `src/hooks/useFeatures.js` — Hook React para Feature Flags
+-  `src/config/README.md` — Documentação rápida de Feature Flags
 
 ---
 
