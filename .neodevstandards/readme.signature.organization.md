@@ -1,6 +1,26 @@
 # Assinatura Padrão — Organização NΞØ Smart Factory
 
+Este documento apresenta opções de assinatura padrão para uso nos READMEs dos repositórios da organização **neo-smart-token-factory**.
+
+---
+
 ## Opção 1: Minimalista (Recomendada)
+
+**Preview:**
+
+---
+
+<div align="center">
+
+**NΞØ SMART FACTORY** — *Transformando código em ativos líquidos.*
+
+[Website](https://neosmart.space) • [GitHub](https://github.com/neo-smart-token-factory) • [Twitter](https://x.com/neosmartfactory)
+
+</div>
+
+---
+
+**Código para copiar:**
 
 ```markdown
 ---
@@ -17,6 +37,27 @@
 ---
 
 ## Opção 2: Completa com Badges
+
+**Preview:**
+
+---
+
+<div align="center">
+
+## NΞØ SMART FACTORY
+
+**Transformando código em ativos líquidos.**
+
+[![Website](https://img.shields.io/badge/Website-neosmart.space-D8F244?style=flat-square&logo=internet-explorer&logoColor=000)](https://neosmart.space)
+[![GitHub](https://img.shields.io/badge/GitHub-neo--smart--token--factory-000?style=flat-square&logo=github&logoColor=fff)](https://github.com/neo-smart-token-factory)
+[![Twitter](https://img.shields.io/badge/Twitter-@neosmartfactory-1DA1F2?style=flat-square&logo=twitter&logoColor=fff)](https://x.com/neosmartfactory)
+[![Email](https://img.shields.io/badge/Email-neosmart.factory@gmail.com-D8F244?style=flat-square&logo=gmail&logoColor=000)](mailto:neosmart.factory@gmail.com)
+
+</div>
+
+---
+
+**Código para copiar:**
 
 ```markdown
 ---
@@ -38,6 +79,38 @@
 ---
 
 ## Opção 3: Estilo Original (Adaptada)
+
+**Preview:**
+
+---
+
+<div align="center">
+
+## Contact
+
+[neosmart.factory@gmail.com](mailto:neosmart.factory@gmail.com)
+
+</div>
+
+<div align="center">
+  <a href="https://neosmart.space">
+    <img src="https://img.shields.io/badge/Website-neosmart.space-D8F244?style=flat-square&logo=internet-explorer&logoColor=000" alt="Website" />
+  </a>
+  <a href="https://github.com/neo-smart-token-factory">
+    <img src="https://img.shields.io/badge/GitHub-neo--smart--token--factory-000?style=flat-square&logo=github&logoColor=fff" alt="GitHub" />
+  </a>
+  <a href="https://x.com/neosmartfactory">
+    <img src="https://img.shields.io/badge/Twitter-@neosmartfactory-1DA1F2?style=flat-square&logo=twitter&logoColor=fff" alt="Twitter" />
+  </a>
+</div>
+
+<div align="center">
+  <i>"Transformando código em ativos líquidos."</i>
+</div>
+
+---
+
+**Código para copiar:**
 
 ```markdown
 ---
@@ -71,6 +144,27 @@
 
 ## Opção 4: Profissional com Links Organizados
 
+**Preview:**
+
+---
+
+<div align="center">
+
+### NΞØ SMART FACTORY
+
+**Ecosystem • Documentation • Community**
+
+| [Website](https://neosmart.space) | [GitHub](https://github.com/neo-smart-token-factory) | [Twitter](https://x.com/neosmartfactory) | [Email](mailto:neosmart.factory@gmail.com) |
+|:---:|:---:|:---:|:---:|
+
+*Transformando código em ativos líquidos.*
+
+</div>
+
+---
+
+**Código para copiar:**
+
 ```markdown
 ---
 
@@ -92,6 +186,26 @@
 
 ## Opção 5: Badges Coloridos (Neon Acid Theme)
 
+**Preview:**
+
+---
+
+<div align="center">
+
+## 🌐 NΞØ SMART FACTORY
+
+[![Website](https://img.shields.io/badge/🌐_Website-neosmart.space-D8F244?style=for-the-badge&logo=internet-explorer&logoColor=000)](https://neosmart.space)
+[![GitHub Org](https://img.shields.io/badge/GitHub-Organization-000?style=for-the-badge&logo=github&logoColor=fff)](https://github.com/neo-smart-token-factory)
+[![Twitter](https://img.shields.io/badge/Twitter-@neosmartfactory-1DA1F2?style=for-the-badge&logo=twitter&logoColor=fff)](https://x.com/neosmartfactory)
+
+**Transformando código em ativos líquidos.**
+
+</div>
+
+---
+
+**Código para copiar:**
+
 ```markdown
 ---
 
@@ -111,6 +225,22 @@
 ---
 
 ## Opção 6: Horizontal Compacta
+
+**Preview:**
+
+---
+
+<div align="center">
+
+**NΞØ SMART FACTORY** | [Website](https://neosmart.space) • [GitHub](https://github.com/neo-smart-token-factory) • [Twitter](https://x.com/neosmartfactory) • [Email](mailto:neosmart.factory@gmail.com)
+
+*Transformando código em ativos líquidos.*
+
+</div>
+
+---
+
+**Código para copiar:**
 
 ```markdown
 ---
