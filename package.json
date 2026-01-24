@@ -18,6 +18,8 @@
     "migrate": "node scripts/migrate.js"
   },
   "dependencies": {
+    "@dynamic-labs/ethers-v6": "^4.57.2",
+    "@dynamic-labs/sdk-react-core": "^4.57.2",
     "@neondatabase/serverless": "^1.0.2",
     "clsx": "^2.1.0",
     "ethers": "^6.10.0",
