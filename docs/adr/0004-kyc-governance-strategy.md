@@ -2,6 +2,7 @@
 
 **Status**: Aceito  
 **Data**: 2026-01-22  
+**Versão**: 1.0.0  
 **Decisores**: Governança Técnica NΞØ Smart Factory  
 **Contexto**: Conformidade, Governança e Estratégia de Lançamento
 

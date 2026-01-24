@@ -2,6 +2,7 @@
 
 **Status:** Accepted  
 **Date:** 2026-01-21  
+**Versão:** 1.0.0  
 **Deciders:** NΞØ Architecture  
 **Applies to:** smart-ui, smart-core, smart-cli, internal-ops, landing
 

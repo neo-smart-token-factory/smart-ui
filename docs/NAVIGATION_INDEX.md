@@ -43,23 +43,25 @@ Este índice organiza toda a documentação do projeto de forma visual e navegá
 
 ## 🚀 Deploy e Infraestrutura
 
+> 📁 Todos os guias estão organizados em [`guides/`](./guides/)
+
 ### Setup e Configuração
 
 | Documento | Descrição | Para Quem |
 |-----------|-----------|-----------|
-| [DEPLOY_DASHBOARD.md](./DEPLOY_DASHBOARD.md) | Guia completo de deploy | DevOps |
-| [NEON_SETUP_GUIDE.md](./NEON_SETUP_GUIDE.md) | Configuração do Neon Database | DevOps |
-| [RUN_MIGRATIONS.md](./RUN_MIGRATIONS.md) | Como executar migrations | DevOps |
-| [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md) | Configuração de workflows | DevOps |
+| [DEPLOY_DASHBOARD.md](./guides/DEPLOY_DASHBOARD.md) | Guia completo de deploy | DevOps |
+| [NEON_SETUP_GUIDE.md](./guides/NEON_SETUP_GUIDE.md) | Configuração do Neon Database | DevOps |
+| [RUN_MIGRATIONS.md](./guides/RUN_MIGRATIONS.md) | Como executar migrations | DevOps |
+| [GITHUB_ACTIONS_SETUP.md](./guides/GITHUB_ACTIONS_SETUP.md) | Configuração de workflows | DevOps |
 
 ### Operações
 
 | Documento | Descrição | Para Quem |
 |-----------|-----------|-----------|
-| [SYNC_ENV_FROM_VERCEL.md](./SYNC_ENV_FROM_VERCEL.md) | Sincronizar variáveis do Vercel | DevOps |
-| [SYNC_POLICIES_TO_DOCS_REPO.md](./SYNC_POLICIES_TO_DOCS_REPO.md) | Sincronizar políticas para docs repo | DevOps |
-| [ECOSYSTEM_GRAPH_ACCESS.md](./ECOSYSTEM_GRAPH_ACCESS.md) | Acesso ao gráfico do ecossistema | DevOps |
-| [ECOSYSTEM_GRAPH_REPOS.md](./ECOSYSTEM_GRAPH_REPOS.md) | Dados do gráfico de repositórios | DevOps |
+| [SYNC_ENV_FROM_VERCEL.md](./guides/SYNC_ENV_FROM_VERCEL.md) | Sincronizar variáveis do Vercel | DevOps |
+| [SYNC_POLICIES_TO_DOCS_REPO.md](./guides/SYNC_POLICIES_TO_DOCS_REPO.md) | Sincronizar políticas para docs repo | DevOps |
+| [ECOSYSTEM_GRAPH_ACCESS.md](./guides/ECOSYSTEM_GRAPH_ACCESS.md) | Acesso ao gráfico do ecossistema | DevOps |
+| [ECOSYSTEM_GRAPH_REPOS.md](./guides/ECOSYSTEM_GRAPH_REPOS.md) | Dados do gráfico de repositórios | DevOps |
 
 ---
 
@@ -70,16 +72,19 @@ Este índice organiza toda a documentação do projeto de forma visual e navegá
 | Documento | Descrição | Para Quem |
 |-----------|-----------|-----------|
 | [FRONTEND_MAP.md](./FRONTEND_MAP.md) | Mapa dos 3 frontends | Desenvolvedores |
-| [FRONTEND_MARKETING_INTEGRATION.md](./FRONTEND_MARKETING_INTEGRATION.md) | Integração de marketing | Desenvolvedores |
 | [SIMULATION_MODE.md](./SIMULATION_MODE.md) | Documentação do simulation mode | Desenvolvedores |
 | [ui-diagnostic-checklist.md](./ui-diagnostic-checklist.md) | Checklist de diagnóstico | Desenvolvedores |
 
 ### API e Backend
 
+> 📁 Documentação de API está em [`api/`](./api/)
+
 | Documento | Descrição | Para Quem |
 |-----------|-----------|-----------|
-| [API_MARKETING_ROUTES.md](./API_MARKETING_ROUTES.md) | Rotas de API para marketing | Desenvolvedores |
-| [MARKETING_SCHEMA_EXPLANATION.md](./MARKETING_SCHEMA_EXPLANATION.md) | Explicação do schema de marketing | Desenvolvedores |
+| [openapi.yaml](./api/openapi.yaml) | Especificação OpenAPI completa | Desenvolvedores |
+| [API_MARKETING_ROUTES.md](./api/API_MARKETING_ROUTES.md) | Rotas de API para marketing | Desenvolvedores |
+| [MARKETING_SCHEMA_EXPLANATION.md](./api/MARKETING_SCHEMA_EXPLANATION.md) | Explicação do schema de marketing | Desenvolvedores |
+| [FRONTEND_MARKETING_INTEGRATION.md](./api/FRONTEND_MARKETING_INTEGRATION.md) | Integração de marketing no frontend | Desenvolvedores |
 | [DATABASE_SCHEMA.sql](./DATABASE_SCHEMA.sql) | Schema do banco de dados | Desenvolvedores |
 
 ---
@@ -113,6 +118,12 @@ Este índice organiza toda a documentação do projeto de forma visual e navegá
 | [DOCS_AUDIT_AND_STANDARDIZATION.md](./DOCS_AUDIT_AND_STANDARDIZATION.md) | Auditoria e padronização | Todos |
 | [SUGGESTIONS.md](./SUGGESTIONS.md) | Sugestões de melhorias | Todos |
 
+### Versionamento
+
+| Documento | Descrição | Para Quem |
+|-----------|-----------|-----------|
+| [CRITICAL_DOCUMENTS.md](./versions/CRITICAL_DOCUMENTS.md) | Rastreamento de versões de documentos críticos | Todos |
+
 ### Roadmap
 
 | Documento | Descrição | Para Quem |
@@ -143,15 +154,15 @@ Ver [`archive/README.md`](./archive/README.md) para índice completo.
 
 1. Comece por: [FRONTEND_MAP.md](./FRONTEND_MAP.md)
 2. Entenda o modo: [SIMULATION_MODE.md](./SIMULATION_MODE.md)
-3. Veja a integração: [FRONTEND_MARKETING_INTEGRATION.md](./FRONTEND_MARKETING_INTEGRATION.md)
-4. Consulte APIs: [API_MARKETING_ROUTES.md](./API_MARKETING_ROUTES.md)
+3. Veja a integração: [FRONTEND_MARKETING_INTEGRATION.md](./api/FRONTEND_MARKETING_INTEGRATION.md)
+4. Consulte APIs: [openapi.yaml](./api/openapi.yaml) ou [API_MARKETING_ROUTES.md](./api/API_MARKETING_ROUTES.md)
 
 ### 🔧 DevOps
 
-1. Setup inicial: [DEPLOY_DASHBOARD.md](./DEPLOY_DASHBOARD.md)
-2. Database: [NEON_SETUP_GUIDE.md](./NEON_SETUP_GUIDE.md)
-3. Migrations: [RUN_MIGRATIONS.md](./RUN_MIGRATIONS.md)
-4. CI/CD: [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md)
+1. Setup inicial: [DEPLOY_DASHBOARD.md](./guides/DEPLOY_DASHBOARD.md)
+2. Database: [NEON_SETUP_GUIDE.md](./guides/NEON_SETUP_GUIDE.md)
+3. Migrations: [RUN_MIGRATIONS.md](./guides/RUN_MIGRATIONS.md)
+4. CI/CD: [GITHUB_ACTIONS_SETUP.md](./guides/GITHUB_ACTIONS_SETUP.md)
 
 ### 🏛️ Arquitetura
 
@@ -178,9 +189,10 @@ Ver [`archive/README.md`](./archive/README.md) para índice completo.
 - [adr/0003-wallet-extensions-mpc-automation-posture.md](./adr/0003-wallet-extensions-mpc-automation-posture.md)
 
 **Marketing / Analytics:**
-- [API_MARKETING_ROUTES.md](./API_MARKETING_ROUTES.md)
-- [MARKETING_SCHEMA_EXPLANATION.md](./MARKETING_SCHEMA_EXPLANATION.md)
-- [FRONTEND_MARKETING_INTEGRATION.md](./FRONTEND_MARKETING_INTEGRATION.md)
+- [openapi.yaml](./api/openapi.yaml)
+- [API_MARKETING_ROUTES.md](./api/API_MARKETING_ROUTES.md)
+- [MARKETING_SCHEMA_EXPLANATION.md](./api/MARKETING_SCHEMA_EXPLANATION.md)
+- [FRONTEND_MARKETING_INTEGRATION.md](./api/FRONTEND_MARKETING_INTEGRATION.md)
 
 **Database:**
 - [DATABASE_SCHEMA.sql](./DATABASE_SCHEMA.sql)
@@ -188,14 +200,18 @@ Ver [`archive/README.md`](./archive/README.md) para índice completo.
 - [RUN_MIGRATIONS.md](./RUN_MIGRATIONS.md)
 
 **Deploy:**
-- [DEPLOY_DASHBOARD.md](./DEPLOY_DASHBOARD.md)
-- [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md)
+- [DEPLOY_DASHBOARD.md](./guides/DEPLOY_DASHBOARD.md)
+- [GITHUB_ACTIONS_SETUP.md](./guides/GITHUB_ACTIONS_SETUP.md)
 - [ARCHITECTURE_WORKFLOWS_AND_DEPLOYMENT.md](./ARCHITECTURE_WORKFLOWS_AND_DEPLOYMENT.md)
+
+**API:**
+- [openapi.yaml](./api/openapi.yaml)
+- [API_MARKETING_ROUTES.md](./api/API_MARKETING_ROUTES.md)
 
 **Organização:**
 - [ORGANIZATION.md](./ORGANIZATION.md)
 - [REPOSITORY_VISIBILITY_POLICY.md](./REPOSITORY_VISIBILITY_POLICY.md)
-- [REPOSITORY_CONSISTENCY_CHECKLIST.md](./REPOSITORY_CONSISTENCY_CHECKLIST.md)
+- [REPOSITORY_CONSISTENCY_CHECKLIST.md](./guides/REPOSITORY_CONSISTENCY_CHECKLIST.md)
 
 ---
 

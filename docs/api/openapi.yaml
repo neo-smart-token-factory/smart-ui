@@ -1,0 +1,725 @@
+openapi: 3.0.3
+info:
+  title: NΞØ Smart Factory API
+  description: |
+    API documentation for the NΞØ Smart Factory Demo & Intent Layer.
+    
+    **⚠️ Important:** This API operates in simulation mode and does not execute real blockchain transactions.
+    
+    All endpoints are Vercel Serverless Functions and require proper database configuration.
+  version: 1.0.0
+  contact:
+    name: NΞØ Smart Factory
+    url: https://github.com/neo-smart-token-factory/smart-ui
+  license:
+    name: MIT
+
+servers:
+  - url: https://smart-ui-dashboard.vercel.app/api
+    description: Production
+  - url: http://localhost:3000/api
+    description: Local development (vercel dev)
+
+tags:
+  - name: Deploys
+    description: Token deployment tracking (simulation mode)
+  - name: Drafts
+    description: User draft management
+  - name: Marketing
+    description: Marketing and analytics endpoints
+  - name: Operations
+    description: Operational status and health checks
+
+paths:
+  /deploys:
+    get:
+      summary: List recent deploys
+      description: Returns the 50 most recent token deployments (simulated)
+      tags:
+        - Deploys
+      responses:
+        '200':
+          description: List of deploys
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deploy'
+        '503':
+          description: Database connection not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Record a new deploy
+      description: Records a new token deployment (simulation mode)
+      tags:
+        - Deploys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeployInput'
+      responses:
+        '201':
+          description: Deploy recorded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: Missing required fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Failed to record deploy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Database connection not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /drafts:
+    get:
+      summary: Get user draft
+      description: Retrieves a saved draft for a user address
+      tags:
+        - Drafts
+      parameters:
+        - name: address
+          in: query
+          required: true
+          description: User wallet address
+          schema:
+            type: string
+            pattern: '^0x[a-fA-F0-9]{40}$'
+      responses:
+        '200':
+          description: Draft configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenConfig'
+        '400':
+          description: Address required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: No draft found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Fetch error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Database connection not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Save user draft
+      description: Saves or updates a user draft configuration
+      tags:
+        - Drafts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DraftInput'
+      responses:
+        '200':
+          description: Draft saved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '500':
+          description: Failed to save draft
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Database connection not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /ops-status:
+    get:
+      summary: Get operational status
+      description: Returns the operational status of the protocol
+      tags:
+        - Operations
+      responses:
+        '200':
+          description: Operational status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpsStatus'
+        '500':
+          description: Failed to retrieve status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /leads:
+    get:
+      summary: Get lead by identifier
+      description: Retrieves a lead by session_id, wallet_address, or email
+      tags:
+        - Marketing
+      parameters:
+        - name: session_id
+          in: query
+          schema:
+            type: string
+        - name: wallet_address
+          in: query
+          schema:
+            type: string
+        - name: email
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lead information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+        '400':
+          description: Missing required parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Lead not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Database connection not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create or update lead
+      description: Creates a new lead or updates an existing one
+      tags:
+        - Marketing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadInput'
+      responses:
+        '200':
+          description: Lead created/updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Database connection not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /analytics:
+    get:
+      summary: Get analytics data
+      description: Retrieves analytics and metrics
+      tags:
+        - Marketing
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [funnel, abandoned, summary]
+        - name: days
+          in: query
+          schema:
+            type: integer
+            default: 30
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: hours
+          in: query
+          schema:
+            type: integer
+            default: 24
+      responses:
+        '200':
+          description: Analytics data
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/FunnelData'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/AbandonedLead'
+                  - $ref: '#/components/schemas/SummaryData'
+        '400':
+          description: Invalid type parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Database connection not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /sessions:
+    get:
+      summary: Get user session
+      description: Retrieves a user session by session_id
+      tags:
+        - Marketing
+      parameters:
+        - name: session_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Session information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '400':
+          description: session_id is required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Database connection not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create or update session
+      description: Creates a new session or updates an existing one
+      tags:
+        - Marketing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionInput'
+      responses:
+        '200':
+          description: Session created/updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Database connection not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /events:
+    get:
+      summary: Get conversion events
+      description: Retrieves conversion events with optional filters
+      tags:
+        - Marketing
+      parameters:
+        - name: lead_id
+          in: query
+          schema:
+            type: integer
+        - name: session_id
+          in: query
+          schema:
+            type: string
+        - name: event_type
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: List of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConversionEvent'
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Database connection not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Record conversion event
+      description: Records a new conversion event
+      tags:
+        - Marketing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventInput'
+      responses:
+        '201':
+          description: Event recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversionEvent'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Database connection not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Deploy:
+      type: object
+      properties:
+        id:
+          type: integer
+        contract_address:
+          type: string
+          pattern: '^0x[a-fA-F0-9]{40}$'
+        owner_address:
+          type: string
+          pattern: '^0x[a-fA-F0-9]{40}$'
+        network:
+          type: string
+          enum: [base, polygon, ethereum]
+        tx_hash:
+          type: string
+          nullable: true
+        token_name:
+          type: string
+        token_symbol:
+          type: string
+        lead_id:
+          type: integer
+          nullable: true
+        session_id:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+
+    DeployInput:
+      type: object
+      required:
+        - contract_address
+        - owner_address
+      properties:
+        contract_address:
+          type: string
+          pattern: '^0x[a-fA-F0-9]{40}$'
+        owner_address:
+          type: string
+          pattern: '^0x[a-fA-F0-9]{40}$'
+        network:
+          type: string
+          enum: [base, polygon, ethereum]
+        tx_hash:
+          type: string
+          nullable: true
+        token_name:
+          type: string
+        token_symbol:
+          type: string
+        lead_id:
+          type: integer
+          nullable: true
+        session_id:
+          type: string
+          nullable: true
+
+    DraftInput:
+      type: object
+      required:
+        - user_address
+      properties:
+        user_address:
+          type: string
+          pattern: '^0x[a-fA-F0-9]{40}$'
+        token_config:
+          $ref: '#/components/schemas/TokenConfig'
+        lead_id:
+          type: integer
+          nullable: true
+        session_id:
+          type: string
+          nullable: true
+
+    TokenConfig:
+      type: object
+      additionalProperties: true
+      description: Flexible JSON object containing token configuration
+
+    OpsStatus:
+      type: object
+      properties:
+        version:
+          type: string
+          example: "0.5.3"
+        codename:
+          type: string
+          example: "MULTICHAIN FOUNDATION"
+        status:
+          type: string
+          enum: [operational, degraded, error]
+        forge:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              status:
+                type: string
+                enum: [completed, in_progress, pending]
+              notes:
+                type: string
+
+    Lead:
+      type: object
+      properties:
+        id:
+          type: integer
+        session_id:
+          type: string
+        wallet_address:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    LeadInput:
+      type: object
+      required:
+        - session_id
+      properties:
+        session_id:
+          type: string
+        wallet_address:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+
+    Session:
+      type: object
+      properties:
+        id:
+          type: integer
+        session_id:
+          type: string
+        user_agent:
+          type: string
+          nullable: true
+        referrer:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        last_activity_at:
+          type: string
+          format: date-time
+
+    SessionInput:
+      type: object
+      required:
+        - session_id
+      properties:
+        session_id:
+          type: string
+        user_agent:
+          type: string
+          nullable: true
+        referrer:
+          type: string
+          nullable: true
+
+    ConversionEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+        lead_id:
+          type: integer
+          nullable: true
+        session_id:
+          type: string
+          nullable: true
+        event_type:
+          type: string
+        event_data:
+          type: object
+          additionalProperties: true
+        occurred_at:
+          type: string
+          format: date-time
+
+    EventInput:
+      type: object
+      required:
+        - event_type
+      properties:
+        lead_id:
+          type: integer
+          nullable: true
+        session_id:
+          type: string
+          nullable: true
+        event_type:
+          type: string
+        event_data:
+          type: object
+          additionalProperties: true
+
+    FunnelData:
+      type: object
+      properties:
+        visitors:
+          type: integer
+        leads:
+          type: integer
+        drafts:
+          type: integer
+        deploys:
+          type: integer
+
+    AbandonedLead:
+      type: object
+      properties:
+        lead_id:
+          type: integer
+        session_id:
+          type: string
+        wallet_address:
+          type: string
+          nullable: true
+        hours_since_activity:
+          type: number
+        last_activity_at:
+          type: string
+          format: date-time
+
+    SummaryData:
+      type: object
+      properties:
+        total_leads:
+          type: integer
+        total_sessions:
+          type: integer
+        total_deploys:
+          type: integer
+        conversion_rate:
+          type: number
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
