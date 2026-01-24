@@ -34,6 +34,17 @@ Esta pasta contém documentos históricos e relatórios de processos concluídos
   - **Status:** Concluída
   - **Descrição:** Auditoria de visibilidade da organização (política criada)
 
+### Documentos Desatualizados
+- **[ui-status.md](./ui-status.md)**
+  - **Data:** 2026-01-24
+  - **Status:** Arquivado
+  - **Descrição:** Status do Smart UI (redundante com ADR 0002, substituído)
+
+- **[ui-diagnostic-checklist.md](./ui-diagnostic-checklist.md)**
+  - **Data:** 2026-01-24
+  - **Status:** Arquivado
+  - **Descrição:** Checklist de diagnóstico (desatualizado após migração multi-repos)
+
 ---
 
 ## 📝 Nota
