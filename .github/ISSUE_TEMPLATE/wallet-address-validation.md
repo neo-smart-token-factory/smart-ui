@@ -25,11 +25,13 @@ Currently, wallet addresses are not validated before use, which could lead to:
 ### Impact
 
 **User Experience:**
+
 - Confusing errors when addresses are invalid
 - No feedback for typos
 - Transactions may fail with unclear errors
 
 **Security:**
+
 - Potential issues with malformed addresses
 - No checksum validation (EIP-55)
 
