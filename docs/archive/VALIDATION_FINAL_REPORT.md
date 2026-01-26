@@ -1,5 +1,8 @@
 # ✅ Relatório Final de Validação - Todos os Repositórios
 
+> **⚠️ ARCHIVED DOCUMENT**  
+> This document is preserved for historical reference. The content reflects the state of the project at the time of archiving and may contain outdated nomenclature (e.g., "forge" instead of "deploy/smart"). Please refer to current documentation for up-to-date information.
+
 **Data:** Janeiro 2026  
 **Status:** ✅ **Validação Completa e Correções Aplicadas**
 

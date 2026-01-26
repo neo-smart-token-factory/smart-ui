@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS email_subscriptions (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     lead_id INTEGER REFERENCES leads(id) ON DELETE SET NULL,
-    source VARCHAR(100),                         -- landing_page, newsletter_form, post_forge, etc.
+    source VARCHAR(100),                         -- landing_page, newsletter_form, post_deploy, etc.
     subscribed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     unsubscribed_at TIMESTAMP WITH TIME ZONE,
     status VARCHAR(20) DEFAULT 'active',         -- active, unsubscribed, bounced

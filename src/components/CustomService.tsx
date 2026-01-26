@@ -38,9 +38,15 @@ export default function CustomService() {
 
             <div className="p-8 space-y-6">
                 <div className="space-y-2">
+<<<<<<< HEAD
                     <h3 className="text-2xl font-bold font-headline">Custom Neural Smart</h3>
                     <p className="text-slate-400 text-sm max-w-xl">
                         Seeking architectures beyond our standard matrix? Our specialized engineers craft custom protocols, L3 solutions, and complex tokenomics.
+=======
+                    <h3 className="text-2xl font-bold font-headline">Custom Smart Solutions</h3>
+                    <p className="text-slate-400 text-sm max-w-xl">
+                        Seeking architectures beyond our standard matrix? Our specialized engineers develop custom protocols, L3 solutions, and complex tokenomics.
+>>>>>>> main
                     </p>
                 </div>
 
