@@ -32,11 +32,7 @@ When the user clicks "Deploy Token", the deployment is simulated:
 - No actual smart contract is deployed to any blockchain
 - The simulated deployment is saved to the database
 
-<<<<<<< HEAD
-**Code Location**: `src/App.jsx` - `handleSmart()` function
-=======
 **Code Location**: `src/App.jsx` - `handleDeploy()` function (lines 136-182)
->>>>>>> main
 
 **Warning**: Simulated deployments appear in the deployment history but do not correspond to real blockchain contracts.
 
@@ -72,11 +68,7 @@ To implement real blockchain deployments, the following changes are needed:
    - Connect to selected network (Base, Arbitrum, etc.)
    ```
 
-<<<<<<< HEAD
-2. **Contract Deployment** (`handleSmart` function)
-=======
 2. **Contract Deployment** (`handleDeploy` function)
->>>>>>> main
 
    ```javascript
    // Replace setTimeout simulation with:

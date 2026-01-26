@@ -25,13 +25,8 @@
       { id: 'smart-core',         label: 'smart-core',         type: 'repo-private', description: 'Autoridade de protocolo. Acesso apenas via smart-cli (ADR).' },
       { id: 'smart-cli',          label: 'smart-cli',          type: 'repo-private', description: 'CLI, gateway para smart-core. Makefile CLI_DIR.' },
       { id: 'internal-ops',       label: 'internal-ops',       type: 'repo-private', description: 'Ops e estado. Makefile OPS_DIR. ops-sync atualiza state.' },
-<<<<<<< HEAD
-      { id: 'smart-core',         label: 'smart-core',         type: 'component',   description: 'Contratos (neo-smart-factory). Makefile CORE_DIR. smart-mint sync ABIs.' },
-      { id: 'smart-cli',          label: 'smart-cli',          type: 'component',   description: 'CLI (neo-smart-factory). smart-mint verifica atualizações.' },
-=======
       { id: 'smart-core-contracts', label: 'smart-core-contracts', type: 'component', description: 'Contratos (neo-smart-factory). Makefile CORE_DIR. smart-mint sync ABIs.' },
       { id: 'smart-cli-tool',     label: 'smart-cli-tool',     type: 'component',   description: 'CLI tool (neo-smart-factory). smart-mint verifica atualizações.' },
->>>>>>> main
       { id: 'state',              label: 'state.json',         type: 'component',   description: 'Estado operacional (internal-ops). smart-mint, ops-sync.' },
       { id: 'changelog',          label: 'changelog',          type: 'component',   description: 'Changelog (neo-smart-factory/docs). ops-sync, smart-mint.' },
       { id: 'protocol-health',    label: 'protocol-health',    type: 'workflow',    description: 'CI: checkout smart-ui + neo-smart-factory. make health.' },
@@ -51,20 +46,6 @@
       { source: 'ops-sync',         target: 'smart-ui',          label: 'runs (Makefile)',    type: 'workflow' },
       { source: 'ops-sync',         target: 'internal-ops',      label: 'sync state',         type: 'workflow' },
       { source: 'ops-sync',         target: 'docs',              label: 'changelog check',    type: 'workflow' },
-<<<<<<< HEAD
-      { source: 'smart-ui',         target: 'smart-core',        label: 'CORE_DIR (Makefile)',type: 'connected' },
-      { source: 'smart-ui',         target: 'smart-cli',         label: 'CLI_DIR (Makefile)', type: 'connected' },
-      { source: 'smart-ui',         target: 'internal-ops',      label: 'OPS_DIR, ops-sync',  type: 'connected' },
-      { source: 'neo-smart-factory',target: 'smart-core',        label: 'contains',           type: 'structure' },
-      { source: 'neo-smart-factory',target: 'smart-cli',         label: 'contains',           type: 'structure' },
-      { source: 'neo-smart-factory',target: 'internal-ops',      label: 'contains',           type: 'structure' },
-      { source: 'neo-smart-factory',target: 'changelog',         label: 'contains',           type: 'structure' },
-      { source: 'internal-ops',     target: 'state',             label: 'contains',           type: 'structure' },
-      { source: 'smart-mint',       target: 'smart-core',        label: 'sync ABIs',          type: 'workflow' },
-      { source: 'smart-mint',       target: 'changelog',         label: 'update',             type: 'workflow' },
-      { source: 'smart-mint',       target: 'state',             label: 'update',             type: 'workflow' },
-      { source: 'smart-mint',       target: 'smart-cli',         label: 'check',              type: 'workflow' },
-=======
       { source: 'smart-ui',         target: 'smart-core-contracts', label: 'CORE_DIR (Makefile)',type: 'connected' },
       { source: 'smart-ui',         target: 'smart-cli',         label: 'CLI_DIR (Makefile)', type: 'connected' },
       { source: 'smart-ui',         target: 'internal-ops',      label: 'OPS_DIR, ops-sync',  type: 'connected' },
@@ -77,7 +58,6 @@
       { source: 'smart-mint',       target: 'changelog',         label: 'update',             type: 'workflow' },
       { source: 'smart-mint',       target: 'state',             label: 'update',             type: 'workflow' },
       { source: 'smart-mint',       target: 'smart-cli-tool',    label: 'check',              type: 'workflow' },
->>>>>>> main
       { source: 'smart-ui',         target: 'smart-mint',        label: 'follows (doc)',      type: 'workflow' },
       { source: 'smart-cli',        target: 'smart-core',        label: 'gateway (ADR)',      type: 'connected' },
       { source: 'smart-ui-landing', target: 'smart-ui',          label: 'references',         type: 'connected' },
@@ -86,16 +66,10 @@
     ],
     notConnected: [
       { source: 'smart-ui',   target: 'landing',    reason: 'Sem sync nem link direto.' },
-<<<<<<< HEAD
-      { source: 'smart-core',        target: 'smart-ui',   reason: 'Sem integração direta (apenas via smart-cli).' },
-      { source: 'smart-core',        target: 'landing',    reason: 'Sem conexão.' },
-      { source: 'smart-core',        target: 'docs',       reason: 'Sem conexão direta.' },
-=======
       { source: 'smart-core', target: 'smart-ui',   reason: 'Sem integração direta (apenas via smart-cli).' },
       { source: 'smart-core', target: 'landing',    reason: 'Sem conexão.' },
       { source: 'smart-core', target: 'docs',       reason: 'Sem conexão direta.' },
       { source: 'smart-core-contracts', target: 'landing', reason: 'Sem conexão.' },
->>>>>>> main
       { source: 'state',      target: 'landing',    reason: 'Sem conexão.' },
       { source: 'landing',    target: 'smart-ui-landing', reason: 'Repos distintos; sem link direto.' }
     ]

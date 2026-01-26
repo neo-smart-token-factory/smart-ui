@@ -6,22 +6,67 @@
  * @see https://docs.dynamic.xyz/
  */
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 import { Wallet } from 'lucide-react';
-import { DynamicContextProvider, DynamicWidget } from '@dynamic-labs/sdk-react-core';
+import { DynamicContextProvider, DynamicWidget, useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import useFeatures from '../hooks/useFeatures';
 
 /**
- * WalletConnect Component
- * 
- * @param {Object} props
- * @param {string} [props.className] - Classes CSS adicionais
- * @param {Function} [props.onConnect] - Callback quando wallet conecta
- * @param {Function} [props.onDisconnect] - Callback quando wallet desconecta
- * @param {string} [props.userAddress] - Endereço da wallet conectada (controlado)
- * @param {Function} [props.setUserAddress] - Setter para endereço (controlado)
+ * Internal component that has access to Dynamic context
  */
+function WalletConnectInner({ onConnect, onDisconnect, userAddress, setUserAddress, className }) {
+  const { primaryWallet, isAuthenticated } = useDynamicContext();
+  const prevAddressRef = useRef(null);
+
+  // Effect to handle wallet connection/disconnection callbacks
+  useEffect(() => {
+    const walletAddress = primaryWallet?.address || null;
+    const isConnected = isAuthenticated && !!primaryWallet;
+    const prevAddress = prevAddressRef.current;
+
+    // Update parent component state if provided
+    if (setUserAddress && walletAddress !== userAddress) {
+      setUserAddress(walletAddress);
+    }
+
+    // Handle connection callback (when address changes from null to a value)
+    if (isConnected && walletAddress && !prevAddress) {
+      if (onConnect) {
+        onConnect(walletAddress);
+      }
+    }
+
+    // Handle disconnection callback (when address changes from a value to null)
+    if (!isConnected && prevAddress) {
+      if (onDisconnect) {
+        onDisconnect();
+      }
+    }
+
+    // Update ref for next render
+    prevAddressRef.current = walletAddress;
+  }, [primaryWallet, isAuthenticated, onConnect, onDisconnect, setUserAddress, userAddress]);
+
+  return (
+    <div className={`flex items-center gap-2 ${className}`}>
+      <DynamicWidget
+        variant="modal"
+        buttonClassName="btn-secondary !py-2 !px-4 !text-xs flex items-center gap-2"
+        innerButtonComponent={
+          <div className="flex items-center gap-2">
+            <Wallet className="w-3 h-3" />
+            <span>
+              {userAddress
+                ? `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`
+                : 'Connect Wallet'}
+            </span>
+          </div>
+        }
+      />
+    </div>
+  );
+}
+
 export default function WalletConnect({
   className = '',
   onConnect = null,
@@ -31,8 +76,6 @@ export default function WalletConnect({
 }) {
   const { isEnabled } = useFeatures();
   const isWeb3Enabled = isEnabled('phase2', 'web3');
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [error, setError] = useState(null);
 
   // Dynamic.xyz Environment ID
   const dynamicEnvironmentId = import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID || 
@@ -112,22 +155,13 @@ export default function WalletConnect({
         },
       }}
     >
-      <div className={`flex items-center gap-2 ${className}`}>
-        <DynamicWidget
-          variant="modal"
-          buttonClassName="btn-secondary !py-2 !px-4 !text-xs flex items-center gap-2"
-          innerButtonComponent={
-            <div className="flex items-center gap-2">
-              <Wallet className="w-3 h-3" />
-              <span>
-                {userAddress
-                  ? `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`
-                  : 'Connect Wallet'}
-              </span>
-            </div>
-          }
-        />
-      </div>
+      <WalletConnectInner
+        onConnect={onConnect}
+        onDisconnect={onDisconnect}
+        userAddress={userAddress}
+        setUserAddress={setUserAddress}
+        className={className}
+      />
     </DynamicContextProvider>
   );
 }
@@ -138,18 +172,20 @@ export default function WalletConnect({
  * @returns {Object} - { address, isConnected, provider, signer }
  */
 export function useDynamicWallet() {
+  // Always call the hook - React Hooks must be called unconditionally
+  let dynamicContext = null;
+  let hookError = null;
+  
   try {
-    const { useDynamicContext } = require('@dynamic-labs/sdk-react-core');
-    const { primaryWallet, isAuthenticated } = useDynamicContext();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    dynamicContext = useDynamicContext();
+  } catch (err) {
+    // Dynamic context not available (provider not mounted)
+    hookError = err;
+  }
 
-    return {
-      address: primaryWallet?.address || null,
-      isConnected: isAuthenticated && !!primaryWallet,
-      provider: primaryWallet?.connector?.getPublicClient?.() || null,
-      signer: primaryWallet?.connector?.getSigner?.() || null,
-    };
-  } catch (error) {
-    // Se Dynamic não estiver disponível, retorna valores padrão
+  // If we couldn't get the context, return default values
+  if (hookError || !dynamicContext) {
     return {
       address: null,
       isConnected: false,
@@ -157,6 +193,13 @@ export function useDynamicWallet() {
       signer: null,
     };
   }
-}
 
-// Export default já está no início do arquivo
+  const { primaryWallet, isAuthenticated } = dynamicContext;
+
+  return {
+    address: primaryWallet?.address || null,
+    isConnected: isAuthenticated && !!primaryWallet,
+    provider: primaryWallet?.connector?.getPublicClient?.() || null,
+    signer: primaryWallet?.connector?.getSigner?.() || null,
+  };
+}

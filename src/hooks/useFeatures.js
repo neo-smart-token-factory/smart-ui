@@ -23,7 +23,6 @@ import { useMemo } from 'react';
 import {
   FEATURES,
   PHASE_INFO,
-  isFeatureEnabled,
   getPhaseFeatures,
   getPhaseInfo,
   getCurrentPhase,

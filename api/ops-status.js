@@ -17,11 +17,7 @@ export default async function handler(req, res) {
             version: process.env.NEXT_PUBLIC_APP_VERSION || DEFAULT_VERSION,
             codename: process.env.NEXT_PUBLIC_APP_CODENAME || DEFAULT_CODENAME,
             status: "operational",
-<<<<<<< HEAD
-            smart: {
-=======
             components: {
->>>>>>> main
                 "Core Engine": {
                     status: "completed",
                     notes: "Smart contract core deployed and verified across all chains."
@@ -49,11 +45,7 @@ export default async function handler(req, res) {
             version: "unknown",
             codename: "ERROR",
             status: "degraded",
-<<<<<<< HEAD
-            smart: {}
-=======
             components: {}
->>>>>>> main
         });
     }
 }
