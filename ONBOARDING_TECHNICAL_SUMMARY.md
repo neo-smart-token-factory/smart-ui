@@ -270,7 +270,7 @@ make health  # Verifica status de todos os componentes do ecossistema
 
 1. **Verificação de Alinhamento (Core)**
    - Quando alterar interação com contrato, verificar última versão em:
-     - `/Users/nettomello/CODIGOS/neo-smart-factory/forge-core/contracts/`
+     - `/Users/nettomello/CODIGOS/neo-smart-factory/smart-core/contracts/`
    - Garantir que ABI no frontend corresponde ao deploy atual
 
 2. **Registro em Documentação (Docs)**
@@ -286,7 +286,7 @@ make health  # Verifica status de todos os componentes do ecossistema
 
 4. **Sincronização de Build (CLI)**
    - Verificar se CLI precisa atualização em:
-     - `/Users/nettomello/CODIGOS/neo-smart-factory/forge-cli/`
+     - `/Users/nettomello/CODIGOS/neo-smart-factory/smart-cli/`
    - Testar se `neo-smart-factory status` reflete mudanças
 
 **Comandos de Atalho:**
@@ -308,10 +308,10 @@ O projeto `smart-ui` faz parte de um ecossistema maior coordenado pela organiza�
    - **Organização:** `neo-smart-token-factory/neo-smart-factory`
    - **Integração:** Checkout automático no workflow `protocol-health.yml`
    - **Conteúdo esperado:**
-     - `forge-core/contracts/` — Contratos inteligentes
+     - `smart-core/contracts/` — Contratos inteligentes
      - `docs/changelog.md` — Changelog do ecossistema
      - `internal-ops/` — Operações internas e estado
-     - `forge-cli/` — CLI do ecossistema
+     - `smart-cli/` — CLI do ecossistema
 
 2. **`smart-ui`** (Este repositório)
    - **Organização:** `neo-smart-token-factory/smart-ui`
@@ -350,7 +350,7 @@ O workflow `protocol-health.yml` utiliza checkout cross-repo:
 O `Makefile` referencia caminhos locais para outros componentes (desenvolvimento local):
 
 ```makefile
-CORE_DIR = ../../neo_smart_factory/forge-core
+CORE_DIR = ../../neo_smart_factory/smart-core
 CLI_DIR = ../smart-cli
 DOCS_DIR = ../docs
 OPS_DIR = ../../neo_smart_factory/internal-ops
@@ -367,7 +367,7 @@ O arquivo `.env.example` referencia integrações com serviços externos:
 ```bash
 # Ecosystem Synchronization (Local Dev Only)
 INTERNAL_OPS_PATH="../neo-smart-factory/internal-ops/state.json"
-CORE_CONTRACTS_PATH="../neo-smart-factory/forge-core/contracts"
+CORE_CONTRACTS_PATH="../neo-smart-factory/smart-core/contracts"
 ```
 
 **Nota:** Em produção, estas serão substituídas por APIs via Neon.tech
@@ -428,9 +428,9 @@ CORE_CONTRACTS_PATH="../neo-smart-factory/forge-core/contracts"
 neo-smart-token-factory/  (Organização GitHub)
 │
 ├── neo-smart-factory/           # Repositório CORE (Principal)
-│   ├── forge-core/
+│   ├── smart-core/
 │   │   └── contracts/           # Contratos Solidity
-│   ├── forge-cli/               # CLI do ecossistema
+│   ├── smart-cli/               # CLI do ecossistema
 │   ├── docs/
 │   │   └── changelog.md         # Changelog centralizado
 │   └── internal-ops/
@@ -537,8 +537,8 @@ O comando `make health` (definido no `Makefile` da raiz) valida a integridade do
 ```makefile
 # Variáveis de integração
 FACTORY_DIR = neo-smart-factory
-CORE_DIR = $(FACTORY_DIR)/forge-core
-CLI_DIR = $(FACTORY_DIR)/forge-cli
+CORE_DIR = $(FACTORY_DIR)/smart-core
+CLI_DIR = $(FACTORY_DIR)/smart-cli
 DOCS_DIR = $(FACTORY_DIR)/docs
 OPS_DIR = $(FACTORY_DIR)/internal-ops
 
@@ -581,15 +581,15 @@ health:
 **Validações Realizadas:**
 1. ✅ Verifica se `smart-ui` está operacional
 2. ✅ Verifica se `neo-smart-factory` foi clonado (via workflow)
-3. ✅ Verifica existência de contratos em `forge-core/contracts/`
-4. ✅ Verifica existência de CLI em `forge-cli/`
+3. ✅ Verifica existência de contratos em `smart-core/contracts/`
+4. ✅ Verifica existência de CLI em `smart-cli/`
 5. ✅ Verifica existência de changelog em `docs/changelog.md`
 6. ✅ Verifica existência de estado operacional em `internal-ops/state.json`
 
 **Teste Local:**
 ```bash
 # Simular estrutura (desenvolvimento local)
-mkdir -p neo-smart-factory/{forge-core/contracts,forge-cli,docs,internal-ops}
+mkdir -p neo-smart-factory/{smart-core/contracts,smart-cli,docs,internal-ops}
 
 # Executar health check
 make health

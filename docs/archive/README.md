@@ -1,5 +1,8 @@
 # 📦 Documentos Arquivados
 
+> **⚠️ ARCHIVED DOCUMENTS**  
+> This folder contains historical documents preserved for reference. The content may contain outdated nomenclature (e.g., "forge" instead of "deploy/smart"). Please refer to current documentation in the parent `docs/` directory for up-to-date information.
+
 Esta pasta contém documentos históricos e relatórios de processos concluídos.
 
 ---

@@ -209,10 +209,10 @@ link.style('opacity', l => {
 ### Workflows
 - `protocol-health.yml` → Checkout de `smart-ui` + `neo-smart-factory`
 - `docs-guard.yml` → Valida `smart-ui` e referencia `docs`
-- `smart-mint-protocol` → Sincroniza `forge-core`, `changelog`, `state`
+- `smart-mint-protocol` → Sincroniza `smart-core`, `changelog`, `state`
 
 ### Estrutura Interna
-- `neo-smart-factory` contém: `forge-core`, `forge-cli`, `internal-ops`, `changelog`
+- `neo-smart-factory` contém: `smart-core`, `smart-cli`, `internal-ops`, `changelog`
 - `internal-ops` contém: `state.json`
 - `smart-ui` contém: `dashboard`, `landing-ui`, `mobile`, `api`
 - `dashboard` usa: `api`

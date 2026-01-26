@@ -195,7 +195,7 @@ function MyComponent() {
 ```
 1. Usuário preenche formulário de token
    ↓
-2. Usuário clica em "Forge Token"
+2. Usuário clica em "Deploy Token"
    ↓
 3. Validação do formulário
    ↓
