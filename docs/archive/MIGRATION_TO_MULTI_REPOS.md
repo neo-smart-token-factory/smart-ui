@@ -1,5 +1,8 @@
 # 🚀 Migração: Monorepo → 3 Repositórios Separados
 
+> **⚠️ ARCHIVED DOCUMENT**  
+> This document is preserved for historical reference. The content reflects the state of the project at the time of archiving and may contain outdated nomenclature (e.g., "forge" instead of "deploy/smart"). Please refer to current documentation for up-to-date information.
+
 **Objetivo:** Separar `smart-ui` em 3 repositórios independentes para simplificar deploy e eliminar problemas de Root Directory / ignoreCommand no Vercel.
 
 **✅ Status:** Migração concluída. Landing e Mobile extraídos para repos independentes; Dashboard limpo.

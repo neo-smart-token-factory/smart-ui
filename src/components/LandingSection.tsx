@@ -3,7 +3,7 @@ import { Shield, Zap, Globe, Target } from 'lucide-react';
 
 export default function LandingSection() {
     const stats = [
-        { label: "Forged Assets", value: "10k+", icon: Zap },
+        { label: "Deployed Assets", value: "10k+", icon: Zap },
         { label: "Total Liquidity", value: "$42M+", icon: Globe },
         { label: "Audit Rating", value: "AAA", icon: Shield }
     ];
@@ -76,7 +76,7 @@ export default function LandingSection() {
                     />
                     <button className="btn-primary !py-2">Join</button>
                 </div>
-                <p className="text-[10px] text-slate-500">Get weekly updates on new chains and forged assets.</p>
+                <p className="text-[10px] text-slate-500">Get weekly updates on new chains and deployed assets.</p>
             </div>
         </div>
     );

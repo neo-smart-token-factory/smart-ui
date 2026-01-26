@@ -9,7 +9,7 @@ Este workflow garante que as alterações no `smart-ui` estejam alinhadas com o 
 
 ### 1. Verificação de Alinhamento (Core)
 Sempre que alterar uma interação com contrato:
-- Verifique a última versão do contrato em `${CORE_CONTRACTS_PATH:-../neo-smart-factory/forge-core/contracts/}`
+- Verifique a última versão do contrato em `${CORE_CONTRACTS_PATH:-../neo-smart-factory/smart-core/contracts/}`
 - Garanta que a ABI no frontend (`smart-ui`) corresponde ao deploy atual.
 - **Nota:** Use variável de ambiente `CORE_CONTRACTS_PATH` ou caminho relativo padrão
 
@@ -25,7 +25,7 @@ Após concluir uma tarefa significativa:
 - **Nota:** Configure `INTERNAL_OPS_PATH` no `.env` para seu ambiente
 
 ### 4. Sincronização de Build (CLI)
-- Verifique se a CLI precisa de atualização em `${CLI_DIR:-../neo-smart-factory/forge-cli/}`.
+- Verifique se a CLI precisa de atualização em `${CLI_DIR:-../neo-smart-factory/smart-cli/}`.
 - Teste se `neo-smart-factory status` reflete as mudanças.
 - **Nota:** Use variável de ambiente ou caminho relativo conforme sua estrutura local
 

@@ -736,7 +736,7 @@ components:
         status:
           type: string
           enum: [operational, degraded, error]
-        forge:
+        components:
           type: object
           additionalProperties:
             type: object

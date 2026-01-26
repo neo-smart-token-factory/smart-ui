@@ -38,9 +38,9 @@ export default function CustomService() {
 
             <div className="p-8 space-y-6">
                 <div className="space-y-2">
-                    <h3 className="text-2xl font-bold font-headline">Custom Neural Forge</h3>
+                    <h3 className="text-2xl font-bold font-headline">Custom Smart Solutions</h3>
                     <p className="text-slate-400 text-sm max-w-xl">
-                        Seeking architectures beyond our standard matrix? Our specialized engineers forja custom protocols, L3 solutions, and complex tokenomics.
+                        Seeking architectures beyond our standard matrix? Our specialized engineers develop custom protocols, L3 solutions, and complex tokenomics.
                     </p>
                 </div>
 
