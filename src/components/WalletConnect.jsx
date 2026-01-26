@@ -169,23 +169,36 @@ export default function WalletConnect({
 /**
  * Hook para usar wallet conectada do Dynamic.xyz
  * 
+ * NOTE: This hook uses a try-catch pattern which technically violates React's
+ * rules of hooks. This is a pragmatic solution for Phase 01 where Web3 is disabled.
+ * 
+ * TODO Phase 02: Refactor to one of these patterns:
+ * 1. Wrap entire App in DynamicContextProvider (recommended)
+ * 2. Create a higher-order component
+ * 3. Use React Context for optional provider pattern
+ * 
  * @returns {Object} - { address, isConnected, provider, signer }
  */
 export function useDynamicWallet() {
-  // Always call the hook - React Hooks must be called unconditionally
-  let dynamicContext = null;
-  let hookError = null;
-  
+  // Try to get the context, but handle the case where we're not inside a provider
+  // This violates React Hooks rules but is acceptable for Phase 01 as a temporary solution
+  let context = null;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    dynamicContext = useDynamicContext();
-  } catch (err) {
-    // Dynamic context not available (provider not mounted)
-    hookError = err;
+    context = useDynamicContext();
+  } catch {
+    // Expected when called outside DynamicContextProvider (Phase 01 - Web3 disabled)
+    // Return safe defaults
+    return {
+      address: null,
+      isConnected: false,
+      provider: null,
+      signer: null,
+    };
   }
-
-  // If we couldn't get the context, return default values
-  if (hookError || !dynamicContext) {
+  
+  // If context is null or undefined, return defaults
+  if (!context) {
     return {
       address: null,
       isConnected: false,
@@ -194,7 +207,7 @@ export function useDynamicWallet() {
     };
   }
 
-  const { primaryWallet, isAuthenticated } = dynamicContext;
+  const { primaryWallet, isAuthenticated } = context;
 
   return {
     address: primaryWallet?.address || null,
