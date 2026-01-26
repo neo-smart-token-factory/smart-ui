@@ -6,7 +6,7 @@ interface OpsState {
     version: string;
     codename: string;
     status: string;
-    forge: {
+    components: {
         [key: string]: {
             status: string;
             notes: string;
@@ -69,7 +69,7 @@ export default function OpsDashboard() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {Object.entries(state.forge).map(([key, info]) => (
+                {Object.entries(state.components).map(([key, info]) => (
                     <div key={key} className="glass-card !p-4 border-white/5 bg-black/40">
                         <div className="flex items-center justify-between mb-3">
                             <span className="text-[10px] uppercase font-bold text-slate-400 tracking-tighter">{key}</span>
