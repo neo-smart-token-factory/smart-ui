@@ -4,7 +4,7 @@
 
 # Variáveis
 DASHBOARD_DIR = .
-CORE_DIR = ../../neo_smart_factory/forge-core
+CORE_DIR = ../../neo_smart_factory/smart-core
 CLI_DIR = ../smart-cli
 DOCS_DIR = ../docs
 OPS_DIR = ../../neo_smart_factory/internal-ops

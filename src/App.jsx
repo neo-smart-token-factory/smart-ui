@@ -429,9 +429,9 @@ export default function SmartMint() {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [sessionId, leadId, step, formData]);
 
-  const [forgeResult, setForgeResult] = useState(null);
+  const [smartResult, setSmartResult] = useState(null);
 
-  const validateForge = () => {
+  const validateSmart = () => {
     if (!formData.tokenName || formData.tokenName.length < 3) return "Token name must be at least 3 chars.";
     if (!formData.tokenSymbol || formData.tokenSymbol.length < 2) return "Token symbol must be at least 2 chars.";
     if (!formData.tokenSupply || Number(formData.tokenSupply) <= 0) return "Genesis supply must be positive.";
@@ -439,11 +439,11 @@ export default function SmartMint() {
     return null;
   };
 
-  const handleForge = async (e) => {
+  const handleSmart = async (e) => {
     e.preventDefault();
     setError(null);
 
-    const vError = validateForge();
+    const vError = validateSmart();
     if (vError) {
       setError(vError);
       return;
@@ -477,7 +477,7 @@ export default function SmartMint() {
           ...formData,
           address: '0x' + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
           txHash: '0x' + Array(64).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
-          status: 'FORGED'
+          status: 'DEPLOYED'
         };
       } else {
         // ⚠️ SIMULATION MODE: This is a mock deployment for demonstration purposes
@@ -491,7 +491,7 @@ export default function SmartMint() {
           ...formData,
           address: '0x' + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
           txHash: '0x' + Array(64).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
-          status: 'FORGED'
+          status: 'DEPLOYED'
         };
       }
 
@@ -596,10 +596,10 @@ export default function SmartMint() {
         });
       }
 
-      setForgeResult(result);
+      setSmartResult(result);
       fetchDeploys(); // Refresh history
     } catch {
-      setError("Protocol Forge Failed: Connectivity issues.");
+      setError("Protocol Deployment Failed: Connectivity issues.");
     } finally {
       setLoading(false);
     }
@@ -725,7 +725,7 @@ export default function SmartMint() {
             </motion.div>
           )}
 
-          {!forgeResult && step === 1 ? (
+          {!smartResult && step === 1 ? (
             <motion.div
               key="landing"
               initial={{ opacity: 0 }}
@@ -770,7 +770,7 @@ export default function SmartMint() {
 
               <LandingSection />
             </motion.div>
-          ) : !forgeResult && step === 2 ? (
+          ) : !smartResult && step === 2 ? (
             <motion.div
               key="constructor"
               initial={{ opacity: 0, y: 20 }}
@@ -778,7 +778,7 @@ export default function SmartMint() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="space-y-12"
             >
-              <form onSubmit={handleForge} className="space-y-10">
+              <form onSubmit={handleSmart} className="space-y-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="glass-card space-y-6">
                     <div className="flex items-center gap-2 text-neon-acid mb-2">
@@ -904,8 +904,8 @@ export default function SmartMint() {
                 </div>
                 <div className="space-y-2">
                   <span className="text-neon-acid font-mono text-[10px] tracking-[0.3em] font-bold">GENESIS SUCCESSFUL</span>
-                  <h2 className="text-4xl font-bold">{formData.tokenName} is Forged!</h2>
-                  <p className="text-slate-400 font-mono text-xs break-all border border-white/10 bg-black/40 p-2 rounded max-w-sm mx-auto">{forgeResult?.address}</p>
+                  <h2 className="text-4xl font-bold">{formData.tokenName} is Deployed!</h2>
+                  <p className="text-slate-400 font-mono text-xs break-all border border-white/10 bg-black/40 p-2 rounded max-w-sm mx-auto">{smartResult?.address}</p>
                 </div>
                 <div className="flex flex-wrap justify-center gap-3">
                   <button className="bg-white/5 px-6 py-2 rounded-lg border border-white/10 flex items-center gap-2 hover:bg-white/10 transition-all text-xs font-bold uppercase">
@@ -922,7 +922,7 @@ export default function SmartMint() {
 
               <div className="flex justify-center border-t border-white/5 pt-10">
                 <button
-                  onClick={() => { setForgeResult(null); setStep(1); }}
+                  onClick={() => { setSmartResult(null); setStep(1); }}
                   className="text-xs text-slate-500 hover:text-neon-acid transition-colors flex items-center gap-2 uppercase tracking-widest font-bold"
                 >
                   <ArrowRight className="w-3 h-3 rotate-180" /> Start New Sequence
