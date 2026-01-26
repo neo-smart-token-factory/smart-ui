@@ -88,6 +88,15 @@ test-dashboard:
 	cd $(DASHBOARD_DIR) && npm run lint
 	@echo "✅ Dashboard tests passed!"
 
+test-apis:
+	@echo "🧪 Testing all APIs..."
+	@echo "⚠️  Make sure 'make dev-vercel' is running in another terminal"
+	@./scripts/test-apis.sh
+
+test-apis-prod:
+	@echo "🧪 Testing APIs in production..."
+	@./scripts/test-apis.sh https://smart-ui-delta.vercel.app
+
 ops-sync:
 	@echo "Syncing with NΞØ Ecosystem..."
 	@if [ -d "$(OPS_DIR)" ]; then \
