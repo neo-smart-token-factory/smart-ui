@@ -10,6 +10,7 @@
 ## 📋 Problem Summary
 
 Currently, wallet addresses are not validated before use, which could lead to:
+
 - Invalid addresses causing errors
 - Typos in addresses not being caught
 - Security issues with malformed addresses
@@ -58,8 +59,8 @@ Currently, wallet addresses are not validated before use, which could lead to:
 ## 📚 References
 
 - Audit Report: `RESUMO_AUDITORIA_PT.md` (lines 302-304)
-- Ethers.js Address Validation: https://docs.ethers.org/v6/api/utils/#isAddress
-- EIP-55: https://eips.ethereum.org/EIPS/eip-55
+- Ethers.js Address Validation: <https://docs.ethers.org/v6/api/utils/#isAddress>
+- EIP-55: <https://eips.ethereum.org/EIPS/eip-55>
 
 ---
 
@@ -68,6 +69,7 @@ Currently, wallet addresses are not validated before use, which could lead to:
 ### Phase 1: Create Address Validation Utilities
 
 **File:** `src/utils/addressValidation.js`
+
 ```jsx
 import { isAddress, getAddress } from 'ethers';
 

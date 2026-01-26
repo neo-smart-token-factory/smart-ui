@@ -799,8 +799,10 @@ export default function SmartMint() {
                     </div>
 
                     <div>
-                      <label className="neo-label">Token Identity</label>
+                      <label htmlFor="token-name" className="neo-label">Token Identity</label>
                       <input
+                        id="token-name"
+                        name="tokenName"
                         type="text"
                         required
                         autoComplete="off"
@@ -812,8 +814,10 @@ export default function SmartMint() {
                     </div>
 
                     <div>
-                      <label className="neo-label">Neural Symbol</label>
+                      <label htmlFor="token-symbol" className="neo-label">Neural Symbol</label>
                       <input
+                        id="token-symbol"
+                        name="tokenSymbol"
                         type="text"
                         required
                         autoComplete="off"
@@ -826,8 +830,10 @@ export default function SmartMint() {
                     </div>
 
                     <div>
-                      <label className="neo-label">Genesis Supply</label>
+                      <label htmlFor="token-supply" className="neo-label">Genesis Supply</label>
                       <input
+                        id="token-supply"
+                        name="tokenSupply"
                         type="number"
                         required
                         min="1"
@@ -846,8 +852,10 @@ export default function SmartMint() {
                     </div>
 
                     <div>
-                      <label className="neo-label">Mission Narrative</label>
+                      <label htmlFor="mission-narrative" className="neo-label">Mission Narrative</label>
                       <textarea
+                        id="mission-narrative"
+                        name="description"
                         className="neo-input w-full min-h-[140px] resize-none"
                         placeholder="Describe the neural impact and utility of this asset..."
                         value={formData.description}

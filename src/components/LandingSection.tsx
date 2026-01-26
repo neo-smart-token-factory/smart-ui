@@ -70,11 +70,14 @@ export default function LandingSection() {
                 <h3 className="neo-label">Join the Neural Network</h3>
                 <div className="flex w-full max-w-md gap-2">
                     <input
+                        id="newsletter-email"
+                        name="email"
                         type="email"
                         placeholder="enter@your.neural.link"
                         className="neo-input flex-1"
+                        autoComplete="email"
                     />
-                    <button className="btn-primary !py-2">Join</button>
+                    <button type="submit" className="btn-primary !py-2">Join</button>
                 </div>
                 <p className="text-[10px] text-slate-500">Get weekly updates on new chains and deployed assets.</p>
             </div>

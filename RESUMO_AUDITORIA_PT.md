@@ -21,6 +21,7 @@ Esta auditoria avaliou completamente o código relacionado à conexão de Wallet
 ## ✅ O que está BOM
 
 ### 1. Arquitetura e Estrutura
+
 - ✅ **Arquitetura limpa e bem estruturada**
   - Separação adequada de responsabilidades
   - Padrão de hooks React bem implementado
@@ -40,6 +41,7 @@ Esta auditoria avaliou completamente o código relacionado à conexão de Wallet
   - Apropriado para escopo da Phase 01
 
 ### 2. Qualidade de Código
+
 - ✅ **Build passando com sucesso**
   - `npm run build` completa sem erros
   - Todas as dependências instaladas corretamente
@@ -56,6 +58,7 @@ Esta auditoria avaliou completamente o código relacionado à conexão de Wallet
   - Sanitização de input implementada
 
 ### 3. Documentação
+
 - ✅ **Documentação completa criada**
   - `WALLET_CONNECTION_AUDIT_PHASE01.md` (400+ linhas)
   - `SECURITY_SUMMARY.md` (detalhes de segurança)
@@ -82,12 +85,14 @@ Pacotes Afetados:
 ```
 
 **Ação Imediata Requerida:**
+
 ```bash
 npm install @dynamic-labs/sdk-react-core@4.56.0 @dynamic-labs/ethers-v6@4.56.0
 npm audit fix
 ```
 
 **Risco:** 
+
 - Potencial SSRF via axios vulnerável
 - Possível comprometimento de carteira
 - Exposição de chaves MPC
@@ -97,6 +102,7 @@ npm audit fix
 ### 2. ⚠️ Código Incompleto ou Experimental
 
 #### Problema #1: Integração CLI é Stub
+
 **Local:** `src/types/cli.js`
 
 ```javascript
@@ -110,6 +116,7 @@ async deployToken(request) {
 **Action:** Implementar na Phase 02
 
 #### Problema #2: Faltam Error Boundaries
+
 **Local:** Nenhum - NÃO IMPLEMENTADO
 
 **Impacto:** ALTO  
@@ -125,6 +132,7 @@ async deployToken(request) {
 **Prazo:** Phase 02 (antes de produção)
 
 #### Problema #3: Padrão Arriscado - Hook Condicional
+
 **Local:** `WalletConnect.jsx:188`
 
 ```javascript
@@ -145,9 +153,11 @@ try {
 ### 3. ⚠️ Fluxos Quebrados e Edge Cases
 
 #### Edge Case #1: Rejeição de Conexão
+
 **Status:** ❌ NÃO TRATADO
 
 **Comportamento Atual:**
+
 - Usuário rejeita conexão → Nenhum feedback
 - Sem estado de erro exibido
 - Sem mecanismo de retry
@@ -162,6 +172,7 @@ const [connectionError, setConnectionError] = useState(null);
 **Status:** ❌ NÃO TRATADO
 
 **Atual:**
+
 - Configurado para Base (8453) e Polygon (137)
 - Sem validação se usuário está em rede errada
 - Sem prompt para trocar de rede
@@ -169,6 +180,7 @@ const [connectionError, setConnectionError] = useState(null);
 **Recomendação:** Implementar detecção de rede na Phase 02
 
 #### Edge Case #3: Troca de Conta
+
 **Status:** ✅ PARCIALMENTE TRATADO
 
 **Atual:** useEffect rastreia mudanças em primaryWallet.address  
@@ -178,6 +190,7 @@ const [connectionError, setConnectionError] = useState(null);
 ### 4. ❌ Faltam Testes
 
 **Missing Test Coverage:**
+
 - ❌ Testes unitários para WalletConnect
 - ❌ Testes unitários para useDynamicWallet hook
 - ❌ Testes de integração para fluxo de conexão
@@ -203,6 +216,7 @@ const [connectionError, setConnectionError] = useState(null);
 ```
 
 **Problemas:**
+
 - ⚠️ Sem spinner de loading
 - ⚠️ Sem feedback de erro ao rejeitar
 - ⚠️ Sem confirmação de sucesso
@@ -218,6 +232,7 @@ const [connectionError, setConnectionError] = useState(null);
 ```
 
 **Problemas:**
+
 - ⚠️ Sem diálogo de confirmação
 - ⚠️ Sem notificação após desconexão
 
@@ -235,6 +250,7 @@ const [connectionError, setConnectionError] = useState(null);
 ### Estados de Erro: ❌ 20% Pronto
 
 **Tratamento Faltando:**
+
 - ❌ Conexão rejeitada
 - ❌ Rede indisponível
 - ❌ Falha de RPC endpoint
