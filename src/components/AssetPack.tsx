@@ -19,11 +19,7 @@ export default function AssetPack() {
             color: "text-green-400"
         },
         {
-<<<<<<< HEAD
-            title: "Social Smart",
-=======
             title: "Social Kit",
->>>>>>> main
             subtitle: "Branding kits & profile setups",
             icon: Share2,
             action: "Get Kit",

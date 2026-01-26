@@ -98,7 +98,7 @@ export default async function handler(req, res) {
 /**
  * Extrai estratégias de redes sociais do texto
  */
-function extractSocialMediaStrategies(answer, results) {
+function extractSocialMediaStrategies(answer) {
   const strategies = [];
   const platforms = ['twitter', 'telegram', 'discord', 'reddit', 'medium'];
 

@@ -224,23 +224,25 @@ export class CLIClient {
 
   /**
    * Executa deploy de token via CLI
-   * @param {DeployRequest} _request
+   * @param {DeployRequest} request
    * @returns {Promise<DeployResponse>}
    */
-  async deployToken(_request) {
+  async deployToken(request) {
     // TODO: Implementar quando CLI estiver pronto
     // Por enquanto, retorna erro indicando que não está implementado
+    console.log('Deploy request:', request); // Log for debugging
     return DeployResponse.error('CLI integration not yet implemented');
   }
 
   /**
    * Verifica status de uma transação
-   * @param {string} _txHash
-   * @param {string} _network
+   * @param {string} txHash
+   * @param {string} network
    * @returns {Promise<TransactionResult>}
    */
-  async getTransactionStatus(_txHash, _network) {
+  async getTransactionStatus(txHash, network) {
     // TODO: Implementar quando CLI estiver pronto
+    console.log('Transaction status check:', txHash, network); // Log for debugging
     throw new Error('CLI integration not yet implemented');
   }
 }
