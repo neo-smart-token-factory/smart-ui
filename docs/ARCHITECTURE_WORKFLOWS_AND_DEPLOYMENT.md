@@ -169,7 +169,7 @@ Report de saúde do protocolo
 
 2. **`POST /api/deploys`**
    - **Uso:** Registrar novo deploy após minting
-   - **Componente:** `App.jsx` → `handleForge()`
+   - **Componente:** `App.jsx` → `handleSmart()`
    - **Payload:**
      ```json
      {
@@ -204,7 +204,7 @@ Report de saúde do protocolo
 5. **`GET /api/ops-status`**
    - **Uso:** Status operacional do protocolo
    - **Componente:** `OpsDashboard.tsx`
-   - **Resposta:** Estado operacional (version, codename, status, forge)
+   - **Resposta:** Estado operacional (version, codename, status, smart)
 
 **Modo de Desenvolvimento:**
 

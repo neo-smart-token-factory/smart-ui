@@ -45,7 +45,7 @@ Guia para colocar o **Dashboard** no ar com Neon (DB), Vercel e API routes + sim
 ### 4. Pós-deploy
 
 - [ ] URL do Dashboard abre sem erro
-- [ ] Simulation mode ativo (Forge funciona sem wallet)
+- [ ] Simulation mode ativo (Deploy funciona sem wallet)
 - [ ] `/api/deploys` e `/api/drafts` respondem (com DB configurado)
 
 ---
@@ -186,7 +186,7 @@ Funcionam **apenas** em runtime Vercel (`vercel dev` local ou deploy). Com `vite
 
 ### Simulation mode
 
-- `VITE_ENABLE_WEB3=false`: Forge usa fluxo simulado (sem wallet/blockchain real).
+- `VITE_ENABLE_WEB3=false`: Deploy usa fluxo simulado (sem wallet/blockchain real).
 - UI funciona normalmente; deploys e drafts são persistidos via API + Neon quando `DATABASE_URL` está configurado.
 
 ### Garantir API + DB em produção
@@ -203,7 +203,7 @@ Funcionam **apenas** em runtime Vercel (`vercel dev` local ou deploy). Com `vite
 
 1. Abrir a URL do Dashboard.
 2. Verificar que a interface carrega sem erro.
-3. **Forge (simulation):** preencher formulário e clicar em deploy → deve completar o fluxo simulado.
+3. **Deploy (simulation):** preencher formulário e clicar em deploy → deve completar o fluxo simulado.
 4. **Deploy history:** deve carregar (vazio ou com itens) sem erro no console.
 5. **Drafts:** salvar e recarregar → draft deve persistir (com DB + API OK).
 

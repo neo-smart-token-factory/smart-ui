@@ -1,5 +1,10 @@
 # UI Diagnostic Checklist
 
+> **⚠️ NOMENCLATURE NOTE (2026-01-24):**  
+> This document contains historical references to "Forge" terminology which has been deprecated.  
+> The official nomenclature is now "Smart" (e.g., smart-core, smart-cli).  
+> Historical terminology is preserved for archival purposes only.
+
 **Data:** 2026-01-24  
 **Status:** Ativo  
 **Categoria:** Guia  

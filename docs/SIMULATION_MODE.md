@@ -32,7 +32,7 @@ When the user clicks "Forge Token", the deployment is simulated:
 - No actual smart contract is deployed to any blockchain
 - The simulated deployment is saved to the database
 
-**Code Location**: `src/App.jsx` - `handleForge()` function (lines 136-182)
+**Code Location**: `src/App.jsx` - `handleSmart()` function
 
 **Warning**: Simulated deployments appear in the deployment history but do not correspond to real blockchain contracts.
 
@@ -68,11 +68,11 @@ To implement real blockchain deployments, the following changes are needed:
    - Connect to selected network (Base, Arbitrum, etc.)
    ```
 
-2. **Contract Deployment** (`handleForge` function)
+2. **Contract Deployment** (`handleSmart` function)
 
    ```javascript
    // Replace setTimeout simulation with:
-   - Import contract factory from forge-core ABIs
+   - Import contract factory from smart-core ABIs
    - Deploy contract with ethers.ContractFactory
    - Wait for transaction confirmation
    - Listen for TokenCreated events
@@ -161,7 +161,7 @@ vercel deploy --prod
 Phase 1: Web3 Integration is the priority
 
 - [ ] Replace Demo Fallback with Dynamic.xyz SDK
-- [ ] Import real ABIs from forge-core
+- [ ] Import real ABIs from smart-core
 - [ ] Replace setTimeout simulation with contract writes
 - [ ] Listen for on-chain TokenCreated events
 

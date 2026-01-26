@@ -31,7 +31,7 @@ O Protocolo NΞØ não é apenas um código; é um diferencial de mercado que un
 *   **Hospedagem:** [Vercel](https://vercel.com) (Grátis/Hobby).
 *   **Estrutura:** 
     *   **Main Dashboard (Nexus):** Next.js 14 — Controle total do ecossistema.
-    *   **User App (Forge PWA):** Nuxt 3 — Fábrica de tokens mobile-optimized.
+    *   **User App (Smart PWA):** Nuxt 3 — Fábrica de tokens mobile-optimized.
     *   **Landing Page:** React/Vite — Marketing e Conversão.
 
 ### **4. Banco de Dados e Estado (Alternativas ao Supabase)**

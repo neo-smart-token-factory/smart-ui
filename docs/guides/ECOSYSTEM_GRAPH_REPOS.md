@@ -13,7 +13,7 @@
 
 | Elemento | Descrição |
 |----------|-----------|
-| **Nodes** | Repos (públicos + privados), componentes (forge-core, forge-cli, state, changelog), workflows (protocol-health, docs-guard, smart-mint, ops-sync). |
+| **Nodes** | Repos (públicos + privados), componentes (smart-core, smart-cli, state, changelog), workflows (protocol-health, docs-guard, smart-mint, ops-sync). |
 | **Edges (conectados)** | Conexões rastreadas em profundidade: sync, referências, Makefile (CORE_DIR, CLI_DIR, OPS_DIR), CI checkout, contains, etc. |
 | **Não conectados** | Pares **sem** sync, link direto ou workflow entre si. |
 
@@ -85,10 +85,10 @@ O grafo vive no **smart-ui** e é servido com o dashboard (Vercel). **Pré-lanç
 
 As conexões do grafo foram mapeadas a partir de:
 
-- **Makefile:** `CORE_DIR`, `CLI_DIR`, `OPS_DIR`, `DOCS_DIR` → forge-core, smart-cli, internal-ops, docs.
+- **Makefile:** `CORE_DIR`, `CLI_DIR`, `OPS_DIR`, `DOCS_DIR` → smart-core, smart-cli, internal-ops, docs.
 - **Workflows CI:** `protocol-health` (checkout smart-ui + neo-smart-factory), `docs-guard` (valida docs do smart-ui).
 - **Makefile targets:** `ops-sync` (sync com internal-ops e docs/changelog), `health` (checagem de componentes).
-- **Workflow doc:** `smart-mint-protocol` → forge-core (sync ABIs), changelog, state, forge-cli.
+- **Workflow doc:** `smart-mint-protocol` → smart-core (sync ABIs), changelog, state, smart-cli.
 - **Referências:** README, ORGANIZATION, checklist (smart-ui-landing, smart-ui-mobile ↔ docs, smart-ui).
 - **ADRs / ui-status:** smart-cli como gateway para smart-core; smart-ui não integra direto com smart-core.
 
