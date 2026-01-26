@@ -42,7 +42,7 @@ interface NetworkSelectorProps {
 export default function NetworkSelector({ selected, onSelect }: NetworkSelectorProps) {
     return (
         <div className="space-y-4">
-            <h3 className="neo-label">Select Deployment Forge</h3>
+            <h3 className="neo-label">Select Deployment Network</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {networks.map((net) => (
                     <motion.div

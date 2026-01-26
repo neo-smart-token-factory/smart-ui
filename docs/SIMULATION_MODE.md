@@ -24,7 +24,7 @@ When no Web3 wallet (like MetaMask) is detected in the browser:
 
 ### 2. Token Deployment
 
-When the user clicks "Forge Token", the deployment is simulated:
+When the user clicks "Deploy Token", the deployment is simulated:
 
 - 3-second artificial delay mimics blockchain transaction time
 - Random contract address is generated (40 hex characters)

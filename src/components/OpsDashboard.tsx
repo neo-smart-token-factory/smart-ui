@@ -6,7 +6,7 @@ interface OpsState {
     version: string;
     codename: string;
     status: string;
-    forge: {
+    smart: {
         [key: string]: {
             status: string;
             notes: string;
