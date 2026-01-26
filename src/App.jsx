@@ -24,6 +24,7 @@ import TransactionStatus from './components/TransactionStatus';
 import { useTransactionStatus } from './components/TransactionStatus';
 import useFeatures from './hooks/useFeatures';
 import { TRANSACTION_STATUS } from './types/cli';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Input sanitization
 const sanitizeInput = (val) => String(val).replace(/[<>]/g, '');
@@ -606,7 +607,18 @@ export default function SmartMint() {
   };
 
   return (
-    <div className="min-h-screen selection:bg-neon-acid selection:text-obsidian">
+    <ErrorBoundary
+      componentName="SmartMint"
+      level="critical"
+      title="Erro na Aplicação"
+      message="Ocorreu um erro inesperado. Por favor, recarregue a página."
+      showDetails={import.meta.env.DEV}
+      showReload={true}
+      onError={(error, errorInfo) => {
+        console.error('[SmartMint] Critical error caught by boundary:', error, errorInfo);
+      }}
+    >
+      <div className="min-h-screen selection:bg-neon-acid selection:text-obsidian">
 
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-neon-acid/10 blur-[120px] rounded-full animate-pulse" />
@@ -1019,7 +1031,8 @@ export default function SmartMint() {
         </div>
       </footer>
 
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }
 

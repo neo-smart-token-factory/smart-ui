@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, XCircle, Loader2, ExternalLink, Copy } from 'lucide-react';
 import { useState } from 'react';
 import { TRANSACTION_STATUS } from '../types/cli';
+import ErrorBoundary from './ErrorBoundary';
+import TransactionErrorFallback from './TransactionErrorFallback';
 
 /**
  * TransactionStatus Component
@@ -92,13 +94,28 @@ export default function TransactionStatus({
   };
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        className={`p-4 rounded-xl border ${config.bgColor} ${config.borderColor} ${className}`}
-      >
+    <ErrorBoundary
+      componentName="TransactionStatus"
+      level="critical"
+      fallback={(error, reset) => (
+        <TransactionErrorFallback
+          error={error}
+          transactionHash={txHash}
+          network={network}
+          onRetry={reset}
+        />
+      )}
+      onError={(error, errorInfo) => {
+        console.error('[TransactionStatus] Error caught by boundary:', error, errorInfo);
+      }}
+    >
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          className={`p-4 rounded-xl border ${config.bgColor} ${config.borderColor} ${className}`}
+        >
         <div className="flex items-start gap-3">
           <div className="flex-shrink-0">
             {config.animate ? (
@@ -196,6 +213,7 @@ export default function TransactionStatus({
         </div>
       </motion.div>
     </AnimatePresence>
+    </ErrorBoundary>
   );
 }
 

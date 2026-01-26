@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 // import { motion } from 'framer-motion';
 import { Activity, Shield, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
+import ErrorBoundary from './ErrorBoundary';
+import APIErrorFallback from './APIErrorFallback';
 
 interface OpsState {
     version: string;
@@ -40,25 +42,44 @@ export default function OpsDashboard() {
         fetchState();
     }, []);
 
-    if (loading) return <div className="animate-pulse text-neon-acid text-[10px] font-bold uppercase tracking-widest">Synchronizing Protocol Intel...</div>;
-    
-    // Show graceful fallback UI when API is unavailable (e.g., local dev without Vercel)
-    if (!state || error) {
-        return (
-            <div className="glass-card !p-6 border-orange-500/20 bg-black/60">
-                <div className="flex items-center gap-2 mb-3">
-                    <AlertCircle className="w-4 h-4 text-orange-400" />
-                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-orange-400">Protocol Intel Unavailable</h3>
-                </div>
-                <p className="text-[10px] text-slate-400 leading-relaxed">
-                    Ops dashboard requires Vercel serverless functions. Use <code className="text-neon-acid bg-black/40 px-1 py-0.5 rounded">vercel dev</code> for local development,
-                    or deploy to Vercel to enable Protocol Intel synchronization.
-                </p>
-            </div>
-        );
-    }
-
     return (
+        <ErrorBoundary
+            componentName="OpsDashboard"
+            level="warning"
+            fallback={(error: any, reset: any) => (
+                <APIErrorFallback
+                    error={error}
+                    endpoint="/api/ops-status"
+                    onRetry={reset}
+                    onDismiss={() => {}}
+                    showDevInstructions={true}
+                />
+            )}
+            onError={(error: unknown, errorInfo: unknown) => {
+                console.error('[OpsDashboard] Error caught by boundary:', error, errorInfo);
+            }}
+        >
+            {loading && (
+                <div className="animate-pulse text-neon-acid text-[10px] font-bold uppercase tracking-widest">
+                    Synchronizing Protocol Intel...
+                </div>
+            )}
+            
+            {/* Show graceful fallback UI when API is unavailable (e.g., local dev without Vercel) */}
+            {!loading && (!state || error) && (
+                <div className="glass-card !p-6 border-orange-500/20 bg-black/60">
+                    <div className="flex items-center gap-2 mb-3">
+                        <AlertCircle className="w-4 h-4 text-orange-400" />
+                        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-orange-400">Protocol Intel Unavailable</h3>
+                    </div>
+                    <p className="text-[10px] text-slate-400 leading-relaxed">
+                        Ops dashboard requires Vercel serverless functions. Use <code className="text-neon-acid bg-black/40 px-1 py-0.5 rounded">vercel dev</code> for local development,
+                        or deploy to Vercel to enable Protocol Intel synchronization.
+                    </p>
+                </div>
+            )}
+
+            {!loading && state && !error && (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -134,5 +155,7 @@ export default function OpsDashboard() {
                 </div>
             </div>
         </div>
+            )}
+        </ErrorBoundary>
     );
 }

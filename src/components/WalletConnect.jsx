@@ -10,6 +10,8 @@ import { useEffect, useRef } from 'react';
 import { Wallet } from 'lucide-react';
 import { DynamicContextProvider, DynamicWidget, useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import useFeatures from '../hooks/useFeatures';
+import ErrorBoundary from './ErrorBoundary';
+import WalletErrorFallback from './WalletErrorFallback';
 
 /**
  * Internal component that has access to Dynamic context
@@ -115,54 +117,72 @@ export default function WalletConnect({
   }
 
   return (
-    <DynamicContextProvider
-      settings={{
-        environmentId: dynamicEnvironmentId,
-        walletConnectors: ['metamask', 'walletconnect', 'coinbase'],
-        appName: 'NΞØ Smart Factory',
-        appLogoUrl: '/brand/logo-main.png',
-        overrides: {
-          evmNetworks: [
-            {
-              chainId: 8453, // Base Mainnet
-              name: 'Base',
-              nativeCurrency: {
-                name: 'Ethereum',
-                symbol: 'ETH',
-                decimals: 18,
-              },
-              rpcUrls: {
-                default: {
-                  http: ['https://mainnet.base.org'],
-                },
-              },
-            },
-            {
-              chainId: 137, // Polygon Mainnet
-              name: 'Polygon',
-              nativeCurrency: {
-                name: 'MATIC',
-                symbol: 'MATIC',
-                decimals: 18,
-              },
-              rpcUrls: {
-                default: {
-                  http: ['https://polygon-rpc.com'],
-                },
-              },
-            },
-          ],
-        },
+    <ErrorBoundary
+      componentName="WalletConnect"
+      level="critical"
+      fallback={(error, reset) => (
+        <WalletErrorFallback
+          error={error}
+          onRetry={reset}
+          onUseSimulation={() => {
+            // Fallback para simulation mode se disponível
+            console.info('[WalletConnect] Using simulation mode fallback');
+          }}
+        />
+      )}
+      onError={(error, errorInfo) => {
+        console.error('[WalletConnect] Error caught by boundary:', error, errorInfo);
       }}
     >
-      <WalletConnectInner
-        onConnect={onConnect}
-        onDisconnect={onDisconnect}
-        userAddress={userAddress}
-        setUserAddress={setUserAddress}
-        className={className}
-      />
-    </DynamicContextProvider>
+      <DynamicContextProvider
+        settings={{
+          environmentId: dynamicEnvironmentId,
+          walletConnectors: ['metamask', 'walletconnect', 'coinbase'],
+          appName: 'NΞØ Smart Factory',
+          appLogoUrl: '/brand/logo-main.png',
+          overrides: {
+            evmNetworks: [
+              {
+                chainId: 8453, // Base Mainnet
+                name: 'Base',
+                nativeCurrency: {
+                  name: 'Ethereum',
+                  symbol: 'ETH',
+                  decimals: 18,
+                },
+                rpcUrls: {
+                  default: {
+                    http: ['https://mainnet.base.org'],
+                  },
+                },
+              },
+              {
+                chainId: 137, // Polygon Mainnet
+                name: 'Polygon',
+                nativeCurrency: {
+                  name: 'MATIC',
+                  symbol: 'MATIC',
+                  decimals: 18,
+                },
+                rpcUrls: {
+                  default: {
+                    http: ['https://polygon-rpc.com'],
+                  },
+                },
+              },
+            ],
+          },
+        }}
+      >
+        <WalletConnectInner
+          onConnect={onConnect}
+          onDisconnect={onDisconnect}
+          userAddress={userAddress}
+          setUserAddress={setUserAddress}
+          className={className}
+        />
+      </DynamicContextProvider>
+    </ErrorBoundary>
   );
 }
 
