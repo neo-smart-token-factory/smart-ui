@@ -70,10 +70,10 @@ export default function SmartMint() {
   const { isEnabled, phaseInfo } = useFeatures();
   const isWeb3Enabled = isEnabled('phase2', 'web3');
   const isRealTransactionsEnabled = isEnabled('phase2', 'realTransactions');
-  
+
   // Web3 Wallet (Dynamic.xyz) - só funciona se Phase 2 habilitada
   const dynamicWallet = useDynamicWallet();
-  
+
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -87,14 +87,14 @@ export default function SmartMint() {
 
   // Wallet address: usa Dynamic.xyz se Web3 habilitado, senão usa estado local
   const [userAddress, setUserAddress] = useState(null);
-  const effectiveUserAddress = isWeb3Enabled && dynamicWallet.isConnected 
-    ? dynamicWallet.address 
+  const effectiveUserAddress = isWeb3Enabled && dynamicWallet.isConnected
+    ? dynamicWallet.address
     : userAddress;
-  
+
   const [deployHistory, setDeployHistory] = useState([]);
   const [leadId, setLeadId] = useState(null);
   const [sessionId] = useState(() => getOrCreateSessionId());
-  
+
   // Transaction Status
   const { transaction, setTransaction: setTransactionState, clearTransaction } = useTransactionStatus();
 
@@ -102,7 +102,7 @@ export default function SmartMint() {
   const fetchDeploys = useCallback(async () => {
     try {
       const res = await fetch('/api/deploys');
-      
+
       // Check if response is actually JSON (not source code)
       const contentType = res.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
@@ -110,7 +110,7 @@ export default function SmartMint() {
         console.info("[PROTOCOL] API routes not available. Use 'vercel dev' for full API support.");
         return;
       }
-      
+
       if (res.ok) {
         try {
           const data = await res.json();
@@ -230,7 +230,7 @@ export default function SmartMint() {
   const handleWalletConnect = async (address) => {
     if (address) {
       setUserAddress(address);
-      
+
       // Marketing: Atualizar lead com wallet_address
       if (sessionId && leadId) {
         await safeApiCall('/api/leads', {
@@ -289,12 +289,12 @@ export default function SmartMint() {
                 session_id: sessionId
               })
             });
-            
+
             const contentType = res.headers.get('content-type');
             if (!contentType || !contentType.includes('application/json')) {
               return;
             }
-            
+
             if (!res.ok && res.status !== 404) {
               console.warn("[CLOUD] Auto-save failed:", res.status);
             }
@@ -361,14 +361,14 @@ export default function SmartMint() {
       const loadDraft = async () => {
         try {
           const res = await fetch(`/api/drafts?address=${userAddress}`);
-          
+
           // Check if response is actually JSON (not source code)
           const contentType = res.headers.get('content-type');
           if (!contentType || !contentType.includes('application/json')) {
             // Response is not JSON (likely source code in vite dev mode)
             return; // Silently fail - expected in vite dev
           }
-          
+
           if (res.ok) {
             try {
               const draftData = await res.json();
@@ -429,15 +429,9 @@ export default function SmartMint() {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [sessionId, leadId, step, formData]);
 
-<<<<<<< HEAD
-  const [smartResult, setSmartResult] = useState(null);
-
-  const validateSmart = () => {
-=======
   const [deployResult, setDeployResult] = useState(null);
 
   const validateDeploy = () => {
->>>>>>> main
     if (!formData.tokenName || formData.tokenName.length < 3) return "Token name must be at least 3 chars.";
     if (!formData.tokenSymbol || formData.tokenSymbol.length < 2) return "Token symbol must be at least 2 chars.";
     if (!formData.tokenSupply || Number(formData.tokenSupply) <= 0) return "Genesis supply must be positive.";
@@ -445,19 +439,11 @@ export default function SmartMint() {
     return null;
   };
 
-<<<<<<< HEAD
-  const handleSmart = async (e) => {
-    e.preventDefault();
-    setError(null);
-
-    const vError = validateSmart();
-=======
   const handleDeploy = async (e) => {
     e.preventDefault();
     setError(null);
 
     const vError = validateDeploy();
->>>>>>> main
     if (vError) {
       setError(vError);
       return;
@@ -476,13 +462,13 @@ export default function SmartMint() {
 
     try {
       let result;
-      
+
       if (isRealTransactionsEnabled && dynamicWallet.signer) {
         // TODO: Implementar deploy real via Smart CLI quando estiver pronto
         // Por enquanto, ainda usa simulation mode mesmo com Web3 habilitado
         // porque o CLI ainda não está implementado
         console.info("[WEB3] Real transactions enabled but CLI not yet implemented. Using simulation.");
-        
+
         // Simulate transaction wait (3 seconds)
         await new Promise(resolve => setTimeout(resolve, 3000));
 
@@ -496,7 +482,7 @@ export default function SmartMint() {
       } else {
         // ⚠️ SIMULATION MODE: This is a mock deployment for demonstration purposes
         // Feature Flag: Real transactions are disabled in Phase 1
-        
+
         // Simulate transaction wait (3 seconds)
         await new Promise(resolve => setTimeout(resolve, 3000));
 
@@ -556,7 +542,7 @@ export default function SmartMint() {
             network: formData.network,
           });
         }
-        
+
         // Don't block deployment if API is unavailable
         if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
           // Expected in vite dev mode
@@ -610,11 +596,7 @@ export default function SmartMint() {
         });
       }
 
-<<<<<<< HEAD
-      setSmartResult(result);
-=======
       setDeployResult(result);
->>>>>>> main
       fetchDeploys(); // Refresh history
     } catch {
       setError("Protocol Deployment Failed: Connectivity issues.");
@@ -743,11 +725,7 @@ export default function SmartMint() {
             </motion.div>
           )}
 
-<<<<<<< HEAD
-          {!smartResult && step === 1 ? (
-=======
           {!deployResult && step === 1 ? (
->>>>>>> main
             <motion.div
               key="landing"
               initial={{ opacity: 0 }}
@@ -766,7 +744,7 @@ export default function SmartMint() {
                   The most efficient Smart Contract Factory. Compile and deploy stable, liquid protocols in seconds with zero upfront fees.
                 </p>
                 <div className="pt-8">
-                  <button 
+                  <button
                     onClick={() => {
                       setStep(2);
                       // Marketing: Registrar evento de clique no CTA
@@ -782,7 +760,7 @@ export default function SmartMint() {
                           })
                         });
                       }
-                    }} 
+                    }}
                     className="btn-primary flex items-center gap-3 mx-auto text-lg px-12 relative z-10 group"
                   >
                     Open Smart Mint <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -792,11 +770,7 @@ export default function SmartMint() {
 
               <LandingSection />
             </motion.div>
-<<<<<<< HEAD
-          ) : !smartResult && step === 2 ? (
-=======
           ) : !deployResult && step === 2 ? (
->>>>>>> main
             <motion.div
               key="constructor"
               initial={{ opacity: 0, y: 20 }}
@@ -804,11 +778,7 @@ export default function SmartMint() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="space-y-12"
             >
-<<<<<<< HEAD
-              <form onSubmit={handleSmart} className="space-y-10">
-=======
               <form onSubmit={handleDeploy} className="space-y-10">
->>>>>>> main
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="glass-card space-y-6">
                     <div className="flex items-center gap-2 text-neon-acid mb-2">
@@ -905,7 +875,7 @@ export default function SmartMint() {
                         <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }}>
                           <Rocket className="w-5 h-5" />
                         </motion.div>
-                        Forging Sequence...
+                        Launching Sequence...
                       </>
                     ) : (
                       <>
@@ -935,11 +905,7 @@ export default function SmartMint() {
                 <div className="space-y-2">
                   <span className="text-neon-acid font-mono text-[10px] tracking-[0.3em] font-bold">GENESIS SUCCESSFUL</span>
                   <h2 className="text-4xl font-bold">{formData.tokenName} is Deployed!</h2>
-<<<<<<< HEAD
-                  <p className="text-slate-400 font-mono text-xs break-all border border-white/10 bg-black/40 p-2 rounded max-w-sm mx-auto">{smartResult?.address}</p>
-=======
                   <p className="text-slate-400 font-mono text-xs break-all border border-white/10 bg-black/40 p-2 rounded max-w-sm mx-auto">{deployResult?.address}</p>
->>>>>>> main
                 </div>
                 <div className="flex flex-wrap justify-center gap-3">
                   <button className="bg-white/5 px-6 py-2 rounded-lg border border-white/10 flex items-center gap-2 hover:bg-white/10 transition-all text-xs font-bold uppercase">
@@ -956,11 +922,7 @@ export default function SmartMint() {
 
               <div className="flex justify-center border-t border-white/5 pt-10">
                 <button
-<<<<<<< HEAD
-                  onClick={() => { setSmartResult(null); setStep(1); }}
-=======
                   onClick={() => { setDeployResult(null); setStep(1); }}
->>>>>>> main
                   className="text-xs text-slate-500 hover:text-neon-acid transition-colors flex items-center gap-2 uppercase tracking-widest font-bold"
                 >
                   <ArrowRight className="w-3 h-3 rotate-180" /> Start New Sequence

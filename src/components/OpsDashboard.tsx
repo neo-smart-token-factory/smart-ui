@@ -6,11 +6,7 @@ interface OpsState {
     version: string;
     codename: string;
     status: string;
-<<<<<<< HEAD
-    smart: {
-=======
     components: {
->>>>>>> main
         [key: string]: {
             status: string;
             notes: string;
@@ -45,7 +41,7 @@ export default function OpsDashboard() {
     }, []);
 
     if (loading) return <div className="animate-pulse text-neon-acid text-[10px] font-bold uppercase tracking-widest">Synchronizing Protocol Intel...</div>;
-    
+
     // Show graceful fallback UI when API is unavailable (e.g., local dev without Vercel)
     if (!state || error) {
         return (
@@ -73,11 +69,7 @@ export default function OpsDashboard() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-<<<<<<< HEAD
-                {Object.entries(state.smart).map(([key, info]) => (
-=======
                 {Object.entries(state.components).map(([key, info]) => (
->>>>>>> main
                     <div key={key} className="glass-card !p-4 border-white/5 bg-black/40">
                         <div className="flex items-center justify-between mb-3">
                             <span className="text-[10px] uppercase font-bold text-slate-400 tracking-tighter">{key}</span>

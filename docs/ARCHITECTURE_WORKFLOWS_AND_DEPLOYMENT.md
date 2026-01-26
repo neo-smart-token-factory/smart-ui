@@ -169,11 +169,7 @@ Report de saúde do protocolo
 
 2. **`POST /api/deploys`**
    - **Uso:** Registrar novo deploy após minting
-<<<<<<< HEAD
-   - **Componente:** `App.jsx` → `handleSmart()`
-=======
    - **Componente:** `App.jsx` → `handleDeploy()`
->>>>>>> main
    - **Payload:**
      ```json
      {
@@ -208,11 +204,7 @@ Report de saúde do protocolo
 5. **`GET /api/ops-status`**
    - **Uso:** Status operacional do protocolo
    - **Componente:** `OpsDashboard.tsx`
-<<<<<<< HEAD
-   - **Resposta:** Estado operacional (version, codename, status, smart)
-=======
-   - **Resposta:** Estado operacional (version, codename, status, deploy)
->>>>>>> main
+   - **Resposta:** Estado operacional (version, codename, status, components)
 
 **Modo de Desenvolvimento:**
 
