@@ -10,6 +10,7 @@
 ## 📋 Problem Summary
 
 Currently, the application lacks proper loading states for async operations, leaving users without feedback during:
+
 - Wallet connection attempts
 - Transaction processing
 - API calls
@@ -27,6 +28,7 @@ Currently, the application lacks proper loading states for async operations, lea
 ### Impact
 
 **User Experience:**
+
 - Confusion about whether actions are processing
 - Multiple clicks on buttons (causing duplicate requests)
 - No sense of progress
@@ -122,6 +124,7 @@ export default function LoadingButton({
 ### Phase 2: Add Loading States to WalletConnect
 
 **Changes needed:**
+
 - Track connection state (`isConnecting`)
 - Show spinner during connection
 - Disable button while connecting
@@ -130,6 +133,7 @@ export default function LoadingButton({
 ### Phase 3: Add Loading States to Transaction Flow
 
 **Changes needed:**
+
 - Show pending state immediately
 - Progress indicators for confirmation
 - Loading states for explorer data
@@ -137,6 +141,7 @@ export default function LoadingButton({
 ### Phase 4: Add Loading States to Forms
 
 **Changes needed:**
+
 - Loading state on deploy button
 - Disable form during submission
 - Show progress for multi-step forms
