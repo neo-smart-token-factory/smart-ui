@@ -296,7 +296,9 @@ O projeto `smart-ui` faz parte de um ecossistema maior coordenado pela organiza�
      - `smart-cli/` — CLI do ecossistema
 
 2. **`smart-ui`** (Este repositório)
-   - **Organização:** `neo-smart-token-factory/smart-ui`
+   - **Produção:** `https://nsfactory.xyz` (ou `nsfactory.xyz/ecosystem-graph.html`)
+   - **Local Dev:** `http://localhost:3000`
+   - **Repositório:** `github.com/neo-smart-token-factory/smart-ui`
    - **Status:** Demo and Intent Layer
 
 3. **`landing`** (Repositório separado)

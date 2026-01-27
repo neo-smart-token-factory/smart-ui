@@ -111,7 +111,7 @@ export default function SmartMint() {
   const fetchDeploys = useCallback(async () => {
     setHistoryLoading(true);
     try {
-      const res = await fetch('/api/deploys');
+      const res = await fetch('/api/ops?action=deploys');
 
       // Check if response is actually JSON (not source code)
       const contentType = res.headers.get('content-type');
@@ -164,7 +164,7 @@ export default function SmartMint() {
       const utmMedium = urlParams.get('utm_medium');
       const utmCampaign = urlParams.get('utm_campaign');
 
-      const lead = await safeApiCall('/api/leads', {
+      const lead = await safeApiCall('/api/marketing?action=lead-sync', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -181,7 +181,7 @@ export default function SmartMint() {
       if (lead) {
         setLeadId(lead.id);
         // Registrar evento page_view
-        await safeApiCall('/api/events', {
+        await safeApiCall('/api/marketing?action=event-record', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -289,7 +289,7 @@ export default function SmartMint() {
         // Salvar draft (se tiver wallet)
         if (userAddress) {
           try {
-            const res = await fetch('/api/drafts', {
+            const res = await fetch('/api/ops?action=drafts', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -327,7 +327,7 @@ export default function SmartMint() {
           if (formData.tokenSupply) currentStep = 3;
           if (formData.description) currentStep = 4;
 
-          await safeApiCall('/api/sessions', {
+          await safeApiCall('/api/marketing?action=session-sync', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -346,7 +346,7 @@ export default function SmartMint() {
 
           // Registrar eventos de progresso
           if (currentStep >= 2) {
-            await safeApiCall('/api/events', {
+            await safeApiCall('/api/marketing?action=event-record', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -370,7 +370,7 @@ export default function SmartMint() {
     if (userAddress) {
       const loadDraft = async () => {
         try {
-          const res = await fetch(`/api/drafts?address=${userAddress}`);
+          const res = await fetch(`/api/ops?action=drafts&address=${userAddress}`);
 
           // Check if response is actually JSON (not source code)
           const contentType = res.headers.get('content-type');
@@ -416,22 +416,24 @@ export default function SmartMint() {
       // Usar sendBeacon para garantir que o request seja enviado mesmo ao fechar
       if (navigator.sendBeacon) {
         const data = JSON.stringify({
+          action: 'session-sync',
           session_id: sessionId,
           abandoned_at: new Date().toISOString(),
           step_reached: formData.tokenName ? 2 : 1
         });
-        navigator.sendBeacon('/api/sessions', new Blob([data], { type: 'application/json' }));
+        navigator.sendBeacon('/api/marketing', new Blob([data], { type: 'application/json' }));
       }
 
       // Registrar evento de abandono
       if (navigator.sendBeacon) {
         const eventData = JSON.stringify({
+          action: 'event-record',
           lead_id: leadId,
           session_id: sessionId,
           event_type: 'form_abandon',
           event_data: { step_reached: formData.tokenName ? 2 : 1 }
         });
-        navigator.sendBeacon('/api/events', new Blob([eventData], { type: 'application/json' }));
+        navigator.sendBeacon('/api/marketing', new Blob([eventData], { type: 'application/json' }));
       }
     };
 
@@ -527,7 +529,7 @@ export default function SmartMint() {
 
       // Record deployment in DB
       try {
-        const deployRes = await fetch('/api/deploys', {
+        const deployRes = await fetch('/api/ops?action=deploys', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -579,7 +581,7 @@ export default function SmartMint() {
       // Marketing: Atualizar lead e sessão para 'token_created'
       if (sessionId && leadId) {
         // Atualizar lead
-        await safeApiCall('/api/leads', {
+        await safeApiCall('/api/marketing?action=lead-sync', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -589,7 +591,7 @@ export default function SmartMint() {
         });
 
         // Marcar sessão como completada
-        await safeApiCall('/api/sessions', {
+        await safeApiCall('/api/marketing?action=session-sync', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

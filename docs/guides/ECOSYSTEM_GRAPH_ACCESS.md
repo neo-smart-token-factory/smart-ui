@@ -18,13 +18,13 @@
 Após o deploy no Vercel, o gráfico estará disponível em:
 
 ```
-https://smart-ui-delta.vercel.app/ecosystem-graph.html 
+https://nsfactory.xyz/ecosystem-graph.html 
 ```
 
 Ou, se você tiver um domínio customizado:
 
 ```
-smart-ui-delta.vercel.app/ecosystem-graph.html
+www.nsfactory.xyz/ecosystem-graph.html
 ```
 
 ### Preview (Branches)
@@ -77,7 +77,7 @@ http://localhost:3000/ecosystem-graph.html
 
 ```bash
 # Via curl
-curl -I https://smart-ui-dashboard.vercel.app/ecosystem-graph.html
+curl -I https://nsfactory.xyz/ecosystem-graph.html
 
 # Deve retornar:
 # HTTP/2 200
@@ -195,7 +195,7 @@ O gráfico é **público** (não requer autenticação). Se precisar proteger:
 
 ## 🔗 Links Rápidos
 
-- **Produção:** `https://smart-ui-dashboard.vercel.app/ecosystem-graph.html`
+- **Produção:** `https://nsfactory.xyz/ecosystem-graph.html`
 - **Local Dev:** `http://localhost:3000/ecosystem-graph.html`
 - **Repositório:** `github.com/neo-smart-token-factory/smart-ui`
 

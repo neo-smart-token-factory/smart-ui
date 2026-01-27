@@ -28,7 +28,7 @@ export default function OpsDashboard() {
         // Fetch operational status from API route
         const fetchState = async () => {
             try {
-                const res = await fetch('/api/ops-status');
+                const res = await fetch('/api/ops?action=status');
                 if (res.ok) {
                     const data = await res.json();
                     setState(data);
