@@ -9,6 +9,7 @@
 import { useEffect, useRef } from 'react';
 import { Wallet } from 'lucide-react';
 import { DynamicContextProvider, DynamicWidget, useDynamicContext } from '@dynamic-labs/sdk-react-core';
+import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
 import useFeatures from '../hooks/useFeatures';
 import ErrorBoundary from './ErrorBoundary';
 import WalletErrorFallback from './WalletErrorFallback';
@@ -157,7 +158,7 @@ export default function WalletConnect({
       <DynamicContextProvider
         settings={{
           environmentId: dynamicEnvironmentId,
-          walletConnectors: ['metamask', 'walletconnect', 'coinbase'],
+          walletConnectors: [EthereumWalletConnectors],
           appName: 'NΞØ Smart Factory',
           appLogoUrl: '/brand/logo-main.png',
           overrides: {
