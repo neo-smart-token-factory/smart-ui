@@ -19,7 +19,7 @@ import { validateAddress, formatAddress } from '../utils/addressValidation';
  * Internal component that has access to Dynamic context
  */
 function WalletConnectInner({ onConnect, onDisconnect, userAddress, setUserAddress, className }) {
-  const { primaryWallet, isAuthenticated } = useDynamicContext();
+  const { primaryWallet, isAuthenticated, sdkHasLoaded } = useDynamicContext();
   const prevAddressRef = useRef(null);
 
   // Effect to handle wallet connection/disconnection callbacks
@@ -60,17 +60,27 @@ function WalletConnectInner({ onConnect, onDisconnect, userAddress, setUserAddre
         variant="modal"
         buttonClassName="btn-secondary !py-2 !px-4 !text-xs flex items-center gap-2"
         innerButtonComponent={
-          <div className="flex items-center gap-2">
-            {!isAuthenticated && primaryWallet ? (
-              <LoadingSpinner size="sm" className="!w-3 !h-3" />
+          <div className="flex items-center gap-2 min-w-[120px] justify-center">
+            {!sdkHasLoaded ? (
+              <>
+                <LoadingSpinner size="sm" className="!w-3 !h-3" />
+                <span>Initializing...</span>
+              </>
+            ) : !isAuthenticated && primaryWallet ? (
+              <>
+                <LoadingSpinner size="sm" className="!w-3 !h-3" />
+                <span>Authenticating...</span>
+              </>
             ) : (
-              <Wallet className="w-3 h-3" />
+              <>
+                <Wallet className="w-3 h-3" />
+                <span>
+                  {userAddress
+                    ? formatAddress(userAddress)
+                    : 'Connect Wallet'}
+                </span>
+              </>
             )}
-            <span>
-              {userAddress
-                ? formatAddress(userAddress)
-                : 'Connect Wallet'}
-            </span>
           </div>
         }
       />

@@ -28,6 +28,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import LoadingButton from './components/ui/LoadingButton';
 import SkeletonLoader from './components/ui/SkeletonLoader';
 import { validateAddress, formatAddress } from './utils/addressValidation';
+import ProgressBar from './components/ui/ProgressBar';
 
 // Input sanitization
 const sanitizeInput = (val) => String(val).replace(/[<>]/g, '');
@@ -103,6 +104,8 @@ export default function SmartMint() {
   const { transaction, setTransaction: setTransactionState, clearTransaction } = useTransactionStatus();
 
   const [historyLoading, setHistoryLoading] = useState(true);
+  const [deployProgress, setDeployProgress] = useState(0);
+  const [deployStatus, setDeployStatus] = useState('');
 
   // Fetch History with retry logic
   const fetchDeploys = useCallback(async () => {
@@ -460,6 +463,8 @@ export default function SmartMint() {
     }
 
     setLoading(true);
+    setDeployProgress(10);
+    setDeployStatus('Validating Protocol Sequence...');
 
     // Mostrar TransactionStatus como pending
     if (isRealTransactionsEnabled) {
@@ -473,16 +478,25 @@ export default function SmartMint() {
     try {
       let result;
 
+      const simulateProgress = async () => {
+        setDeployProgress(30);
+        setDeployStatus('Initializing Genesis Block...');
+        await new Promise(r => setTimeout(r, 1000));
+
+        setDeployProgress(60);
+        setDeployStatus('Verifying Neural Uplink...');
+        await new Promise(r => setTimeout(r, 1000));
+
+        setDeployProgress(90);
+        setDeployStatus('Confirming Deployment...');
+        await new Promise(r => setTimeout(r, 1000));
+        setDeployProgress(100);
+      };
+
       if (isRealTransactionsEnabled && dynamicWallet.signer) {
-        // TODO: Implementar deploy real via Smart CLI quando estiver pronto
-        // Por enquanto, ainda usa simulation mode mesmo com Web3 habilitado
-        // porque o CLI ainda não está implementado
         console.info("[WEB3] Real transactions enabled but CLI not yet implemented. Using simulation.");
+        await simulateProgress();
 
-        // Simulate transaction wait (3 seconds)
-        await new Promise(resolve => setTimeout(resolve, 3000));
-
-        // Generate simulated contract address and transaction hash
         result = {
           ...formData,
           address: '0x' + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
@@ -490,13 +504,8 @@ export default function SmartMint() {
           status: 'DEPLOYED'
         };
       } else {
-        // ⚠️ SIMULATION MODE: This is a mock deployment for demonstration purposes
-        // Feature Flag: Real transactions are disabled in Phase 1
+        await simulateProgress();
 
-        // Simulate transaction wait (3 seconds)
-        await new Promise(resolve => setTimeout(resolve, 3000));
-
-        // Generate simulated contract address and transaction hash
         result = {
           ...formData,
           address: '0x' + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
@@ -893,7 +902,16 @@ export default function SmartMint() {
                     />
                   </div>
 
-                  <div className="flex flex-col items-center gap-4">
+                  <div className="flex flex-col items-center gap-4 w-full">
+                    {loading && (
+                      <div className="w-full md:w-[400px] mb-2 space-y-2">
+                        <div className="flex justify-between items-center text-[8px] uppercase font-bold tracking-[0.2em] text-neon-acid px-1">
+                          <span className="animate-pulse">{deployStatus}</span>
+                          <span className="font-mono">{deployProgress}%</span>
+                        </div>
+                        <ProgressBar progress={deployProgress} height="h-1" />
+                      </div>
+                    )}
                     <LoadingButton
                       type="submit"
                       loading={loading}
