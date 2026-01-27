@@ -79,7 +79,7 @@ A **NΞØ Smart Factory** é uma **interface de demonstração** para o ecossist
 ## 📦 Funcionalidades Demonstradas
 
 ==============================================
-    STATUS DE IMPLEMENTAÇÃO - v0.5.3
+    STATUS DE IMPLEMENTAÇÃO - v0.5.4
 ==============================================
 
 [####] FABRICA MULTICHAIN ................................................. OK
@@ -109,11 +109,13 @@ STATUS: 5/5 funcionalidades demonstradas
 
 ```bash
 make install
-make dev          # Só frontend (sem API)
-make dev-vercel   # Com API routes (recomendado)
+make dev-vercel   # Inicia com API routes (Recomendado)
+make dev          # Apenas frontend (Vite puro)
 ```
 
-**Deploy:** Veja [docs/DEPLOY_DASHBOARD.md](docs/DEPLOY_DASHBOARD.md) (Neon + Vercel + migrations).
+**Guia Detalhado:** Veja [docs/guides/DEVELOPMENT.md](docs/guides/DEVELOPMENT.md).
+
+**Deploy:** Veja [docs/guides/DEPLOYMENT.md](docs/guides/DEPLOYMENT.md).
 ```
 ## 📐 Arquitetura do Sistema
 

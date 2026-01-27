@@ -18,13 +18,13 @@
 Após o deploy no Vercel, o gráfico estará disponível em:
 
 ```
-https://smart-ui-dashboard.vercel.app/ecosystem-graph.html
+https://smart-ui-delta.vercel.app/ecosystem-graph.html 
 ```
 
 Ou, se você tiver um domínio customizado:
 
 ```
-https://seu-dominio.com/ecosystem-graph.html
+smart-ui-delta.vercel.app/ecosystem-graph.html
 ```
 
 ### Preview (Branches)
@@ -32,7 +32,7 @@ https://seu-dominio.com/ecosystem-graph.html
 Para branches de preview:
 
 ```
-https://smart-ui-dashboard-{branch}-{org}.vercel.app/ecosystem-graph.html
+smart-ui-delta-{branch}-{org}.vercel.app/ecosystem-graph.html
 ```
 
 ---

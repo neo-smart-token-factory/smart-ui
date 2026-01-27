@@ -3,7 +3,7 @@
 # ============================================
 # NΞØ SMART FACTORY — Onboarding Validation Script
 # ============================================
-# Este script valida a estrutura documentada no ONBOARDING_TECHNICAL_SUMMARY.md
+# Este script valida a estrutura documentada no docs/ONBOARDING_TECHNICAL_SUMMARY.md
 #
 # Uso: ./validate-onboarding.sh
 # ============================================
@@ -48,6 +48,9 @@ FILES=(
   ".env.example"
   "vite.config.js"
   "tailwind.config.cjs"
+  "docs/ONBOARDING_TECHNICAL_SUMMARY.md"
+  "docs/guides/DEVELOPMENT.md"
+  "docs/guides/DEPLOYMENT.md"
 )
 
 MISSING=()

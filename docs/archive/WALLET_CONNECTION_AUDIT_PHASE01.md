@@ -50,11 +50,11 @@ The wallet implementation follows a clean, layered architecture:
                │
 ┌──────────────▼──────────────────────┐
 │   useDynamicWallet Hook              │
-│   - Refactored to src/hooks/          │
+│   - Refactored to src/hooks/         │
 │   - Safe hook invocation             │
 │   - Returns: address, isConnected,   │
 │     provider, signer                 │
-└──────────────────────────────────────┘
+└─────────────────────────────────────┘
 ```
 
 **Strengths:**

@@ -1,7 +1,8 @@
 # 🔍 Auditoria do Gráfico do Ecossistema NEØ
 
-**Data:** 23 de Janeiro de 2026  
-**Status:** ✅ Corrigido
+**Data:** 27 de Janeiro de 2026  
+**Versão:** 0.5.4  
+**Status:** ✅ Sincronizado (v0.5.4)
 
 ---
 
@@ -19,20 +20,16 @@ Este documento detalha as correções realizadas no gráfico D3.js do ecossistem
 - `landing` era tratado como repositório separado
 - `docs` era componente dentro de `neo-smart-factory`
 
-#### ✅ **Depois (Correto):**
-- `landing` é um **workspace** dentro de `smart-ui` (monorepo)
-- `docs` é um **repositório separado** de documentação centralizada
-- `smart-ui` é um **monorepo** com workspaces: `landing`, `nuxt-app`, `packages/*`
+#### ✅ **Depois (Correto - v0.5.4):**
+- `landing` foi extraído para um **repositório separado** (`smart-ui-landing`)
+- `nuxt-app` foi extraído para um **repositório separado** (`smart-ui-mobile`)
+- `smart-ui` agora é uma **Single App (React/Vite)**, removendo a estrutura de workspaces no `package.json`.
+- `docs` continua como um **repositório separado** de documentação centralizada.
+- `packages/shared` permanece como biblioteca interna, mas a lógica de monorepo foi simplificada.
 
 **Evidência:**
-```json
-// package.json
-"workspaces": [
-  "landing",
-  "nuxt-app",
-  "packages/*"
-]
-```
+- O `package.json` raiz não contém mais a chave `"workspaces"`.
+- Pastas `landing/` e `nuxt-app/` removidas da raiz do `smart-ui`.
 
 ---
 
@@ -214,7 +211,8 @@ link.style('opacity', l => {
 ### Estrutura Interna
 - `neo-smart-factory` contém: `smart-core`, `smart-cli`, `internal-ops`, `changelog`
 - `internal-ops` contém: `state.json`
-- `smart-ui` contém: `dashboard`, `landing-ui`, `mobile`, `api`
+- `smart-ui` contém: `dashboard`, `api`, `src/hooks`, `src/utils`
+- `smart-ui-landing` e `smart-ui-mobile` agora são nós externos (repositórios separados).
 - `dashboard` usa: `api`
 
 ### Infraestrutura
@@ -228,7 +226,8 @@ link.style('opacity', l => {
 ## ✅ Validação Final
 
 ### Checklist de Correções
-- [x] `landing` como workspace, não repositório
+- [x] `landing` e `mobile` como repositórios separados (Single App migration)
+- [x] Remoção da configuração de `workspaces` no `package.json`
 - [x] `docs` como repositório separado
 - [x] `internal-ops` adicionado como componente
 - [x] `state.json` dentro de `internal-ops`
@@ -249,4 +248,4 @@ O gráfico agora reflete **fielmente** a arquitetura real do ecossistema NEØ, c
 
 ---
 
-**Última atualização:** 23 de Janeiro de 2026
+**Última atualização:** 27 de Janeiro de 2026 (v0.5.4)

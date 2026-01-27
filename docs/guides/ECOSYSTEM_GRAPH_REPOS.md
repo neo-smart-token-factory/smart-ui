@@ -1,6 +1,6 @@
 # Grafo de Repositórios e Conexões — NEØ
 
-**Data:** 2026-01-24  
+**Data:** 2026-01-27  
 **Status:** Ativo  
 **Categoria:** Guia  
 **Audiência:** DevOps
@@ -72,7 +72,7 @@ O grafo vive no **smart-ui** e é servido com o dashboard (Vercel). **Pré-lanç
 
 | Onde | Grafo | Repos | Acesso |
 |------|--------|--------|--------|
-| **smart-ui** (atual) | Público | smart-ui, landing, docs | `/ecosystem-graph.html` (produção) |
+| **smart-ui** (atual) | Público | smart-ui, smart-ui-landing, smart-ui-mobile, docs | `/ecosystem-graph.html` (produção) |
 | **Ops** (ou repo privado) | Interno | Todos (incl. privados) | Local ou URL interna |
 | **Novo repo** | Público **ou** interno | Conforme deploy | Conforme escolha |
 
@@ -115,4 +115,4 @@ Ao adicionar novos repos, workflows ou integrações, atualizar `ecosystem-graph
 
 ---
 
-**Última atualização:** 2026-01-24
+**Última atualização:** 2026-01-27
