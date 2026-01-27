@@ -31,7 +31,7 @@ export default function IntelligenceModal({ isOpen, onClose }: IntelligenceModal
     const fetchAlchemy = async () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/alchemy-pulse');
+            const res = await fetch('/api/intelligence?action=alchemy-pulse');
             if (res.ok) {
                 const data = await res.json();
                 setAlchemyData(data);
@@ -46,10 +46,14 @@ export default function IntelligenceModal({ isOpen, onClose }: IntelligenceModal
     const fetchTavily = async () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/tavily/market-research', {
+            const res = await fetch('/api/intelligence', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ category: 'Web3 Infrastructure', keywords: 'smart contract factory' })
+                body: JSON.stringify({
+                    action: 'market-research',
+                    category: 'Web3 Infrastructure',
+                    keywords: 'smart contract factory'
+                })
             });
             if (res.ok) {
                 const data = await res.json();
