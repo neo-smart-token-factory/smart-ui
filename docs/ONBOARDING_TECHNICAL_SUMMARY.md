@@ -377,9 +377,9 @@ CORE_CONTRACTS_PATH="../neo-smart-factory/smart-core/contracts"
 | `MODAL_TOKEN_ID` | Token ID para integração com Modal.com (IA) | Opcional | Modal.com |
 | `MODAL_TOKEN_SECRET` | Token Secret para integração com Modal.com | Opcional | Modal.com |
 | `DATABASE_URL` | URL de conexão com Neon Database | Sim (produção) | Neon.tech |
-| `NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID` | ID do ambiente Dynamic.xyz (Auth) | Opcional | Dynamic.xyz |
-| `NEXT_PUBLIC_DRPC_API_KEY` | API Key do dRPC (RPC Provider) | Opcional | dRPC |
-| `NEXT_PUBLIC_ALCHEMY_ID` | ID do Alchemy (RPC Provider) | Opcional | Alchemy |
+| `VITE_DYNAMIC_ENVIRONMENT_ID` | ID do ambiente Dynamic.xyz (Auth) | Opcional | Dynamic.xyz |
+| `VITE_DRPC_API_KEY` | API Key do dRPC (RPC Provider) | Opcional | dRPC |
+| `VITE_ALCHEMY_ID` | ID do Alchemy (RPC Provider) | Opcional | Alchemy |
 
 ### Triggers e Actions Configurados
 

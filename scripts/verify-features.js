@@ -39,10 +39,10 @@ async function testTavily() {
 
 async function testAlchemy() {
     console.log('🧪 Testing Alchemy API...');
-    const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID;
+    const alchemyId = process.env.VITE_ALCHEMY_ID;
 
     if (!alchemyId) {
-        console.error('❌ NEXT_PUBLIC_ALCHEMY_ID not found in env');
+        console.error('❌ VITE_ALCHEMY_ID not found in env');
         return false;
     }
 

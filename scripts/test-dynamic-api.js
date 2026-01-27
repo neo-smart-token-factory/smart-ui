@@ -19,7 +19,7 @@ async function testDynamicConnectivity() {
         const envPath = path.resolve(process.cwd(), '.env');
         if (fs.existsSync(envPath)) {
             const envContent = fs.readFileSync(envPath, 'utf8');
-            const match = envContent.match(/NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID=["']?([^"'\s]+)["']?/);
+            const match = envContent.match(/VITE_DYNAMIC_ENVIRONMENT_ID=["']?([^"'\s]+)["']?/);
             if (match) envId = match[1];
         }
     } catch (e) {
@@ -27,12 +27,12 @@ async function testDynamicConnectivity() {
     }
 
     // Fallback se não encontrar
-    envId = envId || process.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID;
+    envId = envId || process.env.VITE_DYNAMIC_ENVIRONMENT_ID;
 
     console.log(`[DEBUG] ID detectado: ${envId ? envId.slice(0, 8) + '...' : 'NÃO ENCONTRADO'}`);
 
     if (!envId) {
-        console.error('[ERRO] NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID não encontrado no arquivo .env');
+        console.error('[ERRO] VITE_DYNAMIC_ENVIRONMENT_ID não encontrado no arquivo .env');
         process.exit(1);
     }
 

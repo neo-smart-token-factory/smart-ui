@@ -124,7 +124,7 @@ Este repositório (`smart-ui`) segue uma estratégia de **lançamento por fases 
 
 ### Features planejadas
 
--  📋 Doctor AI via Modal.com
+-  ✅ **Doctor AI via Modal.com (LIVE)**
 -  📋 Narrative generator automático
 -  📋 Predictive analytics
 -  📋 Automated contract validation

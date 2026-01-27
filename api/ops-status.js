@@ -14,8 +14,8 @@ export default async function handler(req, res) {
         // In production, this could read from INTERNAL_OPS_PATH or a database
         // For now, we return a stable operational state
         const opsState = {
-            version: process.env.NEXT_PUBLIC_APP_VERSION || DEFAULT_VERSION,
-            codename: process.env.NEXT_PUBLIC_APP_CODENAME || DEFAULT_CODENAME,
+            version: process.env.VITE_APP_VERSION || DEFAULT_VERSION,
+            codename: process.env.VITE_APP_CODENAME || DEFAULT_CODENAME,
             status: "operational",
             components: {
                 "Core Engine": {
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
         return res.status(200).json(opsState);
     } catch (error) {
         console.error("Ops Status Error:", error);
-        return res.status(500).json({ 
+        return res.status(500).json({
             error: "Failed to retrieve ops status",
             version: "unknown",
             codename: "ERROR",

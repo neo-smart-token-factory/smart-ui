@@ -92,10 +92,10 @@ O script criará um arquivo `.env` com:
    ✓ VITE_CHAIN_ID
    ✓ VITE_RPC_URL
    ✓ VITE_ENABLE_WEB3
-   ✓ NEXT_PUBLIC_APP_VERSION
-   ✓ NEXT_PUBLIC_APP_CODENAME
-   ✓ NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID
-   ✓ NEXT_PUBLIC_SENTRY_DSN
+   ✓ VITE_APP_VERSION
+   ✓ VITE_APP_CODENAME
+   ✓ VITE_DYNAMIC_ENVIRONMENT_ID
+   ✓ VITE_SENTRY_DSN
 
 📝 Criando arquivo .env...
 

@@ -93,9 +93,9 @@ To implement real blockchain deployments, the following changes are needed:
 
 Required for real Web3 integration (see `.env.example`):
 ```
-NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID=""  # For Social Login + Wallet
-NEXT_PUBLIC_DRPC_API_KEY=""            # RPC Provider
-NEXT_PUBLIC_ALCHEMY_ID=""              # Alternative RPC Provider
+VITE_DYNAMIC_ENVIRONMENT_ID=""         # For Social Login + Wallet
+VITE_DRPC_API_KEY=""                   # RPC Provider
+VITE_ALCHEMY_ID=""                     # Alternative RPC Provider
 ```
 
 ## Database Impact

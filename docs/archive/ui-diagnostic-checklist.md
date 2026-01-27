@@ -74,7 +74,7 @@ This assessment describes the state of the codebase as of January 2026.
     - `DATABASE_URL` / `DIRECT_URL` (Server-side only).
     - `MODAL_TOKEN_ID` / `SECRET` (Server-side/Scripts).
     - `NEXT_PUBLIC_SENTRY_DSN` (Client-side).
-    - `NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID` (Auth - prepared but logic possibly pending).
+    - `VITE_DYNAMIC_ENVIRONMENT_ID` (Auth - prepared but logic possibly pending).
 
 ---
 
@@ -138,7 +138,7 @@ This assessment describes the state of the codebase as of January 2026.
 
 - [x] **Incomplete flows**:
     - Actual Blockchain Transaction (Minting) is mocked.
-    - `NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID` exists in Env but Dynamic implementation not fully visible in `App.jsx` (uses generic `window.ethereum`).
+    - `VITE_DYNAMIC_ENVIRONMENT_ID` exists in Env but Dynamic implementation not fully visible in `App.jsx` (uses generic `window.ethereum`).
 
 ---
 

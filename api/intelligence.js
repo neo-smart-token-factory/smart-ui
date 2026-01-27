@@ -76,7 +76,7 @@ export default async function handler(req, res) {
 
 async function handleAlchemyPulse(req, res) {
     try {
-        const ALCHEMY_ID = process.env.VITE_ALCHEMY_ID || process.env.NEXT_PUBLIC_ALCHEMY_ID;
+        const ALCHEMY_ID = process.env.VITE_ALCHEMY_ID;
         if (!ALCHEMY_ID) {
             return res.status(200).json({ gasPriceGwei: '0.01', blockNumber: '41343573', status: 'simulated' });
         }

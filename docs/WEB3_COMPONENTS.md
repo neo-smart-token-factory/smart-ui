@@ -24,7 +24,7 @@ Componente para conexão de wallet usando **Dynamic.xyz**.
 
 **Variável de Ambiente:**
 
-- `VITE_DYNAMIC_ENVIRONMENT_ID` ou `NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID`
+- `VITE_DYNAMIC_ENVIRONMENT_ID`
 
 **Uso Básico:**
 
