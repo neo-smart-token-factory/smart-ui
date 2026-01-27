@@ -11,6 +11,7 @@ import { TRANSACTION_STATUS } from '../types/cli';
 import LoadingSpinner from './ui/LoadingSpinner';
 import ErrorBoundary from './ErrorBoundary';
 import TransactionErrorFallback from './TransactionErrorFallback';
+import { formatAddress, formatHash } from '../utils/addressValidation';
 
 /**
  * TransactionStatus Component
@@ -133,7 +134,7 @@ export default function TransactionStatus({
               {txHash && (
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xs text-gray-400 font-mono truncate">
-                    {txHash.slice(0, 10)}...{txHash.slice(-8)}
+                    {formatHash(txHash)}
                   </span>
                   <button
                     onClick={() => copyToClipboard(txHash)}
@@ -161,7 +162,7 @@ export default function TransactionStatus({
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xs text-gray-300">Contract:</span>
                   <span className="text-xs text-gray-400 font-mono truncate">
-                    {contractAddress.slice(0, 10)}...{contractAddress.slice(-8)}
+                    {formatAddress(contractAddress)}
                   </span>
                   <button
                     onClick={() => copyToClipboard(contractAddress)}

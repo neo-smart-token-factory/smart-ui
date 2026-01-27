@@ -27,6 +27,7 @@ import { TRANSACTION_STATUS } from './types/cli';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingButton from './components/ui/LoadingButton';
 import SkeletonLoader from './components/ui/SkeletonLoader';
+import { validateAddress, formatAddress } from './utils/addressValidation';
 
 // Input sanitization
 const sanitizeInput = (val) => String(val).replace(/[<>]/g, '');
@@ -440,7 +441,11 @@ export default function SmartMint() {
     if (!formData.tokenName || formData.tokenName.length < 3) return "Token name must be at least 3 chars.";
     if (!formData.tokenSymbol || formData.tokenSymbol.length < 2) return "Token symbol must be at least 2 chars.";
     if (!formData.tokenSupply || Number(formData.tokenSupply) <= 0) return "Genesis supply must be positive.";
+
     if (!effectiveUserAddress) return "Wallet connection required for protocol deployment.";
+    const addrValidation = validateAddress(effectiveUserAddress);
+    if (!addrValidation.valid) return `Invalid wallet: ${addrValidation.error}`;
+
     return null;
   };
 
@@ -971,7 +976,9 @@ export default function SmartMint() {
                       <div key={deploy.id} className="glass-card !p-4 flex items-center justify-between border-white/5 hover:border-neon-acid/20 transition-all group">
                         <div>
                           <p className="text-xs font-bold text-white uppercase">{deploy.token_name || 'Protocol Unknown'}</p>
-                          <p className="text-[10px] text-slate-500 font-mono tracking-tighter">{deploy.contract_address.slice(0, 10)}...{deploy.contract_address.slice(-8)}</p>
+                          <p className="text-[10px] text-slate-500 font-mono tracking-tighter" title={deploy.contract_address}>
+                            {formatAddress(deploy.contract_address)}
+                          </p>
                         </div>
                         <div className="text-right">
                           <span className="text-[9px] bg-neon-acid/10 text-neon-acid px-2 py-0.5 rounded-full border border-neon-acid/20 uppercase font-bold tracking-tighter">

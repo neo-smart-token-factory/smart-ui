@@ -13,6 +13,7 @@ import useFeatures from '../hooks/useFeatures';
 import ErrorBoundary from './ErrorBoundary';
 import WalletErrorFallback from './WalletErrorFallback';
 import LoadingSpinner from './ui/LoadingSpinner';
+import { validateAddress, formatAddress } from '../utils/addressValidation';
 
 /**
  * Internal component that has access to Dynamic context
@@ -27,15 +28,18 @@ function WalletConnectInner({ onConnect, onDisconnect, userAddress, setUserAddre
     const isConnected = isAuthenticated && !!primaryWallet;
     const prevAddress = prevAddressRef.current;
 
+    const validation = validateAddress(walletAddress);
+    const effectiveAddress = validation.valid ? validation.normalized : null;
+
     // Update parent component state if provided
-    if (setUserAddress && walletAddress !== userAddress) {
-      setUserAddress(walletAddress);
+    if (setUserAddress && effectiveAddress !== userAddress) {
+      setUserAddress(effectiveAddress);
     }
 
     // Handle connection callback (when address changes from null to a value)
-    if (isConnected && walletAddress && !prevAddress) {
+    if (isConnected && effectiveAddress && !prevAddress) {
       if (onConnect) {
-        onConnect(walletAddress);
+        onConnect(effectiveAddress);
       }
     }
 
@@ -64,7 +68,7 @@ function WalletConnectInner({ onConnect, onDisconnect, userAddress, setUserAddre
             )}
             <span>
               {userAddress
-                ? `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`
+                ? formatAddress(userAddress)
                 : 'Connect Wallet'}
             </span>
           </div>
