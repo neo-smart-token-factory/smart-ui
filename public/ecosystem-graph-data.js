@@ -17,7 +17,6 @@
     },
     nodes: [
       { id: 'smart-ui', label: 'smart-ui', type: 'repo-public', description: 'Dashboard React + API. Makefile: CORE_DIR, CLI_DIR, OPS_DIR, DOCS_DIR. Roda protocol-health, docs-guard, ops-sync.' },
-      { id: 'landing', label: 'landing', type: 'repo-public', description: 'Landing page e marketing. Referências para docs.' },
       { id: 'docs', label: 'docs', type: 'repo-public', description: 'Documentação central. Recebe sync de políticas/ADRs do smart-ui.' },
       { id: 'smart-ui-landing', label: 'smart-ui-landing', type: 'repo-public', description: 'Landing (repo separado pós-migração). Deploy Vercel. Referências docs, smart-ui.' },
       { id: 'smart-ui-mobile', label: 'smart-ui-mobile', type: 'repo-public', description: 'Mobile Vue (repo separado). Deploy Vercel. Referências docs, smart-ui.' },
@@ -36,7 +35,6 @@
     ],
     edges: [
       { source: 'smart-ui', target: 'docs', label: 'sync + references', type: 'connected' },
-      { source: 'landing', target: 'docs', label: 'references', type: 'connected' },
       { source: 'smart-ui-landing', target: 'docs', label: 'references', type: 'connected' },
       { source: 'smart-ui-mobile', target: 'docs', label: 'references', type: 'connected' },
       { source: 'protocol-health', target: 'smart-ui', label: 'checkout, runs', type: 'workflow' },
@@ -65,13 +63,13 @@
       { source: 'smart-ui-landing', target: 'smart-ui-mobile', label: 'references', type: 'connected' }
     ],
     notConnected: [
-      { source: 'smart-ui', target: 'landing', reason: 'Sem sync nem link direto.' },
+      { source: 'smart-ui', target: 'smart-ui-landing', reason: 'Repos distintos; sem link direto.' },
       { source: 'smart-core', target: 'smart-ui', reason: 'Sem integração direta (apenas via smart-cli).' },
-      { source: 'smart-core', target: 'landing', reason: 'Sem conexão.' },
+      { source: 'smart-core', target: 'smart-ui-landing', reason: 'Sem conexão.' },
       { source: 'smart-core', target: 'docs', reason: 'Sem conexão direta.' },
-      { source: 'smart-core-contracts', target: 'landing', reason: 'Sem conexão.' },
-      { source: 'state', target: 'landing', reason: 'Sem conexão.' },
-      { source: 'landing', target: 'smart-ui-landing', reason: 'Repos distintos; sem link direto.' }
+      { source: 'smart-core-contracts', target: 'smart-ui-landing', reason: 'Sem conexão.' },
+      { source: 'state', target: 'smart-ui-landing', reason: 'Sem conexão.' },
+      { source: 'smart-ui-landing', target: 'smart-ui-mobile', reason: 'Repos distintos; sem link direto.' }
     ]
   };
 
