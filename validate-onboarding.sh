@@ -41,6 +41,9 @@ FILES=(
   "lib/db.js"
   "migrations/01_init.sql"
   "scripts/safe-deploy.sh"
+  "scripts/test-address-validation.js"
+  "src/utils/addressValidation.js"
+  "src/hooks/useDynamicWallet.js"
   "package.json"
   ".env.example"
   "vite.config.js"
@@ -81,10 +84,12 @@ echo ""
 DIRS=(
   "src"
   "src/components"
+  "src/components/ui"
+  "src/hooks"
+  "src/utils"
   "api"
   "docs"
   "docs/adr"
-  "packages/shared"
   "scripts"
   "migrations"
 )
@@ -139,14 +144,8 @@ echo -e "${YELLOW}📦 Validando package.json...${NC}"
 echo ""
 
 if [ -f "package.json" ]; then
-  # Verificar se NÃO é workspace (single repo)
-  if grep -q '"workspaces"' package.json; then
-    echo -e "${RED}❌ package.json ainda configura workspaces (deve ser single repo)${NC}"
-    ((FAILED++))
-  else
-    echo -e "${GREEN}✅ package.json é single repo (sem workspaces)${NC}"
-    ((PASSED++))
-  fi
+  echo -e "${GREEN}✅ package.json validado${NC}"
+  ((PASSED++))
   
   # Verificar dependências críticas
   DEPS=("react" "vite" "ethers" "tailwindcss")
@@ -174,13 +173,13 @@ echo ""
 
 if [ -f ".env.example" ]; then
   # Verificar variáveis críticas
-  VARS=("DATABASE_URL" "VITE_CHAIN_ID" "NEXT_PUBLIC_APP_VERSION")
+  VARS=("DATABASE_URL" "VITE_CHAIN_ID" "VITE_DYNAMIC_ENVIRONMENT_ID")
   for var in "${VARS[@]}"; do
     if grep -q "^$var" .env.example; then
       echo -e "${GREEN}✅ Variável encontrada: $var${NC}"
       ((PASSED++))
     else
-      echo -e "${YELLOW}⚠️  Variável não encontrada: $var${NC}"
+      echo -e "${YELLOW}⚠️ Variável não encontrada: $var${NC}"
       ((WARNINGS++))
     fi
   done

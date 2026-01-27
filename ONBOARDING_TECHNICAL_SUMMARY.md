@@ -1,8 +1,8 @@
 # 📋 Resumo Técnico — Onboarding NΞØ Smart Factory UI
 
-**Versão:** 0.5.3  
+**Versão:** 0.5.4  
 **Data:** Janeiro 2026  
-**Status:** Demo and Intent Layer (Estrutura Arquitetural Protegida)
+**Status:** Phase 02 Preparation (Web3 & UX Enhanced)
 
 ---
 
@@ -62,6 +62,8 @@ A **NΞØ Smart Factory UI** é uma interface de gestão e fábrica de tokens mu
 
 ```json
 {
+  "@dynamic-labs/ethers-v6": "^4.57.2",   // Abstração Ethers para Dynamic
+  "@dynamic-labs/sdk-react-core": "^4.57.2", // SDK de Autenticação Web3
   "@neondatabase/serverless": "^1.0.2",    // Cliente Neon Database (serverless)
   "clsx": "^2.1.0",                        // Utilitário para classes CSS condicionais
   "ethers": "^6.10.0",                     // Biblioteca Web3 - Ethereum (v6)
@@ -95,13 +97,9 @@ A **NΞØ Smart Factory UI** é uma interface de gestão e fábrica de tokens mu
 }
 ```
 
-### Workspaces (Monorepo)
+### Estrutura de Repositório Único (Vite Single App)
 
-O projeto utiliza **workspaces** do npm/yarn, organizando múltiplas aplicações:
-
-1. **`landing/`** — Landing Page (React + Vite)
-2. **`nuxt-app/`** — Aplicação Nuxt/Vue (Mobile)
-3. **`packages/*`** — Pacotes compartilhados
+O projeto migrou de uma estrutura de workspaces para uma aplicação React (Vite) unificada para maior agilidade de desenvolvimento e deploy.
 
 ---
 
@@ -131,49 +129,33 @@ smart-ui/
 │   ├── FRONTEND_MAP.md
 │   ├── PROJECT_OVERVIEW.md
 │   └── ... (outros docs)
-├── landing/                         # Workspace: Landing Page
-│   ├── src/
-│   │   ├── main.jsx
-│   │   ├── sections/
-│   │   │   └── App.jsx
-│   │   ├── styles.css
-│   │   └── tokens.css
-│   ├── package.json
-│   └── vite.config.js
 ├── lib/                             # Bibliotecas utilitárias
 │   └── db.js                        # Configuração de banco de dados
 ├── migrations/                      # Migrações de banco de dados
-│   └── 01_init.sql
-├── nuxt-app/                        # Workspace: Nuxt/Vue App
-│   ├── src/
-│   │   ├── App.vue
-│   │   ├── main.js
-│   │   └── style.css
-│   ├── package.json
-│   └── vite.config.js
-├── packages/                        # Pacotes compartilhados
-│   └── shared/                      # Lógica e constantes compartilhadas
-│       ├── constants.js
-│       ├── index.js
-│       └── package.json
+├── packages/                        # Bibliotecas compartilhadas
 ├── public/                          # Assets estáticos
-│   ├── brand/                       # Logos e marca
-│   ├── images/                      # Imagens
-│   └── sw.js                        # Service Worker
 ├── scripts/                         # Scripts utilitários
 │   ├── migrate.js
-│   └── safe-deploy.sh
+│   ├── safe-deploy.sh
+│   └── test-address-validation.js   # Teste de lógica EIP-55
 ├── src/                             # Aplicação Principal (React)
 │   ├── App.jsx                      # Componente raiz
-│   ├── main.jsx                     # Entry point
-│   ├── index.css                    # Estilos globais
-│   └── components/                  # Componentes React
-│       ├── AssetPack.tsx
-│       ├── CustomService.tsx
-│       ├── LandingSection.tsx
-│       ├── NetworkSelector.tsx
-│       └── OpsDashboard.tsx
-├── package.json                     # Configuração raiz (workspaces)
+│   ├── components/                  # Componentes React
+│   │   ├── ui/                      # UI Components (Atomic)
+│   │   │   ├── AddressInput.jsx     # Input com validação EIP-55
+│   │   │   ├── LoadingButton.jsx    # Botão com estado de loading
+│   │   │   ├── LoadingSpinner.jsx   # Spinner animado
+│   │   │   ├── ProgressBar.jsx      # Barra de progresso multi-step
+│   │   │   └── SkeletonLoader.jsx   # Placeholders de carregamento
+│   │   └── ...
+│   ├── hooks/                       # Custom hooks (Refatorado v0.5.4)
+│   │   ├── useDynamicWallet.js      # Integração segura com Dynamic
+│   │   ├── useFeatures.js           # Feature flags
+│   │   └── useTransactionStatus.js  # Gestão de estado on-chain
+│   ├── utils/                       # Utilitários de lógica
+│   │   └── addressValidation.js     # Regex e Checksum (Ethers v6)
+│   └── types/                       # Definições de tipos / constantes
+└── package.json                     # Configuração raiz (Vite)
 ├── vite.config.js                   # Configuração Vite
 ├── tailwind.config.cjs              # Configuração Tailwind
 ├── tsconfig.json                    # Configuração TypeScript
@@ -1138,24 +1120,26 @@ Se você utilizar esta UI como base para seu projeto, solicitamos a **Atribuiç�
 
 ### Web3 / Blockchain
 
-#### ✅ **Ethers.js v6** (Instalado e Configurado)
+#### ✅ **Ethers.js v6** (Instalado e Ativo)
 - **Versão:** `^6.10.0`
-- **Status:** Instalado, mas integração Web3 ainda em modo simulação
-- **Uso Atual:** Preparado para uso, mas a aplicação roda em **Simulation Mode** quando não detecta wallet
-- **Localização:** Referenciado em `src/App.jsx` com comentários TODO para integração real
-- **Nota:** A documentação menciona `Viem` como alternativa futura, mas **não está instalado** no momento
+- **Status:** Ativo para validações de formato e checksum (EIP-55) e normalização de endereços.
+- **Uso Atual:** Utilizado nos utilitários de validação (`src/utils/addressValidation.js`) e no componente `AddressInput.jsx`.
+- **Nota:** Substituiu lógicas manuais de slice por formatação segura via `ethers.getAddress`.
 
-#### ❌ **Wagmi** (Não Instalado)
-- **Status:** Mencionado na documentação como opção futura, mas **não está presente** nas dependências
+#### ✅ **Dynamic.xyz** (Instalado e Ativo)
+- **Versão:** `^4.57.2`
+- **Status:** Provedor oficial de Autenticação e Conexão de Carteira.
+- **Integração:** Implementado em `src/components/WalletConnect.jsx` e consumido via hooks customizados (`src/hooks/useDynamicWallet.js`).
+- **Recursos:** Suporte a multi-wallets, autenticação social e gestão de estados de conexão (isConnecting, sdkHasLoaded).
 
-#### ❌ **Viem** (Não Instalado)
-- **Status:** Mencionado no README como parte da stack, mas **não está instalado** no `package.json`
+#### ❌ **Wagmi / Viem** (Não Instalado)
+- **Status:** Planejado para Phase 03+, atualmente o ecossistema utiliza Ethers v6 por compatibilidade com scripts legados.
 
 #### 📝 **Observações Web3:**
-- A aplicação detecta a presença de `window.ethereum` para determinar se há wallet instalado
-- Quando não há wallet, entra em **Simulation Mode** (deployments simulados)
-- A integração real com Ethers.js está marcada como TODO em `src/App.jsx`
-- Ver `docs/SIMULATION_MODE.md` para detalhes sobre o modo simulação
+- A aplicação utiliza o SDK do **Dynamic.xyz** como camada de abstração de wallet.
+- **Phase 02 Readiness**: Já integra estados de carregamento (spinners, progress bars) para deploys on-chain.
+- **Validação EIP-55**: Todos os endereços são validados e normalizados antes de qualquer operação de deploy.
+- **Simulation Mode**: Ainda disponível como failover, mas a infraestrutura para transações reais via Smart CLI está preparada.
 
 ### UI / Estilização
 
@@ -1271,15 +1255,12 @@ npm run lint         # Executa ESLint
 
 | Categoria | Biblioteca | Versão | Status |
 |-----------|-----------|--------|--------|
-| **Web3** | Ethers.js | ^6.10.0 | ✅ Instalado (Simulation Mode) |
-| **Web3** | Wagmi | - | ❌ Não instalado |
-| **Web3** | Viem | - | ❌ Não instalado |
-| **UI** | Tailwind CSS | ^3.3.0 | ✅ Instalado e configurado |
-| **UI** | Framer Motion | ^11.0.0 | ✅ Instalado |
-| **UI** | Lucide React | ^0.300.0 | ✅ Instalado |
-| **UI** | Shadcn/ui | - | ❌ Não instalado |
-| **UI** | Tailwind Merge | ^2.2.0 | ✅ Instalado |
-| **UI** | clsx | ^2.1.0 | ✅ Instalado |
+| **Web3 (Auth)** | Dynamic.xyz | ^4.57.2 | ✅ Ativo e Configurado |
+| **Web3 (Core)** | Ethers.js | ^6.10.0 | ✅ Ativo (Validações/Checksum) |
+| **Integrations** | Alchemy SDK | - | ✅ Ativo (Intelligence Modal) |
+| **UI** | Tailwind CSS | ^3.3.0 | ✅ Ativo e customizado |
+| **UI** | Framer Motion | ^11.0.0 | ✅ Ativo (Animações/Loading) |
+| **UI** | Lucide React | ^0.300.0 | ✅ Ativo |
 
 ---
 
@@ -1289,7 +1270,7 @@ npm run lint         # Executa ESLint
 2. **Simulation Mode:** A aplicação roda em modo simulação quando não há wallet Web3
 3. **Workspaces:** Projeto monorepo com múltiplas aplicações (landing, nuxt-app, packages)
 4. **TypeScript:** Projeto suporta TypeScript, mas muitos arquivos ainda são `.jsx`
-5. **Web3 Integration:** Integração real com Ethers.js está marcada como TODO
+5. **Web3 Integration:** Integração com Ethers.js e Dynamic.xyz está **ATIVA** para autenticação e validações.
 6. **Documentação ADR:** Decisões arquiteturais importantes estão em `docs/adr/`
 7. **Workflow Docs Guard:** PRs que alteram código SEM atualizar documentação serão bloqueados automaticamente
 8. **Integração Cross-Repo:** O workflow `protocol-health.yml` requer o secret `NEO_ECOSYSTEM_TOKEN` para acesso completo ao repositório `neo-smart-factory`
@@ -1308,5 +1289,5 @@ npm run lint         # Executa ESLint
 
 ---
 
-**Documento gerado automaticamente para onboarding técnico.**  
-**Última atualização:** Janeiro 2026
+**Documento atualizado em Janeiro 2026 para versão 0.5.4.**  
+**Status de Sincronia:** Sincronizado com Repositório Principal (v0.5.4).
