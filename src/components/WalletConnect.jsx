@@ -12,6 +12,7 @@ import { DynamicContextProvider, DynamicWidget, useDynamicContext } from '@dynam
 import useFeatures from '../hooks/useFeatures';
 import ErrorBoundary from './ErrorBoundary';
 import WalletErrorFallback from './WalletErrorFallback';
+import LoadingSpinner from './ui/LoadingSpinner';
 
 /**
  * Internal component that has access to Dynamic context
@@ -56,7 +57,11 @@ function WalletConnectInner({ onConnect, onDisconnect, userAddress, setUserAddre
         buttonClassName="btn-secondary !py-2 !px-4 !text-xs flex items-center gap-2"
         innerButtonComponent={
           <div className="flex items-center gap-2">
-            <Wallet className="w-3 h-3" />
+            {!isAuthenticated && primaryWallet ? (
+              <LoadingSpinner size="sm" className="!w-3 !h-3" />
+            ) : (
+              <Wallet className="w-3 h-3" />
+            )}
             <span>
               {userAddress
                 ? `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`
@@ -80,8 +85,8 @@ export default function WalletConnect({
   const isWeb3Enabled = isEnabled('phase2', 'web3');
 
   // Dynamic.xyz Environment ID
-  const dynamicEnvironmentId = import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID || 
-                                import.meta.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID;
+  const dynamicEnvironmentId = import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID ||
+    import.meta.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID;
 
   // Se Web3 não está habilitado, mostrar modo simulação
   if (!isWeb3Enabled) {
@@ -216,7 +221,7 @@ export function useDynamicWallet() {
       signer: null,
     };
   }
-  
+
   // If context is null or undefined, return defaults
   if (!context) {
     return {

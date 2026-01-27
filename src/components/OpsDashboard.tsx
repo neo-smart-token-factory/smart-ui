@@ -4,6 +4,7 @@ import { Activity, Shield, CheckCircle2, Clock, AlertCircle, BrainCircuit } from
 import IntelligenceModal from './IntelligenceModal';
 import ErrorBoundary from './ErrorBoundary';
 import APIErrorFallback from './APIErrorFallback';
+import LoadingSpinner from './ui/LoadingSpinner';
 
 interface OpsState {
     version: string;
@@ -62,8 +63,11 @@ export default function OpsDashboard() {
             }}
         >
             {loading && (
-                <div className="animate-pulse text-neon-acid text-[10px] font-bold uppercase tracking-widest">
-                    Synchronizing Protocol Intel...
+                <div className="flex items-center gap-3 py-4">
+                    <LoadingSpinner size="sm" />
+                    <div className="animate-pulse text-neon-acid text-[10px] font-bold uppercase tracking-widest">
+                        Synchronizing Protocol Intel...
+                    </div>
                 </div>
             )}
 

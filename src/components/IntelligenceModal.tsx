@@ -14,6 +14,8 @@ import {
     RefreshCw,
     Globe
 } from 'lucide-react';
+import LoadingSpinner from './ui/LoadingSpinner';
+import SkeletonLoader from './ui/SkeletonLoader';
 
 interface IntelligenceModalProps {
     isOpen: boolean;
@@ -134,7 +136,7 @@ export default function IntelligenceModal({ isOpen, onClose }: IntelligenceModal
                                                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Chain Pulse</span>
                                                 </div>
                                                 <p className="text-xl font-mono items-baseline gap-1 flex">
-                                                    {loading ? <span className="animate-pulse">---</span> : alchemyData?.gasPriceGwei || '0.01'}
+                                                    {loading ? <SkeletonLoader width="w-12" height="h-6" className="mt-1" /> : alchemyData?.gasPriceGwei || '0.01'}
                                                     <span className="text-[10px] text-neon-acid">Gwei</span>
                                                 </p>
                                                 <p className="text-[8px] text-slate-500 mt-1 uppercase">Standard Base Gas</p>
@@ -145,7 +147,7 @@ export default function IntelligenceModal({ isOpen, onClose }: IntelligenceModal
                                                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Head Block</span>
                                                 </div>
                                                 <p className="text-xl font-mono text-signal-cyan">
-                                                    {loading ? <span className="animate-pulse">---</span> : alchemyData?.blockNumber || '41343573'}
+                                                    {loading ? <SkeletonLoader width="w-24" height="h-6" className="mt-1" /> : alchemyData?.blockNumber || '41343573'}
                                                 </p>
                                                 <p className="text-[8px] text-slate-500 mt-1 uppercase">Synced in real-time</p>
                                             </div>
@@ -186,12 +188,16 @@ export default function IntelligenceModal({ isOpen, onClose }: IntelligenceModal
                                                     <TrendingUp className="w-3.5 h-3.5 text-signal-magenta" />
                                                     Market Gaps Identified
                                                 </h4>
-                                                <RefreshCw className={`w-3 h-3 text-slate-500 cursor-pointer ${loading ? 'animate-spin' : ''}`} onClick={fetchTavily} />
+                                                {loading ? (
+                                                    <LoadingSpinner size="sm" className="!text-slate-500" />
+                                                ) : (
+                                                    <RefreshCw className="w-3 h-3 text-slate-500 cursor-pointer hover:text-slate-300 transition-colors" onClick={fetchTavily} />
+                                                )}
                                             </div>
                                             <div className="grid grid-cols-1 gap-2">
                                                 {loading ? (
                                                     Array(3).fill(0).map((_, i) => (
-                                                        <div key={i} className="h-10 bg-white/5 rounded-lg animate-pulse" />
+                                                        <SkeletonLoader key={i} height="h-10" className="bg-white/5" />
                                                     ))
                                                 ) : (
                                                     (tavilyData?.marketGaps || [

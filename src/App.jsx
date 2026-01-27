@@ -25,6 +25,8 @@ import { useTransactionStatus } from './components/TransactionStatus';
 import useFeatures from './hooks/useFeatures';
 import { TRANSACTION_STATUS } from './types/cli';
 import ErrorBoundary from './components/ErrorBoundary';
+import LoadingButton from './components/ui/LoadingButton';
+import SkeletonLoader from './components/ui/SkeletonLoader';
 
 // Input sanitization
 const sanitizeInput = (val) => String(val).replace(/[<>]/g, '');
@@ -71,10 +73,10 @@ export default function SmartMint() {
   const { isEnabled, phaseInfo } = useFeatures();
   const isWeb3Enabled = isEnabled('phase2', 'web3');
   const isRealTransactionsEnabled = isEnabled('phase2', 'realTransactions');
-  
+
   // Web3 Wallet (Dynamic.xyz) - só funciona se Phase 2 habilitada
   const dynamicWallet = useDynamicWallet();
-  
+
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -88,22 +90,25 @@ export default function SmartMint() {
 
   // Wallet address: usa Dynamic.xyz se Web3 habilitado, senão usa estado local
   const [userAddress, setUserAddress] = useState(null);
-  const effectiveUserAddress = isWeb3Enabled && dynamicWallet.isConnected 
-    ? dynamicWallet.address 
+  const effectiveUserAddress = isWeb3Enabled && dynamicWallet.isConnected
+    ? dynamicWallet.address
     : userAddress;
-  
+
   const [deployHistory, setDeployHistory] = useState([]);
   const [leadId, setLeadId] = useState(null);
   const [sessionId] = useState(() => getOrCreateSessionId());
-  
+
   // Transaction Status
   const { transaction, setTransaction: setTransactionState, clearTransaction } = useTransactionStatus();
 
+  const [historyLoading, setHistoryLoading] = useState(true);
+
   // Fetch History with retry logic
   const fetchDeploys = useCallback(async () => {
+    setHistoryLoading(true);
     try {
       const res = await fetch('/api/deploys');
-      
+
       // Check if response is actually JSON (not source code)
       const contentType = res.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
@@ -111,7 +116,7 @@ export default function SmartMint() {
         console.info("[PROTOCOL] API routes not available. Use 'vercel dev' for full API support.");
         return;
       }
-      
+
       if (res.ok) {
         try {
           const data = await res.json();
@@ -133,10 +138,9 @@ export default function SmartMint() {
     } catch (error) {
       // Only log if it's not a network/CORS error (expected in vite dev)
       if (error.name !== 'TypeError' && !error.message.includes('Failed to fetch')) {
-        console.warn("[PROTOCOL] Failed to sync history sequence:", error);
-      } else {
-        console.info("[PROTOCOL] API routes not available. Use 'vercel dev' for full API support.");
       }
+    } finally {
+      setHistoryLoading(false);
     }
   }, []);
 
@@ -231,7 +235,7 @@ export default function SmartMint() {
   const handleWalletConnect = async (address) => {
     if (address) {
       setUserAddress(address);
-      
+
       // Marketing: Atualizar lead com wallet_address
       if (sessionId && leadId) {
         await safeApiCall('/api/leads', {
@@ -290,12 +294,12 @@ export default function SmartMint() {
                 session_id: sessionId
               })
             });
-            
+
             const contentType = res.headers.get('content-type');
             if (!contentType || !contentType.includes('application/json')) {
               return;
             }
-            
+
             if (!res.ok && res.status !== 404) {
               console.warn("[CLOUD] Auto-save failed:", res.status);
             }
@@ -362,14 +366,14 @@ export default function SmartMint() {
       const loadDraft = async () => {
         try {
           const res = await fetch(`/api/drafts?address=${userAddress}`);
-          
+
           // Check if response is actually JSON (not source code)
           const contentType = res.headers.get('content-type');
           if (!contentType || !contentType.includes('application/json')) {
             // Response is not JSON (likely source code in vite dev mode)
             return; // Silently fail - expected in vite dev
           }
-          
+
           if (res.ok) {
             try {
               const draftData = await res.json();
@@ -463,13 +467,13 @@ export default function SmartMint() {
 
     try {
       let result;
-      
+
       if (isRealTransactionsEnabled && dynamicWallet.signer) {
         // TODO: Implementar deploy real via Smart CLI quando estiver pronto
         // Por enquanto, ainda usa simulation mode mesmo com Web3 habilitado
         // porque o CLI ainda não está implementado
         console.info("[WEB3] Real transactions enabled but CLI not yet implemented. Using simulation.");
-        
+
         // Simulate transaction wait (3 seconds)
         await new Promise(resolve => setTimeout(resolve, 3000));
 
@@ -483,7 +487,7 @@ export default function SmartMint() {
       } else {
         // ⚠️ SIMULATION MODE: This is a mock deployment for demonstration purposes
         // Feature Flag: Real transactions are disabled in Phase 1
-        
+
         // Simulate transaction wait (3 seconds)
         await new Promise(resolve => setTimeout(resolve, 3000));
 
@@ -543,7 +547,7 @@ export default function SmartMint() {
             network: formData.network,
           });
         }
-        
+
         // Don't block deployment if API is unavailable
         if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
           // Expected in vite dev mode
@@ -620,424 +624,428 @@ export default function SmartMint() {
     >
       <div className="min-h-screen selection:bg-neon-acid selection:text-obsidian">
 
-      <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-neon-acid/10 blur-[120px] rounded-full animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-signal-cyan/10 blur-[120px] rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
-      </div>
+        <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-neon-acid/10 blur-[120px] rounded-full animate-pulse" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-signal-cyan/10 blur-[120px] rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
+        </div>
 
-      <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="relative w-10 h-10">
-            <img src="/brand/logo-main.png" alt="NEØ Logo" className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(216,242,68,0.4)]" />
+        <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="relative w-10 h-10">
+              <img src="/brand/logo-main.png" alt="NEØ Logo" className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(216,242,68,0.4)]" />
+            </div>
+            <span className="font-headline font-bold text-xl tracking-tighter uppercase">NΞØ <span className="text-neon-acid">SMART FACTORY</span></span>
           </div>
-          <span className="font-headline font-bold text-xl tracking-tighter uppercase">NΞØ <span className="text-neon-acid">SMART FACTORY</span></span>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest hidden md:inline">Protocol Status: <span className="text-green-400">Online</span></span>
-          {isWeb3Enabled ? (
-            <WalletConnect
-              userAddress={effectiveUserAddress}
-              setUserAddress={setUserAddress}
-              onConnect={handleWalletConnect}
-              onDisconnect={handleWalletDisconnect}
-            />
-          ) : (
-            <button
-              onClick={connectWalletFallback}
-              disabled={loading}
-              className={`btn-secondary !py-2 !px-4 !text-xs flex items-center gap-2 ${effectiveUserAddress ? 'border-neon-acid/50 text-neon-acid' : ''}`}
-            >
-              <Wallet className="w-3 h-3" /> {effectiveUserAddress ? `${effectiveUserAddress.slice(0, 6)}...${effectiveUserAddress.slice(-4)}` : 'Connect Wallet'}
-            </button>
-          )}
-        </div>
-      </header>
-
-      <main className="container mx-auto px-6 pt-32 pb-20 max-w-4xl">
-        <AnimatePresence mode="wait">
-          {/* Phase Status Badges - Design Moderno */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 flex flex-wrap items-center gap-3"
-          >
-            {/* Badge: Fase Atual */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="glass px-4 py-2 rounded-full flex items-center gap-2 border-[#D8F244]/30"
-            >
-              <div className="w-2 h-2 rounded-full bg-[#D8F244] animate-pulse"></div>
-              <span className="text-xs font-bold text-[#D8F244] uppercase tracking-wider">
-                {phaseInfo?.name}
-              </span>
-              <span className="text-xs text-gray-400 font-mono">
-                {phaseInfo?.status}
-              </span>
-            </motion.div>
-
-            {/* Badge: Features Disponíveis (contador) */}
-            {phaseInfo?.availableFeatures && (
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="glass px-3 py-1.5 rounded-full flex items-center gap-2 border-white/10"
+          <div className="flex items-center gap-4">
+            <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest hidden md:inline">Protocol Status: <span className="text-green-400">Online</span></span>
+            {isWeb3Enabled ? (
+              <WalletConnect
+                userAddress={effectiveUserAddress}
+                setUserAddress={setUserAddress}
+                onConnect={handleWalletConnect}
+                onDisconnect={handleWalletDisconnect}
+              />
+            ) : (
+              <button
+                onClick={connectWalletFallback}
+                disabled={loading}
+                className={`btn-secondary !py-2 !px-4 !text-xs flex items-center gap-2 ${effectiveUserAddress ? 'border-neon-acid/50 text-neon-acid' : ''}`}
               >
-                <ShieldCheck className="w-3.5 h-3.5 text-green-400" />
-                <span className="text-xs text-gray-300 font-medium">
-                  {phaseInfo.availableFeatures.length} Features Ativas
-                </span>
-              </motion.div>
+                <Wallet className="w-3 h-3" /> {effectiveUserAddress ? `${effectiveUserAddress.slice(0, 6)}...${effectiveUserAddress.slice(-4)}` : 'Connect Wallet'}
+              </button>
             )}
+          </div>
+        </header>
 
-            {/* Badge: Próxima Fase (se houver) */}
-            {phaseInfo?.lockedFeatures && phaseInfo.lockedFeatures.length > 0 && (
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="glass px-3 py-1.5 rounded-full flex items-center gap-2 border-orange-500/20"
-              >
-                <Rocket className="w-3.5 h-3.5 text-orange-400" />
-                <span className="text-xs text-orange-300 font-medium">
-                  Phase 2: {phaseInfo?.estimatedRelease || 'Q1 2026'}
-                </span>
-              </motion.div>
-            )}
-
-            {/* Tooltip/Info Button (opcional - expande para ver detalhes) */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="glass p-1.5 rounded-full border-white/10 hover:border-[#D8F244]/30 transition-colors"
-              title="Ver detalhes da fase atual"
-            >
-              <Info className="w-4 h-4 text-gray-400 hover:text-[#D8F244] transition-colors" />
-            </motion.button>
-          </motion.div>
-
-          {/* Transaction Status */}
-          {transaction && isRealTransactionsEnabled && (
-            <TransactionStatus
-              status={transaction.status}
-              txHash={transaction.txHash}
-              network={transaction.network}
-              contractAddress={transaction.contractAddress}
-              error={transaction.error}
-              blockNumber={transaction.blockNumber}
-              onDismiss={clearTransaction}
-              className="mb-6"
-            />
-          )}
-
-          {error && (
+        <main className="container mx-auto px-6 pt-32 pb-20 max-w-4xl">
+          <AnimatePresence mode="wait">
+            {/* Phase Status Badges - Design Moderno */}
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3 text-red-400 text-sm font-bold"
-            >
-              <AlertTriangle className="w-4 h-4" /> {error}
-            </motion.div>
-          )}
-
-          {!deployResult && step === 1 ? (
-            <motion.div
-              key="landing"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="space-y-12"
-            >
-              <div className="text-center space-y-4">
-                <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold text-neon-acid uppercase tracking-widest">
-                  <Zap className="w-3 h-3" /> Decentralized Intelligence Factory
-                </div>
-                <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-                  Deploy your <span className="text-neon-acid">Token</span> now.
-                </h1>
-                <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
-                  The most efficient Smart Contract Factory. Compile and deploy stable, liquid protocols in seconds with zero upfront fees.
-                </p>
-                <div className="pt-8">
-                  <button 
-                    onClick={() => {
-                      setStep(2);
-                      // Marketing: Registrar evento de clique no CTA
-                      if (leadId && sessionId) {
-                        safeApiCall('/api/events', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({
-                            lead_id: leadId,
-                            session_id: sessionId,
-                            event_type: 'cta_click',
-                            event_data: { cta: 'Open Smart Mint' }
-                          })
-                        });
-                      }
-                    }} 
-                    className="btn-primary flex items-center gap-3 mx-auto text-lg px-12 relative z-10 group"
-                  >
-                    Open Smart Mint <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </div>
-              </div>
-
-              <LandingSection />
-            </motion.div>
-          ) : !deployResult && step === 2 ? (
-            <motion.div
-              key="constructor"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="space-y-12"
+              className="mb-6 flex flex-wrap items-center gap-3"
             >
-              <form onSubmit={handleDeploy} className="space-y-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="glass-card space-y-6">
-                    <div className="flex items-center gap-2 text-neon-acid mb-2">
-                      <Cpu className="w-4 h-4" />
-                      <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Protocol Identification</span>
-                    </div>
+              {/* Badge: Fase Atual */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="glass px-4 py-2 rounded-full flex items-center gap-2 border-[#D8F244]/30"
+              >
+                <div className="w-2 h-2 rounded-full bg-[#D8F244] animate-pulse"></div>
+                <span className="text-xs font-bold text-[#D8F244] uppercase tracking-wider">
+                  {phaseInfo?.name}
+                </span>
+                <span className="text-xs text-gray-400 font-mono">
+                  {phaseInfo?.status}
+                </span>
+              </motion.div>
 
-                    <div>
-                      <label htmlFor="token-name" className="neo-label">Token Identity</label>
-                      <input
-                        id="token-name"
-                        name="tokenName"
-                        type="text"
-                        required
-                        autoComplete="off"
-                        className="neo-input w-full"
-                        placeholder="Ex: Neo Flow Token"
-                        value={formData.tokenName}
-                        onChange={e => setFormData({ ...formData, tokenName: sanitizeInput(e.target.value) })}
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="token-symbol" className="neo-label">Neural Symbol</label>
-                      <input
-                        id="token-symbol"
-                        name="tokenSymbol"
-                        type="text"
-                        required
-                        autoComplete="off"
-                        className="neo-input w-full uppercase"
-                        placeholder="Ex: FLOW"
-                        maxLength={6}
-                        value={formData.tokenSymbol}
-                        onChange={e => setFormData({ ...formData, tokenSymbol: sanitizeInput(e.target.value).toUpperCase() })}
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="token-supply" className="neo-label">Genesis Supply</label>
-                      <input
-                        id="token-supply"
-                        name="tokenSupply"
-                        type="number"
-                        required
-                        min="1"
-                        className="neo-input w-full"
-                        placeholder="Ex: 1000000"
-                        value={formData.tokenSupply}
-                        onChange={e => setFormData({ ...formData, tokenSupply: e.target.value })}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="glass-card space-y-6">
-                    <div className="flex items-center gap-2 text-signal-cyan mb-2">
-                      <Layers className="w-4 h-4" />
-                      <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Smart Mint Config</span>
-                    </div>
-
-                    <div>
-                      <label htmlFor="mission-narrative" className="neo-label">Mission Narrative</label>
-                      <textarea
-                        id="mission-narrative"
-                        name="description"
-                        className="neo-input w-full min-h-[140px] resize-none"
-                        placeholder="Describe the neural impact and utility of this asset..."
-                        value={formData.description}
-                        onChange={e => setFormData({ ...formData, description: e.target.value })}
-                      />
-                    </div>
-
-                    <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] text-slate-500 font-bold uppercase">Integrated Logic</span>
-                        <ShieldCheck className="w-3 h-3 text-green-400" />
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {['Anti-Whale', 'Auto-Burn', 'Liquid-Lock', 'Vesting'].map(tag => (
-                          <span key={tag} className="text-[9px] bg-white/5 px-2 py-1 rounded border border-white/5 text-slate-400 font-mono tracking-tighter uppercase">{tag}</span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="glass-card">
-                  <NetworkSelector
-                    selected={formData.network}
-                    onSelect={id => setFormData({ ...formData, network: id })}
-                  />
-                </div>
-
-                <div className="flex flex-col items-center gap-4">
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="btn-primary w-full md:w-[400px] flex items-center justify-center gap-3 text-lg"
-                  >
-                    {loading ? (
-                      <>
-                        <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }}>
-                          <Rocket className="w-5 h-5" />
-                        </motion.div>
-                        Forging Sequence...
-                      </>
-                    ) : (
-                      <>
-                        Deploy Protocol <ArrowRight className="w-5 h-5" />
-                      </>
-                    )}
-                  </button>
-                  <div className="mt-4 p-4 bg-neon-acid/5 border border-neon-acid/20 rounded-xl text-center">
-                    <p className="text-xs text-neon-acid font-bold uppercase tracking-wider">Zero Upfront Fee Policy</p>
-                    <p className="text-[10px] text-slate-400 mt-1">A 5% protocol fee is embedded. Only network GAS is required for genesis.</p>
-                  </div>
-                </div>
-              </form>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="result"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="space-y-8"
-            >
-              <div className="glass-card p-10 text-center space-y-6 relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-energy opacity-10 blur-3xl pointer-events-none group-hover:opacity-20 transition-opacity" />
-                <div className="w-20 h-20 bg-neon-acid rounded-full mx-auto flex items-center justify-center shadow-[0_0_30px_rgba(216,242,68,0.4)]">
-                  <ShieldCheck className="w-10 h-10 text-obsidian" />
-                </div>
-                <div className="space-y-2">
-                  <span className="text-neon-acid font-mono text-[10px] tracking-[0.3em] font-bold">GENESIS SUCCESSFUL</span>
-                  <h2 className="text-4xl font-bold">{formData.tokenName} is Deployed!</h2>
-                  <p className="text-slate-400 font-mono text-xs break-all border border-white/10 bg-black/40 p-2 rounded max-w-sm mx-auto">{deployResult?.address}</p>
-                </div>
-                <div className="flex flex-wrap justify-center gap-3">
-                  <button className="bg-white/5 px-6 py-2 rounded-lg border border-white/10 flex items-center gap-2 hover:bg-white/10 transition-all text-xs font-bold uppercase">
-                    <LayoutDashboard className="w-4 h-4 text-slate-400" /> Explorer
-                  </button>
-                  <button className="bg-neon-acid/10 px-6 py-2 rounded-lg border border-neon-acid/20 flex items-center gap-2 hover:bg-neon-acid/20 transition-all text-xs font-bold uppercase text-neon-acid">
-                    <Rocket className="w-4 h-4" /> Activate Bridge
-                  </button>
-                </div>
-              </div>
-
-              <AssetPack />
-              <CustomService />
-
-              <div className="flex justify-center border-t border-white/5 pt-10">
-                <button
-                  onClick={() => { setDeployResult(null); setStep(1); }}
-                  className="text-xs text-slate-500 hover:text-neon-acid transition-colors flex items-center gap-2 uppercase tracking-widest font-bold"
+              {/* Badge: Features Disponíveis (contador) */}
+              {phaseInfo?.availableFeatures && (
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="glass px-3 py-1.5 rounded-full flex items-center gap-2 border-white/10"
                 >
-                  <ArrowRight className="w-3 h-3 rotate-180" /> Start New Sequence
-                </button>
-              </div>
+                  <ShieldCheck className="w-3.5 h-3.5 text-green-400" />
+                  <span className="text-xs text-gray-300 font-medium">
+                    {phaseInfo.availableFeatures.length} Features Ativas
+                  </span>
+                </motion.div>
+              )}
 
-              <div className="mt-20">
-                <OpsDashboard />
-              </div>
+              {/* Badge: Próxima Fase (se houver) */}
+              {phaseInfo?.lockedFeatures && phaseInfo.lockedFeatures.length > 0 && (
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="glass px-3 py-1.5 rounded-full flex items-center gap-2 border-orange-500/20"
+                >
+                  <Rocket className="w-3.5 h-3.5 text-orange-400" />
+                  <span className="text-xs text-orange-300 font-medium">
+                    Phase 2: {phaseInfo?.estimatedRelease || 'Q1 2026'}
+                  </span>
+                </motion.div>
+              )}
 
-              <div className="mt-20 space-y-6">
-                <div className="flex items-center gap-2 text-neon-acid">
-                  <LayoutDashboard className="w-4 h-4" />
-                  <span className="text-xs font-bold uppercase tracking-[0.2em]">Live Protocol Feed</span>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {deployHistory.length > 0 ? deployHistory.map((deploy) => (
-                    <div key={deploy.id} className="glass-card !p-4 flex items-center justify-between border-white/5 hover:border-neon-acid/20 transition-all group">
-                      <div>
-                        <p className="text-xs font-bold text-white uppercase">{deploy.token_name || 'Protocol Unknown'}</p>
-                        <p className="text-[10px] text-slate-500 font-mono tracking-tighter">{deploy.contract_address.slice(0, 10)}...{deploy.contract_address.slice(-8)}</p>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-[9px] bg-neon-acid/10 text-neon-acid px-2 py-0.5 rounded-full border border-neon-acid/20 uppercase font-bold tracking-tighter">
-                          {deploy.network}
-                        </span>
-                        <p className="text-[8px] text-slate-600 mt-1 uppercase font-bold group-hover:text-neon-acid/60 transition-colors">Verified Node</p>
-                      </div>
-                    </div>
-                  )) : (
-                    <div className="col-span-full py-20 text-center border border-dashed border-white/10 rounded-2xl bg-white/[0.02]">
-                      <p className="text-[10px] text-slate-600 uppercase font-bold tracking-[0.3em]">Awaiting Uplink Sequences...</p>
-                    </div>
-                  )}
-                </div>
-              </div>
+              {/* Tooltip/Info Button (opcional - expande para ver detalhes) */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="glass p-1.5 rounded-full border-white/10 hover:border-[#D8F244]/30 transition-colors"
+                title="Ver detalhes da fase atual"
+              >
+                <Info className="w-4 h-4 text-gray-400 hover:text-[#D8F244] transition-colors" />
+              </motion.button>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
 
-      <footer className="border-t border-white/5 py-12 px-6 bg-black/20">
-        <div className="container mx-auto max-w-4xl space-y-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2 opacity-50">
-              <Hexagon className="w-4 h-4 text-neon-acid" />
-              <span className="text-[10px] font-bold tracking-widest uppercase">NEØ PROTOCOL — EST. 2025</span>
+            {/* Transaction Status */}
+            {transaction && isRealTransactionsEnabled && (
+              <TransactionStatus
+                status={transaction.status}
+                txHash={transaction.txHash}
+                network={transaction.network}
+                contractAddress={transaction.contractAddress}
+                error={transaction.error}
+                blockNumber={transaction.blockNumber}
+                onDismiss={clearTransaction}
+                className="mb-6"
+              />
+            )}
+
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3 text-red-400 text-sm font-bold"
+              >
+                <AlertTriangle className="w-4 h-4" /> {error}
+              </motion.div>
+            )}
+
+            {!deployResult && step === 1 ? (
+              <motion.div
+                key="landing"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="space-y-12"
+              >
+                <div className="text-center space-y-4">
+                  <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold text-neon-acid uppercase tracking-widest">
+                    <Zap className="w-3 h-3" /> Decentralized Intelligence Factory
+                  </div>
+                  <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+                    Deploy your <span className="text-neon-acid">Token</span> now.
+                  </h1>
+                  <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
+                    The most efficient Smart Contract Factory. Compile and deploy stable, liquid protocols in seconds with zero upfront fees.
+                  </p>
+                  <div className="pt-8">
+                    <button
+                      onClick={() => {
+                        setStep(2);
+                        // Marketing: Registrar evento de clique no CTA
+                        if (leadId && sessionId) {
+                          safeApiCall('/api/events', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              lead_id: leadId,
+                              session_id: sessionId,
+                              event_type: 'cta_click',
+                              event_data: { cta: 'Open Smart Mint' }
+                            })
+                          });
+                        }
+                      }}
+                      className="btn-primary flex items-center gap-3 mx-auto text-lg px-12 relative z-10 group"
+                    >
+                      Open Smart Mint <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
+                </div>
+
+                <LandingSection />
+              </motion.div>
+            ) : !deployResult && step === 2 ? (
+              <motion.div
+                key="constructor"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="space-y-12"
+              >
+                <form onSubmit={handleDeploy} className="space-y-10">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="glass-card space-y-6">
+                      <div className="flex items-center gap-2 text-neon-acid mb-2">
+                        <Cpu className="w-4 h-4" />
+                        <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Protocol Identification</span>
+                      </div>
+
+                      <div>
+                        <label htmlFor="token-name" className="neo-label">Token Identity</label>
+                        <input
+                          id="token-name"
+                          name="tokenName"
+                          type="text"
+                          required
+                          autoComplete="off"
+                          className="neo-input w-full"
+                          placeholder="Ex: Neo Flow Token"
+                          value={formData.tokenName}
+                          onChange={e => setFormData({ ...formData, tokenName: sanitizeInput(e.target.value) })}
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="token-symbol" className="neo-label">Neural Symbol</label>
+                        <input
+                          id="token-symbol"
+                          name="tokenSymbol"
+                          type="text"
+                          required
+                          autoComplete="off"
+                          className="neo-input w-full uppercase"
+                          placeholder="Ex: FLOW"
+                          maxLength={6}
+                          value={formData.tokenSymbol}
+                          onChange={e => setFormData({ ...formData, tokenSymbol: sanitizeInput(e.target.value).toUpperCase() })}
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="token-supply" className="neo-label">Genesis Supply</label>
+                        <input
+                          id="token-supply"
+                          name="tokenSupply"
+                          type="number"
+                          required
+                          min="1"
+                          className="neo-input w-full"
+                          placeholder="Ex: 1000000"
+                          value={formData.tokenSupply}
+                          onChange={e => setFormData({ ...formData, tokenSupply: e.target.value })}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="glass-card space-y-6">
+                      <div className="flex items-center gap-2 text-signal-cyan mb-2">
+                        <Layers className="w-4 h-4" />
+                        <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Smart Mint Config</span>
+                      </div>
+
+                      <div>
+                        <label htmlFor="mission-narrative" className="neo-label">Mission Narrative</label>
+                        <textarea
+                          id="mission-narrative"
+                          name="description"
+                          className="neo-input w-full min-h-[140px] resize-none"
+                          placeholder="Describe the neural impact and utility of this asset..."
+                          value={formData.description}
+                          onChange={e => setFormData({ ...formData, description: e.target.value })}
+                        />
+                      </div>
+
+                      <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] text-slate-500 font-bold uppercase">Integrated Logic</span>
+                          <ShieldCheck className="w-3 h-3 text-green-400" />
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {['Anti-Whale', 'Auto-Burn', 'Liquid-Lock', 'Vesting'].map(tag => (
+                            <span key={tag} className="text-[9px] bg-white/5 px-2 py-1 rounded border border-white/5 text-slate-400 font-mono tracking-tighter uppercase">{tag}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="glass-card">
+                    <NetworkSelector
+                      selected={formData.network}
+                      onSelect={id => setFormData({ ...formData, network: id })}
+                    />
+                  </div>
+
+                  <div className="flex flex-col items-center gap-4">
+                    <LoadingButton
+                      type="submit"
+                      loading={loading}
+                      loadingText="Forging Sequence..."
+                      icon={ArrowRight}
+                      className="w-full md:w-[400px] text-lg"
+                    >
+                      Deploy Protocol
+                    </LoadingButton>
+                    <div className="mt-4 p-4 bg-neon-acid/5 border border-neon-acid/20 rounded-xl text-center">
+                      <p className="text-xs text-neon-acid font-bold uppercase tracking-wider">Zero Upfront Fee Policy</p>
+                      <p className="text-[10px] text-slate-400 mt-1">A 5% protocol fee is embedded. Only network GAS is required for genesis.</p>
+                    </div>
+                  </div>
+                </form>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="result"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="space-y-8"
+              >
+                <div className="glass-card p-10 text-center space-y-6 relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-energy opacity-10 blur-3xl pointer-events-none group-hover:opacity-20 transition-opacity" />
+                  <div className="w-20 h-20 bg-neon-acid rounded-full mx-auto flex items-center justify-center shadow-[0_0_30px_rgba(216,242,68,0.4)]">
+                    <ShieldCheck className="w-10 h-10 text-obsidian" />
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-neon-acid font-mono text-[10px] tracking-[0.3em] font-bold">GENESIS SUCCESSFUL</span>
+                    <h2 className="text-4xl font-bold">{formData.tokenName} is Deployed!</h2>
+                    <p className="text-slate-400 font-mono text-xs break-all border border-white/10 bg-black/40 p-2 rounded max-w-sm mx-auto">{deployResult?.address}</p>
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-3">
+                    <button className="bg-white/5 px-6 py-2 rounded-lg border border-white/10 flex items-center gap-2 hover:bg-white/10 transition-all text-xs font-bold uppercase">
+                      <LayoutDashboard className="w-4 h-4 text-slate-400" /> Explorer
+                    </button>
+                    <button className="bg-neon-acid/10 px-6 py-2 rounded-lg border border-neon-acid/20 flex items-center gap-2 hover:bg-neon-acid/20 transition-all text-xs font-bold uppercase text-neon-acid">
+                      <Rocket className="w-4 h-4" /> Activate Bridge
+                    </button>
+                  </div>
+                </div>
+
+                <AssetPack />
+                <CustomService />
+
+                <div className="flex justify-center border-t border-white/5 pt-10">
+                  <button
+                    onClick={() => { setDeployResult(null); setStep(1); }}
+                    className="text-xs text-slate-500 hover:text-neon-acid transition-colors flex items-center gap-2 uppercase tracking-widest font-bold"
+                  >
+                    <ArrowRight className="w-3 h-3 rotate-180" /> Start New Sequence
+                  </button>
+                </div>
+
+                <div className="mt-20">
+                  <OpsDashboard />
+                </div>
+
+                <div className="mt-20 space-y-6">
+                  <div className="flex items-center gap-2 text-neon-acid">
+                    <LayoutDashboard className="w-4 h-4" />
+                    <span className="text-xs font-bold uppercase tracking-[0.2em]">Live Protocol Feed</span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {historyLoading ? (
+                      Array(4).fill(0).map((_, i) => (
+                        <div key={`skeleton-${i}`} className="glass-card !p-4 flex items-center justify-between border-white/5 h-[64px]">
+                          <div className="space-y-2">
+                            <SkeletonLoader width="w-24" height="h-3" />
+                            <SkeletonLoader width="w-32" height="h-2" className="opacity-50" />
+                          </div>
+                          <div className="flex flex-col items-end gap-2">
+                            <SkeletonLoader width="w-12" height="h-4" variant="circle" />
+                            <SkeletonLoader width="w-16" height="h-2" />
+                          </div>
+                        </div>
+                      ))
+                    ) : deployHistory.length > 0 ? deployHistory.map((deploy) => (
+                      <div key={deploy.id} className="glass-card !p-4 flex items-center justify-between border-white/5 hover:border-neon-acid/20 transition-all group">
+                        <div>
+                          <p className="text-xs font-bold text-white uppercase">{deploy.token_name || 'Protocol Unknown'}</p>
+                          <p className="text-[10px] text-slate-500 font-mono tracking-tighter">{deploy.contract_address.slice(0, 10)}...{deploy.contract_address.slice(-8)}</p>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-[9px] bg-neon-acid/10 text-neon-acid px-2 py-0.5 rounded-full border border-neon-acid/20 uppercase font-bold tracking-tighter">
+                            {deploy.network}
+                          </span>
+                          <p className="text-[8px] text-slate-600 mt-1 uppercase font-bold group-hover:text-neon-acid/60 transition-colors">Verified Node</p>
+                        </div>
+                      </div>
+                    )) : (
+                      <div className="col-span-full py-20 text-center border border-dashed border-white/10 rounded-2xl bg-white/[0.02]">
+                        <p className="text-[10px] text-slate-600 uppercase font-bold tracking-[0.3em]">Awaiting Uplink Sequences...</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </main>
+
+        <footer className="border-t border-white/5 py-12 px-6 bg-black/20">
+          <div className="container mx-auto max-w-4xl space-y-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="flex items-center gap-2 opacity-50">
+                <Hexagon className="w-4 h-4 text-neon-acid" />
+                <span className="text-[10px] font-bold tracking-widest uppercase">NEØ PROTOCOL — EST. 2025</span>
+              </div>
+              <div className="flex gap-10">
+                <a
+                  href="https://github.com/neo-smart-token-factory"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest"
+                >
+                  Organization
+                </a>
+                <a
+                  href="https://github.com/neo-smart-token-factory/smart-ui/blob/main/docs/ARCHITECTURAL_ADDENDUMS.md"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest"
+                >
+                  Governance
+                </a>
+                <a
+                  href="https://github.com/neo-smart-token-factory/smart-ui/blob/main/docs/adr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest"
+                >
+                  Technical ADRs
+                </a>
+                <a
+                  href="https://github.com/neo-smart-token-factory/smart-ui/blob/main/docs/PROJECT_OVERVIEW.md"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest"
+                >
+                  Documentation
+                </a>
+              </div>
             </div>
-            <div className="flex gap-10">
-              <a
-                href="https://github.com/neo-smart-token-factory"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest"
-              >
-                Organization
-              </a>
-              <a
-                href="https://github.com/neo-smart-token-factory/smart-ui/blob/main/docs/ARCHITECTURAL_ADDENDUMS.md"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest"
-              >
-                Governance
-              </a>
-              <a
-                href="https://github.com/neo-smart-token-factory/smart-ui/blob/main/docs/adr"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest"
-              >
-                Technical ADRs
-              </a>
-              <a
-                href="https://github.com/neo-smart-token-factory/smart-ui/blob/main/docs/PROJECT_OVERVIEW.md"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[10px] uppercase font-bold text-slate-500 hover:text-neon-acid transition-colors tracking-widest"
-              >
-                Documentation
-              </a>
+
+            <div className="border-t border-white/5 pt-6 text-center">
+              <p className="text-[9px] text-slate-600 uppercase tracking-wider font-mono">
+                Open Source Infrastructure · Institutional Responsibility · Active Governance
+              </p>
+              <p className="text-[8px] text-slate-700 mt-2 max-w-2xl mx-auto">
+                Built with deliberate security architecture. All decisions documented in ADRs.
+                Governed by <a href="https://github.com/neo-smart-token-factory" target="_blank" rel="noopener noreferrer" className="text-neon-acid/60 hover:text-neon-acid transition-colors">neo-smart-token-factory</a> organization.
+              </p>
             </div>
           </div>
-
-          <div className="border-t border-white/5 pt-6 text-center">
-            <p className="text-[9px] text-slate-600 uppercase tracking-wider font-mono">
-              Open Source Infrastructure · Institutional Responsibility · Active Governance
-            </p>
-            <p className="text-[8px] text-slate-700 mt-2 max-w-2xl mx-auto">
-              Built with deliberate security architecture. All decisions documented in ADRs.
-              Governed by <a href="https://github.com/neo-smart-token-factory" target="_blank" rel="noopener noreferrer" className="text-neon-acid/60 hover:text-neon-acid transition-colors">neo-smart-token-factory</a> organization.
-            </p>
-          </div>
-        </div>
-      </footer>
+        </footer>
 
       </div>
     </ErrorBoundary>
