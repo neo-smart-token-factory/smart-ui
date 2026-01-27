@@ -99,8 +99,9 @@ export default function WalletConnect({
   const isWeb3Enabled = isEnabled('phase2', 'web3');
 
   // Dynamic.xyz Environment ID
-  const dynamicEnvironmentId = import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID ||
+  const rawId = import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID ||
     import.meta.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID;
+  const dynamicEnvironmentId = rawId ? String(rawId).trim() : null;
 
   // Se Web3 não está habilitado, mostrar modo simulação
   if (!isWeb3Enabled) {
