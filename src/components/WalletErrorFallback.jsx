@@ -4,7 +4,7 @@
  * Fallback UI específico para erros de conexão de wallet
  */
 
-import { Wallet, AlertTriangle, RefreshCw, Info } from 'lucide-react';
+import { Wallet, RefreshCw, Info, X } from 'lucide-react';
 
 export default function WalletErrorFallback({ error, onRetry, onUseSimulation, onDismiss }) {
   return (
@@ -24,18 +24,18 @@ export default function WalletErrorFallback({ error, onRetry, onUseSimulation, o
           </button>
         )}
       </div>
-      
+
       <p className="text-xs text-slate-400 mb-4 leading-relaxed">
         Não foi possível conectar sua carteira. Isso pode acontecer se:
       </p>
-      
+
       <ul className="text-xs text-slate-500 mb-4 space-y-1.5 list-disc list-inside">
         <li>A extensão da carteira não está instalada</li>
         <li>A conexão foi rejeitada</li>
         <li>Há um problema com a rede</li>
         <li>A carteira está bloqueada ou travada</li>
       </ul>
-      
+
       {error && (
         <div className="mb-4 p-3 bg-black/40 rounded border border-orange-500/20">
           <div className="flex items-start gap-2">
@@ -46,7 +46,7 @@ export default function WalletErrorFallback({ error, onRetry, onUseSimulation, o
           </div>
         </div>
       )}
-      
+
       <div className="flex gap-2 flex-wrap">
         {onRetry && (
           <button
@@ -57,7 +57,7 @@ export default function WalletErrorFallback({ error, onRetry, onUseSimulation, o
             Tentar Novamente
           </button>
         )}
-        
+
         {onUseSimulation && (
           <button
             onClick={onUseSimulation}

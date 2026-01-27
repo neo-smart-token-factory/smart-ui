@@ -17,6 +17,7 @@ Esta pasta contém guias práticos para setup, deploy e operações.
 | [NEON_SETUP_GUIDE.md](./NEON_SETUP_GUIDE.md) | Configuração do Neon Database | DevOps |
 | [RUN_MIGRATIONS.md](./RUN_MIGRATIONS.md) | Como executar migrations | DevOps |
 | [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md) | Configuração de workflows | DevOps |
+| [ADMIN_MANAGEMENT_GUIDE.md](./ADMIN_MANAGEMENT_GUIDE.md) | Guia de gerenciamento administrativo | Admin / Admin |
 
 ## 🔄 Operações
 

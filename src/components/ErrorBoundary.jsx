@@ -7,15 +7,15 @@
  */
 
 import { Component } from 'react';
-import { AlertTriangle, RefreshCw, X } from 'lucide-react';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      hasError: false, 
+    this.state = {
+      hasError: false,
       error: null,
-      errorInfo: null 
+      errorInfo: null
     };
   }
 
@@ -25,19 +25,19 @@ class ErrorBoundary extends Component {
 
   componentDidCatch(error, errorInfo) {
     this.setState({ errorInfo });
-    
+
     // Log to console
     console.error('[ErrorBoundary]', error, errorInfo);
-    
+
     // Log to Sentry if available
     if (typeof window !== 'undefined' && window.Sentry) {
       window.Sentry.captureException(error, {
-        contexts: { 
-          react: { 
-            componentStack: errorInfo.componentStack 
-          } 
+        contexts: {
+          react: {
+            componentStack: errorInfo.componentStack
+          }
         },
-        tags: { 
+        tags: {
           component: this.props.componentName || 'Unknown',
           level: this.props.level || 'error'
         },
@@ -47,7 +47,7 @@ class ErrorBoundary extends Component {
         }
       });
     }
-    
+
     // Call custom error handler
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
@@ -69,7 +69,7 @@ class ErrorBoundary extends Component {
           ? this.props.fallback(this.state.error, this.handleReset)
           : this.props.fallback;
       }
-      
+
       // Default fallback UI
       return (
         <div className="error-boundary glass-card border-red-500/20 bg-black/60 p-6 rounded-lg">
@@ -79,11 +79,11 @@ class ErrorBoundary extends Component {
               {this.props.title || 'Algo deu errado'}
             </h3>
           </div>
-          
+
           <p className="text-xs text-slate-400 mb-4 leading-relaxed">
             {this.props.message || 'Ocorreu um erro inesperado. Por favor, tente novamente.'}
           </p>
-          
+
           {this.props.showDetails && this.state.error && (
             <details className="mb-4">
               <summary className="text-xs text-slate-500 cursor-pointer mb-2 hover:text-slate-400">
@@ -100,7 +100,7 @@ class ErrorBoundary extends Component {
               </pre>
             </details>
           )}
-          
+
           <div className="flex gap-2 flex-wrap">
             <button
               onClick={this.handleReset}
@@ -109,7 +109,7 @@ class ErrorBoundary extends Component {
               <RefreshCw className="w-3 h-3" />
               Tentar Novamente
             </button>
-            
+
             {this.props.showReload && (
               <button
                 onClick={() => window.location.reload()}
