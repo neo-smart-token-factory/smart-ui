@@ -14,7 +14,10 @@ const AddressInput = ({
     const [isFocused, setIsFocused] = useState(false);
     const [copied, setCopied] = useState(false);
 
-    // Compute validation status based on current value
+    // Compute validation status based on current controlled value for display
+    // This is separate from handleChange validation because:
+    // 1. This validates the current prop value for visual feedback
+    // 2. handleChange validates new input to normalize it before passing to parent
     const status = useMemo(() => {
         if (!value) {
             return { valid: null, error: null };
@@ -23,10 +26,12 @@ const AddressInput = ({
         return { valid: result.valid, error: result.error };
     }, [value]);
 
+    // Validate and normalize user input before passing to parent
     const handleChange = (e) => {
         const val = e.target.value;
 
         if (val) {
+            // Validate new input to provide normalized address to parent immediately
             const result = validateAddress(val);
             if (onChange) {
                 onChange(result.valid ? result.normalized : val, result.valid);
