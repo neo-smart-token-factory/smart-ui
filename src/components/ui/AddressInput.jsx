@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { CheckCircle2, AlertCircle, Copy, Search } from 'lucide-react';
 import { validateAddress } from '../../utils/addressValidation';
-import LoadingSpinner from './LoadingSpinner';
 
 const AddressInput = ({
     label = 'Wallet Address',
@@ -12,40 +11,34 @@ const AddressInput = ({
     disabled = false,
     required = false
 }) => {
-    const [internalValue, setInternalValue] = useState(value);
-    const [status, setStatus] = useState({ valid: null, error: null });
     const [isFocused, setIsFocused] = useState(false);
     const [copied, setCopied] = useState(false);
 
-    useEffect(() => {
-        setInternalValue(value);
-        if (value) {
-            const result = validateAddress(value);
-            setStatus({ valid: result.valid, error: result.error });
-        } else {
-            setStatus({ valid: null, error: null });
+    // Compute validation status based on current value
+    const status = useMemo(() => {
+        if (!value) {
+            return { valid: null, error: null };
         }
+        const result = validateAddress(value);
+        return { valid: result.valid, error: result.error };
     }, [value]);
 
     const handleChange = (e) => {
         const val = e.target.value;
-        setInternalValue(val);
 
         if (val) {
             const result = validateAddress(val);
-            setStatus({ valid: result.valid, error: result.error });
             if (onChange) {
                 onChange(result.valid ? result.normalized : val, result.valid);
             }
         } else {
-            setStatus({ valid: null, error: null });
             if (onChange) onChange('', false);
         }
     };
 
     const handleCopy = () => {
-        if (status.valid) {
-            navigator.clipboard.writeText(internalValue);
+        if (status.valid && value) {
+            navigator.clipboard.writeText(value);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         }
@@ -73,7 +66,7 @@ const AddressInput = ({
 
                     <input
                         type="text"
-                        value={internalValue}
+                        value={value}
                         onChange={handleChange}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}

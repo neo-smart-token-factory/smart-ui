@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 const SkeletonLoader = ({ variant = 'text', width = 'w-full', height = 'h-4', className = '' }) => {
     const variants = {

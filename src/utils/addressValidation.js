@@ -29,7 +29,7 @@ export function validateAddress(address) {
         // Normalize to checksum format
         const normalized = getAddress(address);
         return { valid: true, error: null, normalized };
-    } catch (err) {
+    } catch {
         return { valid: false, error: 'Invalid address', normalized: null };
     }
 }
