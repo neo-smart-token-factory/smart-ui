@@ -27,13 +27,13 @@ export const FEATURES = {
     marketing: true,
     sessionTracking: true,
     deployHistory: true,
-    simulationMode: true, // Modo simulação para demonstração
+    simulationMode: false, // Modo simulação para demonstração
   },
   phase2: {
     // Web3 Integration - Em desenvolvimento
-    web3: false, // Será true quando lançar Phase 2
+    web3: true, // Será true quando lançar Phase 2
     realTransactions: false,
-    walletConnection: false,
+    walletConnection: true,
     onChainEvents: false,
     contractDeployment: false,
   },
