@@ -142,6 +142,7 @@ export default function SmartMint() {
     } catch (error) {
       // Only log if it's not a network/CORS error (expected in vite dev)
       if (error.name !== 'TypeError' && !error.message.includes('Failed to fetch')) {
+        console.error('[PROTOCOL] Error checking API health:', error);
       }
     } finally {
       setHistoryLoading(false);
