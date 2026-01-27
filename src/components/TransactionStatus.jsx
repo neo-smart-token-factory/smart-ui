@@ -214,21 +214,4 @@ export default function TransactionStatus({
   );
 }
 
-/**
- * Hook para gerenciar estado de transação
- * 
- * @returns {Object} - { transaction, setTransaction, clearTransaction }
- */
-export function useTransactionStatus() {
-  const [transaction, setTransaction] = useState(null);
 
-  const clearTransaction = () => {
-    setTransaction(null);
-  };
-
-  return {
-    transaction,
-    setTransaction,
-    clearTransaction,
-  };
-}
